@@ -115,7 +115,19 @@
             "style" : {
                 "navigationBarTitleText" : "标签"
             }
-        }
+        },
+		{
+		    "path" : "pages/activity/activity",
+		    "style" : {
+		        "navigationBarTitleText" : "活动"
+		    }
+		},
+		{
+		    "path" : "pages/activity/detail",
+		    "style" : {
+		        "navigationBarTitleText" : "活动详情"
+		    }
+		}
     ],
     "tabBar" : {
         "list" : [
@@ -125,6 +137,12 @@
                 "iconPath" : "static/image/home.png",
                 "selectedIconPath" : "static/image/homeHL.png"
             },
+			{
+			    "pagePath" : "pages/activity/activity",
+			    "text" : "活动",
+			    "iconPath" : "static/image/hd3.png",
+			    "selectedIconPath" : "static/image/hd4.png"
+			},
             {
                 "pagePath" : "pages/user/user",
                 "text" : "我的",
