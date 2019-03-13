@@ -66,6 +66,19 @@ export default {
         }
         return ''
     },
+	dateFomatWeek:function (dateStr) {
+		var arr = ['活动时间:','','','']
+		var weekDay = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+
+	    if (dateStr) {
+			arr[1] = dateStr.substring(0, 10)
+			var myDate = new Date(Date.parse(arr[1].replace(/-/g, "/")));
+			arr[2] = weekDay[myDate.getDay()]
+			arr[3] = dateStr.substring(11, 16)
+	        return arr.join(" ")
+	    }
+	    return ''
+	},
     nowDate(){
         let date = new Date()
         let y = date.getFullYear();
