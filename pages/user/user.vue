@@ -15,7 +15,7 @@
             </view>
             <view class="uni-list-cell-divider"></view>
             <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
-                <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.ngt('/pages/user/wwd-edit/wwd-edit')">
+                <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.ngt('/pages/user/wwd-edit/edit-type-list')">
                     编辑资料
                 </view>
             </view>

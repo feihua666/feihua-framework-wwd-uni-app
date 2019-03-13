@@ -2,7 +2,6 @@
 	export default {
 		onLaunch: async function () {
             console.log('App Launch')
-            this.$http.initGobalData()
         },
 		onShow: function () {
 			console.log('App Show')
@@ -80,6 +79,9 @@
     .fh-justify-content-center{
         justify-content: center;
     }
+    .fh-flex-wrap{
+        flex-wrap: wrap;
+    }
     .fh-align-items-center{
         align-items: center;
     }
@@ -94,6 +96,18 @@
     }
     .fh-text-align-right{
         text-align: right;
+    }
+    .fh-inline-space-5{
+        display: inline-block;
+        width: 5px;
+    }
+    .fh-inline-space-10{
+        display: inline-block;
+        width: 10px;
+    }
+    .fh-inline-space-15{
+        display: inline-block;
+        width: 15px;
     }
     button[size=mini][loading]:before{
         width:25upx !important;

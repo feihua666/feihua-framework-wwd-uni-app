@@ -13,7 +13,7 @@
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				婚姻状况
-				<text @tap="showDictPicker(form.wwdUser.maritalStatus,'married_status','maritalStatus')">{{getDictLabelByType('married_status',form.wwdUser.maritalStatus,'未填写')}}</text>
+				<text @tap="showDictPicker(form.wwdUser.maritalStatus,'married_status','maritalStatus')">{{$dictUtils.getLabelByValue('married_status',form.wwdUser.maritalStatus,'未填写')}}</text>
 			</view>
 		</view>
 		<view class="uni-list-cell">
@@ -31,7 +31,7 @@
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				性别
-				<text @tap="showDictPicker(form.wwdUser.gender,'gender','gender')">{{getDictLabelByType('gender',form.wwdUser.gender,'未填写')}}</text>
+				<text @tap="showDictPicker(form.wwdUser.gender,'gender','gender')">{{$dictUtils.getLabelByValue('gender',form.wwdUser.gender,'未填写')}}</text>
 			</view>
 		</view>
 		<view class="uni-list-cell">
@@ -46,7 +46,7 @@
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				星座
-				<text @tap="showDictPicker(form.wwdUser.constellation,'constellation_type','constellation')">{{getDictLabelByType('constellation_type',form.wwdUser.constellation,'未填写')}}</text>
+				<text @tap="showDictPicker(form.wwdUser.constellation,'constellation_type','constellation')">{{$dictUtils.getLabelByValue('constellation_type',form.wwdUser.constellation,'未填写')}}</text>
 			</view>
 		</view>
 		<view class="uni-list-cell">
@@ -65,7 +65,7 @@
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				学历
-				<text @tap="showDictPicker(form.wwdUser.education,'education_level','education')">{{getDictLabelByType('education_level',form.wwdUser.education,'未填写')}}</text>
+				<text @tap="showDictPicker(form.wwdUser.education,'education_level','education')">{{$dictUtils.getLabelByValue('education_level',form.wwdUser.education,'未填写')}}</text>
 			</view>
 		</view>
 		<view class="uni-list-cell">
@@ -77,13 +77,13 @@
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				车
-				<text @tap="showDictPicker(form.wwdUser.hasCar,'has_car_status','hasCar')">{{getDictLabelByType('has_car_status',form.wwdUser.hasCar,'未填写')}}</text>
+				<text @tap="showDictPicker(form.wwdUser.hasCar,'has_car_status','hasCar')">{{$dictUtils.getLabelByValue('has_car_status',form.wwdUser.hasCar,'未填写')}}</text>
 			</view>
 		</view>
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				房
-				<text @tap="showDictPicker(form.wwdUser.hasHourse,'has_hourse_status','hasHourse')">{{getDictLabelByType('has_hourse_status',form.wwdUser.hasHourse,'未填写')}}</text>
+				<text @tap="showDictPicker(form.wwdUser.hasHourse,'has_hourse_status','hasHourse')">{{$dictUtils.getLabelByValue('has_hourse_status',form.wwdUser.hasHourse,'未填写')}}</text>
 
 			</view>
 		</view>
@@ -114,13 +114,13 @@
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				抽烟
-				<text @tap="showDictPicker(form.wwdUser.smoking,'smoking_status','smoking')">{{getDictLabelByType('smoking_status',form.wwdUser.smoking,'未填写')}}</text>
+				<text @tap="showDictPicker(form.wwdUser.smoking,'smoking_status','smoking')">{{$dictUtils.getLabelByValue('smoking_status',form.wwdUser.smoking,'未填写')}}</text>
 			</view>
 		</view>
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				喝酒
-				<text @tap="showDictPicker(form.wwdUser.drinking,'drinking_status','drinking')">{{getDictLabelByType('drinking_status',form.wwdUser.drinking,'未填写')}}</text>
+				<text @tap="showDictPicker(form.wwdUser.drinking,'drinking_status','drinking')">{{$dictUtils.getLabelByValue('drinking_status',form.wwdUser.drinking,'未填写')}}</text>
 			</view>
 		</view>
 		<view class="uni-list-cell">
@@ -169,9 +169,6 @@
     import fhImageUpload from '@/fh-components/fh-image-upload.vue'
     import fhDictPicker from '@/fh-components/fh-dict-picker.vue';
     import fhAreaPicker from '@/fh-components/fh-area-picker.vue';
-    import {
-        mapState
-    } from 'vuex'
     import ChatInput from "../../../components/im-chat/chatinput";
     export default {
         components: {
@@ -239,7 +236,6 @@
 			};
 		},
 		computed:{
-            ...mapState(['dicts']),
             images(){
                 let i = []
 				for(let j=0;j<this.picData.length;j++){
@@ -249,13 +245,7 @@
 			}
 		},
 		methods:{
-            getDictLabelByType(type,value,defaultValue){
-                let label = this.$dictUtils.getLabelByValue(type,value)
-				if(!label && defaultValue){
-				    label = defaultValue
-				}
-				return label
-			},
+
             // showdictpicker
 			showDictPicker(valueDefault,type,wwdUserDictAttr){
                 this.wwdUserDictAttr = wwdUserDictAttr

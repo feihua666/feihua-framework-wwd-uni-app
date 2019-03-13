@@ -61,6 +61,10 @@
         "devServer" : {
             "port" : 8383,
             "disableHostCheck" : true
-        }
-    }
+        },
+        "title" : "汪汪队"
+    },
+	"networkTimeout" : {
+		"uploadFile": 60000
+	}
 }

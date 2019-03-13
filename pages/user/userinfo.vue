@@ -70,7 +70,7 @@
                              * 如果需要强制登录跳转回登录页面
                              */
                             if (self.forcedLogin) {
-                                uni.navigateTo({
+                                uni.reLaunch({
                                     url: '/pages/login/login',
                                 });
                             }else{
