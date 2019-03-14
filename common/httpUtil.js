@@ -157,6 +157,13 @@ const _post = function (url, options) {
     }
     request(url, options.data, options.success, options.fail,options.complete, header, 'POST',checkLogin)
 }
+const _formpost = function (url, options) {
+  options.header = {
+    "Content-Type": "application/json",
+    "accept": "application/json"
+  }
+  _post(url,options)
+}
 const _put = function (url, options) {
     let header = {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -330,6 +337,7 @@ const _initGobalData = function (force) {
     loadUserinfo(force);
 }
 const http = {
+	formpost: _formpost,
     get: _get,
     post: _post,
     put: _put,

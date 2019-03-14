@@ -19,13 +19,13 @@
 					<view class="uni-card-content-inner">
 						<view>
 							<view class="uni-title"><text>活动时间：{{$utils.dateFomat(activity.startTime)}}-{{$utils.dateFomat(activity.endTime)}}</text></view>
-							<view class="uni-title"><text>活动人数：{{activity.headcount}}</text></view>
+							<view class="uni-title"><text>活动人数：{{activity.headcountDesc}}</text></view>
 							<view class="uni-title"><text>报名费用：{{activity.priceDesc}}</text></view>
 							<view class="uni-title"><text>活动地点：{{activity.addr}}</text></view>
 						</view>
 					</view>
 				</view>
-				<view class="uni-card-footer"><button class="btn-submit" formType="submit" type="primary">我要报名</button></view>
+				<view><button type="primary" v-on:click="goPay">我要报名</button></view>
 			</view>
 		</view>
 	</view>
@@ -42,23 +42,37 @@
 			let self = this
 			return {
 				title: self.activity.title,
-				path: '/pages/activity/detail?activityId=' + self.activity.activityId
+				path: '/pages/activity/detail?id=' + self.activity.id
 			}
 		},
 		onLoad(options) {
 			let self = this
-		    self.activity.activityId = options.activityId
-	
-
+		    self.activity.id = options.id
 			self.getDetail()
 		},
 		methods: {
+			goPay() {
+				uni.navigateTo({
+				    url: '/pages/activity/pay?id=' + this.activity.id
+				})
+			},
 			getDetail() {
 				let self = this
-                self.$http.get('/wwd/activity/' + self.activity.activityId, {
+                self.$http.get('/wwd/activity/' + self.activity.id, {
                     success: function (response) {
                         let content = response.data.data.content
 						self.activity = content
+						let headcountDesc = ''
+						if(content.headcount==0){
+							headcountDesc = '不限人数'
+						}else{
+							headcountDesc = content.headcount + ' 人'
+						}
+						if(content.headcountDesc){
+							self.activity.headcountDesc = headcountDesc + ' (' + content.headcountDesc + ')'
+						}else{
+							self.activity.headcountDesc= headcountDesc
+						}
 						
 						if(self.activity.payRule =='2'){
 							self.activity.priceDesc = '男：'+ content.malePrice+'/人，'+'女：'+content.femalePrice+'/人'

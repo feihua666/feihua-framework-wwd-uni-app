@@ -127,6 +127,12 @@
 		    "style" : {
 		        "navigationBarTitleText" : "活动详情"
 		    }
+		},
+		{
+		    "path" : "pages/activity/pay",
+		    "style" : {
+		        "navigationBarTitleText" : "活动支付"
+		    }
 		}
     ],
     "tabBar" : {

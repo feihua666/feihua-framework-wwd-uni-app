@@ -29,7 +29,7 @@
 		<fh-loadmore ref="loadmoreref">
             <view style="margin-top:10px;" class="uni-card" v-for="(item,index) in listData" :key="index">
                 	<view class="uni-card-content uni-list-cell">
-						<navigator :url="'/pages/activity/detail?activityId=' + item.id">
+						<navigator :url="'/pages/activity/detail?id=' + item.id">
 						<view class="uni-media-list">
 							<view class="uni-media-list-logo">
 								<image  :src="$config.file.getDownloadUrl(item.titleUrl)"></image>
@@ -45,7 +45,7 @@
                 	<view class="uni-card-footer">
                 		<view class="uni-card-link">{{item.wwdParticipateDtos?item.wwdParticipateDtos.length:'0'}}/{{item.headcount}} 人 </view>
                 		<view class="uni-card-link"><uni-tag  :text="$dictUtils.getLabelByValue('activity_status',item.status)"  inverted="true" type="danger" size="small"></uni-tag></view>
-                		<view class="uni-card-link"><navigator :url="'/pages/activity/detail?activityId=' + item.id"><uni-tag text="我要报名" inverted="true" type="warning" size="small"></uni-tag></navigator></view>
+                		<view class="uni-card-link"><navigator :url="'/pages/activity/detail?id=' + item.id"><uni-tag text="我要报名" inverted="true" type="warning" size="small"></uni-tag></navigator></view>
                 	</view>
             </view>
         </fh-loadmore>
