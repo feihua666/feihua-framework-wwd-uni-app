@@ -25,7 +25,7 @@
 
         </uni-nav-bar>
         <!-- 使用非原生导航栏后需要在页面顶部占位 -->
-        <view style="height:80px;"></view>
+        <view style="height:50px;"></view>
 		<fh-loadmore ref="loadmoreref">
             <view style="margin-top:10px;" class="uni-card" v-for="(item,index) in listData" :key="index">
                 <view class="uni-card-header uni-card-media">
@@ -75,40 +75,27 @@
 			    // 列表信息
                 listData: [],
                 //列表头像信息
-                photo:null,
+                photo:{},
                 searchForm: {
                     includePic: true,
-                    keyword:'', // 查询关键字
+                    keyword:'',
+                    gender:'',
+                    ageStart:'',
+                    ageEnd:'',
+                    education:'',
+                    homeProvinceId:'',
+                    homeCityId:'',
+                    homeDistrictId:'',
+                    nowProvinceId:'',
+                    nowCityId:'',
+                    nowDistrictId:''
                 }
 			}
 		},
 		onLoad() {
             console.log('onLoad index')
-            if (!this.hasLogin) {
-                if(this.forcedLogin){
-                    uni.navigateTo({
-                        url: '/pages/login/login'
-                    });
-                }
-            }
-            let self = this
-            this.$bus.$off('indexSearch')
-            this.$bus.$on('indexSearch',(data) => {
-                this.doSearch(data)
-            })
+            this.pageLogical()
 		},
-        onReady() {
-        console.log('onLoad index')
-        if (!this.hasLogin) {
-           /* if(this.forcedLogin){
-                uni.navigateTo({
-                    url: '/pages/login/login'
-                });
-            }*/
-        }else{
-            this.loadData(true)
-        }
-    },
         onPullDownRefresh(){
             console.log('onPullDownRefresh');
             this.loadData(true)
@@ -136,24 +123,114 @@
                         }else{
                             self.listData = self.listData.concat(content);
                         }
-                        self.photo = res.data.data.photo
+                        for(let key in res.data.data.photo){
+                            self.photo[key] = res.data.data.photo[key]
+                        }
+                    },fail:function (res) {
+                        let status = res.statusCode
+                        if(status == 404){
+                            self.listData = []
+                        }
                     }
                 })
             },
 
             doSearch(data){
-                this.searchForm.keyword = data.keyword
+                for(let key in  data){
+                    this.searchForm[key]=data[key]||''
+                }
                 this.loadData(true)
             },
             goSearch(){
+                this.$bus.$off('indexSearch')
+                this.$bus.$on('indexSearch',(data) => {
+                    this.doSearch(data)
+                })
                 uni.navigateTo({
-                    url: '/pages/search/search?searchType=index&keyword=' + this.searchForm.keyword
+                    url: '/pages/index/search?searchType=index&keyword=' + this.searchForm.keyword
                 });
+            },
+
+            // 以下是页面跳转相关逻辑 ***************************
+            pageLogical(){
+                let self = this
+                let splashShowed = uni.getStorageSync('splashShowed')
+                // 先判断引导页是否需要展示，如果需要展示，展示引导页
+                if(!splashShowed){
+                    uni.reLaunch({
+                        url:'/pages/splash/splash'
+                    })
+                }else{
+                    if (!this.hasLogin) {
+                        // 获取用户信息以判断是否已经登录
+                        self.$http.get('/base/user/current',{
+                            success:function (res) {
+                                let content = res.data.data.content
+                                //self.$http.initGobalData()
+                                self.$http.initGobalData(true,function () {
+                                    self.pageLogical_hasLogin()
+                                })
+
+                            },
+                            fail:function (res) {
+                                let status = res.statusCode
+                                if(status == 401){
+                                    if(self.$config.forcedLogin){
+                                        uni.reLaunch({
+                                            url: '/pages/login/login'
+                                        });
+                                    }else{
+                                        uni.showModal({
+                                            title: '未登录',
+                                            content: '您未登录，需要登录后才能继续享受更多服务',
+                                            /**
+                                             * 如果需要强制登录，不显示取消按钮
+                                             */
+                                            showCancel: true,
+                                            success: (res) => {
+                                                if (res.confirm) {
+                                                    uni.navigateTo({
+                                                        url: '/pages/login/login'
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        })
+
+                    }else{
+
+                        self.pageLogical_hasLogin()
+                    }
+                }
+            },
+            pageLogical_hasLogin(){
+                let self = this
+                // 已经登录，判断是否被邀请
+                // 跳转到邀请页面
+                if(uni.getStorageSync('invited' + self.userinfo.id)){
+                    self.loadData(true)
+                    return
+                }
+
+                self.$http.get('/wwd/user/current/invited',{
+                    success:function (res) {
+                        // 有数据，已被邀请
+                        self.loadData(true)
+                        uni.setStorageSync('invited' + self.userinfo.id,true)
+                    },
+                    fail:function () {
+                        // 跳转到输入邀请码页面
+                        uni.reLaunch({
+                            url: '/pages/invitation/invitation'
+                        });
+                    }
+                })
             }
 		},
         watch:{
-
-
         }
 	}
 </script>

@@ -6,6 +6,11 @@
 				<switch :checked="showInList" @change="setShowInList"/>
 			</view>
 			<view class="uni-list-cell-divider"></view>
+			<view class="uni-list-cell uni-list-cell-last uni-list-cell-pd">
+				<view class="uni-list-cell-db">微信自动登录</view>
+				<switch :checked="wxLoginAuto" @change="setWxLoginAuto"/>
+			</view>
+			<view class="uni-list-cell-divider"></view>
 		</view>
 </template>
 
@@ -17,13 +22,18 @@
 			return {
                 showInList:false,
                 isverified:false,
+                wxLoginAuto:false,
                 wwdUser:null
 			};
 		},
 		onLoad(){
+            this.loadWxLoginAuto()
 	        this.loadWwdUser()
 		},
 		methods:{
+	        loadWxLoginAuto(){
+                this.wxLoginAuto = !!uni.getStorageSync('wxLoginAuto')
+			},
 		    loadWwdUser(){
 		        let self = this
                 self.$http.get('/wwd/user/current',{
@@ -57,7 +67,11 @@
                         }
                     }
                 })
-            }
+            },
+            setWxLoginAuto(){
+                uni.setStorageSync('wxLoginAuto',!this.wxLoginAuto)
+				this.loadWxLoginAuto()
+			}
 		},
 		watch:{
 	        wwdUser(){

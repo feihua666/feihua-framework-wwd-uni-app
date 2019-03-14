@@ -7,37 +7,37 @@
 		</swiper>
 		<!-- 基本信息 -->
 		<view class="fh-padding-30">
-			<view><text class="iconfont" :class="$utils.genderIcon(wwdUser.wwdUserDto.gender)"> {{wwdUser.wwdUserDto.nickname}}</text></view>
+			<view><text class="iconfont" :class="$utils.genderIcon(wwdUser.wwdUserDto.gender)"><text class="fh-inline-space-10"></text>{{wwdUser.wwdUserDto.nickname}}</text></view>
 			<view>
-				<text class='iconfont icon-shengri fh-margin-right-30'> {{$utils.dateFomat(wwdUser.wwdUserDto.birthDay)}}</text>
-				<text class='iconfont icon-xingzuo fh-margin-right-30'> {{$dictUtils.getLabelByValue('constellation_type',wwdUser.wwdUserDto.constellation)}}</text>
-				<text class='iconfont icon-shengao fh-margin-right-30'> {{wwdUser.wwdUserDto.height}}</text>
-				<text class='iconfont icon-tizhong fh-margin-right-30'> {{wwdUser.wwdUserDto.weight}}</text>
+				<text class='iconfont icon-shengri fh-margin-right-30'><text class="fh-inline-space-10"></text>{{$utils.dateFomat(wwdUser.wwdUserDto.birthDay)}}</text>
+				<text class='iconfont icon-xingzuo fh-margin-right-30'><text class="fh-inline-space-10"></text>{{$dictUtils.getLabelByValue('constellation_type',wwdUser.wwdUserDto.constellation)}}</text>
+				<text class='iconfont icon-shengao fh-margin-right-30'><text class="fh-inline-space-10"></text>{{wwdUser.wwdUserDto.height}}</text>
+				<text class='iconfont icon-tizhong fh-margin-right-30'><text class="fh-inline-space-10"></text>{{wwdUser.wwdUserDto.weight}}</text>
 			</view>
 			<view>
-				<text class='iconfont icon-daxuemingcheng'> {{$dictUtils.getLabelByValue('education_level',wwdUser.wwdUserDto.education)}} {{wwdUser.wwdUserDto.college}} {{wwdUser.wwdUserDto.major}}</text>
+				<text class='iconfont icon-daxuemingcheng'><text class="fh-inline-space-10"></text>{{$dictUtils.getLabelByValue('education_level',wwdUser.wwdUserDto.education)}} {{wwdUser.wwdUserDto.college}} {{wwdUser.wwdUserDto.major}}</text>
 			</view>
 			<view>
-				<text class='iconfont icon-weizhi'> {{wwdUser.userArea.nowProvinceName}} {{wwdUser.userArea.nowCityName}} {{wwdUser.userArea.nowDistrictName}}</text>
+				<text class='iconfont icon-weizhi'><text class="fh-inline-space-10"></text>{{wwdUser.userArea.nowProvinceName}} {{wwdUser.userArea.nowCityName}} {{wwdUser.userArea.nowDistrictName}}</text>
 			</view>
 			<view>
-				<text class='iconfont icon-fl-jia'> {{wwdUser.userArea.homeProvinceName}} {{wwdUser.userArea.homeCityName}} {{wwdUser.userArea.homeDistrictName}}</text>
+				<text class='iconfont icon-fl-jia'><text class="fh-inline-space-10"></text>{{wwdUser.userArea.homeProvinceName}} {{wwdUser.userArea.homeCityName}} {{wwdUser.userArea.homeDistrictName}}</text>
 			</view>
 		</view>
 		<view class="fh-padding-30">
 			<view>生活信息</view>
 			<view>
 				<view class="uni-flex uni-row">
-					<text class='iconfont icon-cheliang uni-flex-item '> {{$dictUtils.getLabelByValue('has_car_status',wwdUser.wwdUserDto.hasCar)}}</text>
-					<text class='iconfont icon-icon-test1 uni-flex-item'> {{$dictUtils.getLabelByValue('has_hourse_status',wwdUser.wwdUserDto.hasHourse)}}</text>
+					<text class='iconfont icon-cheliang uni-flex-item '><text class="fh-inline-space-10"></text>{{$dictUtils.getLabelByValue('has_car_status',wwdUser.wwdUserDto.hasCar)}}</text>
+					<text class='iconfont icon-icon-test1 uni-flex-item'><text class="fh-inline-space-10"></text>{{$dictUtils.getLabelByValue('has_hourse_status',wwdUser.wwdUserDto.hasHourse)}}</text>
 				</view>
 				<view class="uni-flex uni-row">
-					<text class='iconfont icon-chouyan uni-flex-item '> {{$dictUtils.getLabelByValue('smoking_status',wwdUser.wwdUserDto.smoking)}}</text>
-					<text class='iconfont icon-hejiu uni-flex-item'> {{$dictUtils.getLabelByValue('drinking_status',wwdUser.wwdUserDto.drinking)}}</text>
+					<text class='iconfont icon-chouyan uni-flex-item '><text class="fh-inline-space-10"></text>{{$dictUtils.getLabelByValue('smoking_status',wwdUser.wwdUserDto.smoking)}}</text>
+					<text class='iconfont icon-hejiu uni-flex-item'><text class="fh-inline-space-10"></text>{{$dictUtils.getLabelByValue('drinking_status',wwdUser.wwdUserDto.drinking)}}</text>
 				</view>
 				<view class="uni-flex uni-row">
-					<text class='iconfont icon-qianmoney125 uni-flex-item '> {{wwdUser.wwdUserDto.monthSalary}}</text>
-					<text class='iconfont icon-qianmoney113 uni-flex-item'> {{wwdUser.wwdUserDto.yearSalary}}</text>
+					<text class='iconfont icon-qianmoney125 uni-flex-item '><text class="fh-inline-space-10"></text>{{wwdUser.wwdUserDto.monthSalary}}</text>
+					<text class='iconfont icon-qianmoney113 uni-flex-item'><text class="fh-inline-space-10"></text>{{wwdUser.wwdUserDto.yearSalary}}</text>
 				</view>
 			</view>
 		</view>
