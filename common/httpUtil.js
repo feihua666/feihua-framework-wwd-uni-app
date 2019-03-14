@@ -158,7 +158,7 @@ const _post = function (url, options) {
     }
     request(url, options.data, options.success, options.fail,options.complete, header, 'POST',checkLogin)
 }
-const _formpost = function (url, options) {
+const _postjson = function (url, options) {
   options.header = {
     "Content-Type": "application/json",
     "accept": "application/json"
@@ -374,7 +374,7 @@ const _initGobalDataSuccess = function(globalDataFlag,callback){
     }
 }
 const http = {
-	formpost: _formpost,
+	postjson: _postjson,
     get: _get,
     post: _post,
     put: _put,

@@ -79,7 +79,7 @@
 					
 				if(!self.payLoading){
 					self.payLoading = true
-					self.$http.formpost('/pay/wxpay/unifiedOrder',{
+					self.$http.postjson('/pay/wxpay/unifiedOrder',{
 					data: payForm,
 					success:function (response) {
 						let content = response.data.data.content
