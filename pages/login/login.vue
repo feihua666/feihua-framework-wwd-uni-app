@@ -50,7 +50,7 @@
                 wxLoginForm:{
                     loginType: 'WX_PLATFORM',
                     loginClient: 'h5',
-                    type:'yangwei',
+                    type:this.$config.which,
                     rememberMe: false
                 },
             }
