@@ -92,12 +92,20 @@ const request = function (url, data, success, fail,complete, header, method,chec
             }
         },
         fail:function (res) {
+            console.log('fail',res)
             if (fail && typeof fail == 'function') {
                 fail(res)
 
             }
         },
         complete:function (res) {
+            console.log('complete',res)
+            if(_isTimeout(res)){
+                uni.showToast({
+                    title:'请求超时',
+                    icon:'none'
+                })
+            }
             if (complete && typeof complete == 'function') {
                 complete(res)
             }
@@ -267,6 +275,12 @@ const _uploadFile = function(url,options){
             }
         },
         complete:function (res) {
+            if(_isTimeout(res)){
+                uni.showToast({
+                    title:'请求超时',
+                    icon:'none'
+                })
+            }
             if (options.complete && typeof options.complete == 'function') {
                 options.complete(res)
             }
@@ -341,23 +355,25 @@ const loadReg = function(force){
     })
 }
 const _initGobalData = function (force,callback) {
+    if(callback && typeof callback == 'function'){
+        let globalDataFlag={}
+        bus.$off('initGlobalData_loadReg')
+        bus.$on('initGlobalData_loadReg',function (data) {
+            globalDataFlag.loadReg = true
+            _initGobalDataSuccess(globalDataFlag,callback)
+        })
+        bus.$off('initGlobalData_loadDicts')
+        bus.$on('initGlobalData_loadDicts',function (data) {
+            globalDataFlag.loadDicts = true
+            _initGobalDataSuccess(globalDataFlag,callback)
+        })
+        bus.$off('initGlobalData_loadUserinfo')
+        bus.$on('initGlobalData_loadUserinfo',function (data) {
+            globalDataFlag.loadUserinfo = true
+            _initGobalDataSuccess(globalDataFlag,callback)
+        })
+    }
 
-    let globalDataFlag={}
-    bus.$off('initGlobalData_loadReg')
-    bus.$on('initGlobalData_loadReg',function (data) {
-        globalDataFlag.loadReg = true
-        _initGobalDataSuccess(globalDataFlag,callback)
-    })
-    bus.$off('initGlobalData_loadDicts')
-    bus.$on('initGlobalData_loadDicts',function (data) {
-        globalDataFlag.loadDicts = true
-        _initGobalDataSuccess(globalDataFlag,callback)
-    })
-    bus.$off('initGlobalData_loadUserinfo')
-    bus.$on('initGlobalData_loadUserinfo',function (data) {
-        globalDataFlag.loadUserinfo = true
-        _initGobalDataSuccess(globalDataFlag,callback)
-    })
 
     loadReg(force);
     loadDicts(force);
@@ -373,6 +389,14 @@ const _initGobalDataSuccess = function(globalDataFlag,callback){
         }
     }
 }
+const _isTimeout = function (res) {
+
+    if(res && res.errMsg == 'request:fail timeout'){
+        return true
+    }
+
+    return false
+}
 const http = {
 	postjson: _postjson,
     get: _get,
@@ -380,6 +404,7 @@ const http = {
     put: _put,
     delete: _delete,
     initGobalData: _initGobalData,
-    uploadFile: _uploadFile
+    uploadFile: _uploadFile,
+    isTimeout: _isTimeout
 }
 export default http

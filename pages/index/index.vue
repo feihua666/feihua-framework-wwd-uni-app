@@ -94,8 +94,11 @@
 		},
 		onLoad() {
             console.log('onLoad index')
-            this.pageLogical()
+
 		},
+        onReady(){
+            this.pageLogical()
+        },
         onPullDownRefresh(){
             console.log('onPullDownRefresh');
             this.loadData(true)
@@ -109,6 +112,8 @@
                 uni.previewImage({urls:[url]})
             },
             loadData:function(pullDownRefresh){
+                console.log('loaddata')
+                console.log('loaddata')
                 let self = this
                 if(!this.$refs.loadmoreref){
                     return
@@ -153,6 +158,7 @@
 
             // 以下是页面跳转相关逻辑 ***************************
             pageLogical(){
+                console.log('pageLogical')
                 let self = this
                 let splashShowed = uni.getStorageSync('splashShowed')
                 // 先判断引导页是否需要展示，如果需要展示，展示引导页
@@ -161,12 +167,14 @@
                         url:'/pages/splash/splash'
                     })
                 }else{
+                    console.log('this.hasLogin='+ this.hasLogin)
                     if (!this.hasLogin) {
                         // 获取用户信息以判断是否已经登录
                         self.$http.get('/base/user/current',{
                             success:function (res) {
                                 let content = res.data.data.content
                                 //self.$http.initGobalData()
+                                console.log('loaduserinfo success')
                                 self.$http.initGobalData(true,function () {
                                     self.pageLogical_hasLogin()
                                 })
@@ -174,7 +182,7 @@
                             },
                             fail:function (res) {
                                 let status = res.statusCode
-                                if(status == 401){
+                                if(status == 401 || self.$http.isTimeout(res)){
                                     if(self.$config.forcedLogin){
                                         uni.reLaunch({
                                             url: '/pages/login/login'
@@ -207,6 +215,7 @@
                 }
             },
             pageLogical_hasLogin(){
+                console.log('pageLogical_hasLogin')
                 let self = this
                 // 已经登录，判断是否被邀请
                 // 跳转到邀请页面

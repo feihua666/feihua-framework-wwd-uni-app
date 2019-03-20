@@ -1,33 +1,30 @@
 <template>
-	<view>
+	<view style="width: 100%;">
 		<view class="banner">
-			<image class="banner-img" :src="$config.file.getDownloadUrl(activity.titleUrl)"></image>
+			<image class="banner-img" mode="aspectFill" :src="$config.file.getDownloadUrl(activity.titleUrl)"></image>
 			<view class="banner-title">{{activity.title}}</view>
 		</view>
 		<view class="article-meta">
 			<text class="article-author">{{activity.author}}</text>
-			<text class="article-text">发表于</text>
+			<text class="article-text">创建于</text>
 			<text class="article-time">{{activity.updateAt}}</text>
+		</view>
+		<view class=" fh-padding-30">
+			<view class="uni-title"><text>活动开始时间：{{activity.startTime}}</text></view>
+			<view class="uni-title"><text>活动结束时间：{{activity.endTime}}</text></view>
+			<view class="uni-title"><text>活动人数：{{activity.headcount}}</text></view>
+			<view class="uni-title"><text>报名费用：{{activity.priceDesc}}</text></view>
+			<view class="uni-title"><text>活动地点：{{activity.addr}}</text></view>
+
 		</view>
 		<view class="article-content">
 			<rich-text :nodes="activity.content"></rich-text>
 		</view>
-		<view class="article-bottom">
-			<view class="uni-card">
-				<view class="uni-card-header"></view>
-				<view class="uni-card-content">
-					<view class="uni-card-content-inner">
-						<view>
-							<view class="uni-title"><text>活动时间：{{$utils.dateFomat(activity.startTime)}}-{{$utils.dateFomat(activity.endTime)}}</text></view>
-							<view class="uni-title"><text>活动人数：{{activity.headcountDesc}}</text></view>
-							<view class="uni-title"><text>报名费用：{{activity.priceDesc}}</text></view>
-							<view class="uni-title"><text>活动地点：{{activity.addr}}</text></view>
-						</view>
-					</view>
-				</view>
-				<view><button type="primary" v-on:click="goPay">我要报名</button></view>
-			</view>
+
+		<view class="fh-padding-30">
+			<button class="btn-submit" @tap="goPay" type="primary">我要报名</button>
 		</view>
+
 	</view>
 </template>
 
@@ -73,7 +70,7 @@
 						}else{
 							self.activity.headcountDesc= headcountDesc
 						}
-						
+
 						if(self.activity.payRule =='2'){
 							self.activity.priceDesc = '男：'+ content.malePrice+'/人，'+'女：'+content.femalePrice+'/人'
 						}else{

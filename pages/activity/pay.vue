@@ -4,14 +4,15 @@
 	<view class="uni-card-content">
 		<view class="uni-card-content-inner">
 			<view>
-				<view class="uni-title"><text>活动时间：{{$utils.dateFomat(activity.startTime)}}-{{$utils.dateFomat(activity.endTime)}}</text></view>
+				<view class="uni-title"><text>活动开始时间：{{activity.startTime}}</text></view>
+				<view class="uni-title"><text>活动结束时间：{{activity.endTime}}</text></view>
 				<view class="uni-title"><text>活动人数：{{activity.headcountDesc}}</text></view>
 				<view class="uni-title"><text>报名费用：{{activity.priceDesc}}</text></view>
 				<view class="uni-title"><text>活动地点：{{activity.addr}}</text></view>
 			</view>
 		</view>
 	</view>
-	<view><button v-on:click="doPay()" type="primary" :disabled="payLoading">去支付</button></view>
+	<view class=" fh-padding-30"><button v-on:click="doPay()" type="primary" :disabled="payLoading">去支付</button></view>
 </view>
 </template>
 
@@ -43,7 +44,7 @@
                     success: function (response) {
                         let content = response.data.data.content
 						self.activity = content
-					
+
 						let headcountDesc = ''
 						if(content.headcount==0){
 							headcountDesc = '不限人数'
@@ -55,7 +56,7 @@
 						}else{
 							self.activity.headcountDesc= headcountDesc
 						}
-						
+
 						if(self.activity.payRule =='2'){
 							self.activity.priceDesc = '男：'+ content.malePrice+'/人，'+'女：'+content.femalePrice+'/人'
 						}else{
@@ -76,7 +77,7 @@
 					payForm.totalFee = self.activity.totalFee
 					//// 订单结果通知, 微信主动回调此接口
 					payForm.notifyUrl = ''
-					
+
 				if(!self.payLoading){
 					self.payLoading = true
 					self.$http.postjson('/pay/wxpay/unifiedOrder',{
@@ -85,19 +86,23 @@
 						let content = response.data.data.content
 						if(content){
 							// 调起微信支付
-							payUtil.onBridgeReady(content,function(){
+							payUtil.onBridgeReady(content,function(res){
+							    uni.showToast({
+									title:"支付完成"
+								})
 								if(res.err_msg == "get_brand_wcpay_request:ok" ){
 								  // 使用以上方式判断前端返回,微信团队郑重提示：
 										//res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-								  } 
+
+								  }
 							})
-							
+
 						}
 					},
 					fail:function (response) {}
 					})
 				}
-			
+
 			}
 		}
 	}

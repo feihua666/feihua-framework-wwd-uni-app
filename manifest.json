@@ -65,6 +65,7 @@
         "title" : "汪汪队"
     },
 	"networkTimeout" : {
-		"uploadFile": 60000
+		"uploadFile": 60000,
+		"request": 60000
 	}
 }

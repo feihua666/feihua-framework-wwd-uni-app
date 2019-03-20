@@ -45,15 +45,19 @@
 				},
                 oldKeywordList:[],
 				//上个页面的参数
-				option:null
+				option:null,
+				// 下面两个参数必传
+				emitEvent:'',
+				keyPrefix:''
 			};
 		},
         onLoad(option) {
 
 	        this.option = option
 	        this.form.keyword = option.keyword
-			this.form.isSearch = false
 
+			this.emitEvent = option.emitEvent
+			this.keyPrefix = option.keyPrefix
             this.loadOldKeyword();
         },
 		methods:{
@@ -61,7 +65,7 @@
 	            // 执行
                 if(this.form.keyword != this.option.keyword){
                     this.saveKeyword(this.form.keyword)
-                    this.$bus.$emit('indexSearch',this.form)
+                    this.$bus.$emit(this.emitEvent,this.form)
                     uni.navigateBack({
                         delta: 1
 					})
@@ -74,8 +78,9 @@
 			},
             //加载历史搜索,自动读取本地Storage
             loadOldKeyword() {
+	            let self = this
                 uni.getStorage({
-                    key: 'OldKeys',
+                    key: self.keyPrefix + 'OldKeys',
                     success: (res) => {
                         var OldKeys = JSON.parse(res.data);
                         this.oldKeywordList = OldKeys;
@@ -84,6 +89,7 @@
             },
             //清除历史搜索
             oldDelete() {
+	            let self = this
                 uni.showModal({
                     content: '确定清除历史搜索记录？',
                     success: (res) => {
@@ -91,7 +97,7 @@
                             console.log('用户点击确定');
                             this.oldKeywordList = [];
                             uni.removeStorage({
-                                key: 'OldKeys'
+                                key: self.keyPrefix + 'OldKeys'
                             });
                         } else if (res.cancel) {
                             console.log('用户点击取消');
@@ -101,8 +107,9 @@
             },
             //保存关键字到历史记录
             saveKeyword(keyword) {
+	            let self = this
                 uni.getStorage({
-                    key: 'OldKeys',
+                    key: self.keyPrefix + 'OldKeys',
                     success: (res) => {
                         var OldKeys = JSON.parse(res.data);
                         var findIndex = OldKeys.indexOf(keyword);
@@ -115,7 +122,7 @@
                         //最多10个纪录
                         OldKeys.length > 10 && OldKeys.pop();
                         uni.setStorage({
-                            key: 'OldKeys',
+                            key: self.keyPrefix + 'OldKeys',
                             data: JSON.stringify(OldKeys)
                         });
                         this.oldKeywordList = OldKeys; //更新历史搜索
@@ -123,7 +130,7 @@
                     fail: (e) => {
                         var OldKeys = [keyword];
                         uni.setStorage({
-                            key: 'OldKeys',
+                            key: self.keyPrefix + 'OldKeys',
                             data: JSON.stringify(OldKeys)
                         });
                         this.oldKeywordList = OldKeys; //更新历史搜索

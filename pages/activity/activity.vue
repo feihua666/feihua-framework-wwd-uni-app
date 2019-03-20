@@ -25,7 +25,7 @@
 
         </uni-nav-bar>
         <!-- 使用非原生导航栏后需要在页面顶部占位 -->
-        <view style="height:35px;"></view>
+        <view style="height:40px;"></view>
 		<fh-loadmore ref="loadmoreref">
             <view style="margin-top:10px;" class="uni-card" v-for="(item,index) in listData" :key="index">
                 	<view class="uni-card-content uni-list-cell">
@@ -36,7 +36,7 @@
 							</view>
 							<view class="uni-media-list-body">
 								<view class="uni-media-list-text-top">{{item.title}}</view>
-								<view class="uni-media-list-text-body">{{$utils.dateFomatWeek(item.startTime)}}</view>
+								<view class="uni-media-list-text-body uni-text">{{$utils.dateFomatWeek(item.startTime)}}</view>
 								<view class="uni-media-list-text-bottom uni-ellipsis">{{item.introduced}}</view>
 							</view>
 						</view>
@@ -91,8 +91,8 @@
                 }
             }
             let self = this
-            this.$bus.$off('indexSearch')
-            this.$bus.$on('indexSearch',(data) => {
+            this.$bus.$off('activitySearch')
+            this.$bus.$on('activitySearch',(data) => {
                 this.doSearch(data)
             })
 		},
@@ -145,13 +145,11 @@
             },
             goSearch(){
                 uni.navigateTo({
-                    url: '/pages/search/search?searchType=index&keyword=' + this.searchForm.keyword
+                    url: '/pages/search/search?keyPrefix=activity&emitEvent=activitySearch&keyword=' + this.searchForm.keyword
                 });
             }
 		},
         watch:{
-
-
         }
 	}
 </script>
