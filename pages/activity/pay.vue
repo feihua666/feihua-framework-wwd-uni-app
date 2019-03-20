@@ -71,35 +71,68 @@
 			doPay() {
 				let self = this
 				let payForm = {}
+                payForm.id = self.activity.id
 					//商品描述
-					payForm.body = '活动报名费用'
+					payForm.desc = '活动报名费用'
 					//标价金额
-					payForm.totalFee = self.activity.totalFee
+					payForm.fee = self.activity.totalFee
+                payForm.which = self.$config.which
 					//// 订单结果通知, 微信主动回调此接口
-					payForm.notifyUrl = ''
+					payForm.notifyUrl = self.$config.hostApi + '/wwd/activity/order/success'
 
 				if(!self.payLoading){
 					self.payLoading = true
-					self.$http.postjson('/pay/wxpay/unifiedOrder',{
+					self.$http.postjson('/wwd/activity/' + self.activity.id + '/order',{
 					data: payForm,
 					success:function (response) {
+                        let status = res.statusCode
+						let code = response.data.data.code
 						let content = response.data.data.content
+
 						if(content){
 							// 调起微信支付
 							payUtil.onBridgeReady(content,function(res){
-							    uni.showToast({
-									title:"支付完成"
-								})
+
 								if(res.err_msg == "get_brand_wcpay_request:ok" ){
 								  // 使用以上方式判断前端返回,微信团队郑重提示：
 										//res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-
+                                    uni.showToast({
+                                        title:"支付完成",
+                                        icon:'none'
+                                    })
 								  }
 							})
 
+						}else{
+                            uni.showToast({
+                                title:"未获取到预支付信息",
+                                icon:'none'
+                            })
 						}
 					},
-					fail:function (response) {}
+					fail:function (response) {
+                        let code = response.data.data.code
+                        if(status == 404){
+                            if('wxopenid_no' == code){
+                                uni.showToast({
+                                    title:"未获取到openid",
+                                    icon:'none'
+                                })
+                            }else{
+                                uni.showToast({
+                                    title:"活动不存在",
+                                    icon:'none'
+                                })
+                            }
+                        }else if(status == 409){
+                            if('payStatusError' == code){
+                                uni.showToast({
+                                    title:"你已支付，请勿重复支付",
+                                    icon:'none'
+                                })
+                            }
+                        }
+					}
 					})
 				}
 

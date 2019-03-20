@@ -22,7 +22,8 @@
 		</view>
 
 		<view class="fh-padding-30">
-			<button class="btn-submit" @tap="goPay" type="primary">我要报名</button>
+			<button v-if="!participate" class="btn-submit" @tap="goPay" type="primary">我要报名</button>
+			<button v-if="participate">已报名</button>
 		</view>
 
 	</view>
@@ -32,7 +33,8 @@
 	export default {
 		data() {
 			return {
-				activity: {}
+				activity: {},
+				participate:true
 			}
 		},
 		onShareAppMessage() {
@@ -45,6 +47,7 @@
 		onLoad(options) {
 			let self = this
 		    self.activity.id = options.id
+			self.isParticipate()
 			self.getDetail()
 		},
 		methods: {
@@ -79,6 +82,22 @@
 						uni.setNavigationBarTitle({
 							title: self.activity.title
 						})
+                    }
+                })
+			},
+			isParticipate(){
+                let self = this
+                self.$http.get('/wwd/activity/' + self.activity.id + '/participate', {
+                    success: function (res) {
+                        let content = res.data.data.content
+						if('paid' == content.payStatus){
+                            self.participate = true
+						}else{
+                            self.participate = false
+						}
+                    },
+					fail: function (res) {
+                        self.participate = false
                     }
                 })
 			}
