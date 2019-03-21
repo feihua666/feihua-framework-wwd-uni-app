@@ -22,7 +22,7 @@
 		</view>
 
 		<view class="fh-padding-30">
-			<button v-if="!participate" class="btn-submit" @tap="goPay" type="primary">我要报名</button>
+			<button v-if="!participate && activity.status == '1'" class="btn-submit" @tap="goPay" type="primary">我要报名</button>
 			<button v-if="participate">已报名</button>
 		</view>
 
@@ -47,8 +47,12 @@
 		onLoad(options) {
 			let self = this
 		    self.activity.id = options.id
-			self.isParticipate()
+
 			self.getDetail()
+		},
+        onShow(){
+            let self = this
+            self.isParticipate()
 		},
 		methods: {
 			goPay() {

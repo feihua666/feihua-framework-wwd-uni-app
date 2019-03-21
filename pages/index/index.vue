@@ -11,9 +11,6 @@
                         <view v-if="searchForm.keyword">{{searchForm.keyword}}</view>
                         <swiper v-else vertical="true" autoplay="true" circular="true" interval="9000">
                             <swiper-item>
-                                搜索心仪的TA
-                            </swiper-item>
-                            <swiper-item>
                                 点击搜索
                             </swiper-item>
                         </swiper>
@@ -160,7 +157,9 @@
             pageLogical(){
                 console.log('pageLogical')
                 let self = this
-                let splashShowed = uni.getStorageSync('splashShowed')
+                // let splashShowed = uni.getStorageSync('splashShowed')
+                // 禁用闪屏
+                let splashShowed = true
                 // 先判断引导页是否需要展示，如果需要展示，展示引导页
                 if(!splashShowed){
                     uni.reLaunch({
