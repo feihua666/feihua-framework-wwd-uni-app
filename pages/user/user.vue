@@ -27,11 +27,16 @@
                     <text>{{inviteCode}}</text>
                 </view>
             </view>
-            <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
+            <view class="uni-list-cell" hover-class="uni-list-cell-hover">
                 <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.ngt('/pages/user/invitedFriends')">
                     我邀请的朋友
                 </view>
             </view>
+			<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
+			    <view class="uni-list-cell-navigate uni-navigate-right" @click="$utils.ngt('/pages/participate/participate')">
+			        我的活动
+			    </view>
+			</view>
 
             <view class="uni-list-cell-divider">
             </view>
@@ -52,7 +57,6 @@
                     有意思
                 </view>
             </view>
-
             <view class="uni-list-cell-divider"></view>
             <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
                 <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.ngt('/pages/setting/setting')">

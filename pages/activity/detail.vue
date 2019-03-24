@@ -2,7 +2,7 @@
 	<view style="width: 100%;">
 		<view class="banner">
 			<image class="banner-img" mode="aspectFill" :src="$config.file.getDownloadUrl(activity.titleUrl)"></image>
-			<view class="banner-title">{{activity.title}}</view>
+			<!-- <view class="banner-title">{{activity.title}}</view> -->
 		</view>
 		<view class="article-meta">
 			<text class="article-author">{{activity.author}}</text>
@@ -10,6 +10,7 @@
 			<text class="article-time">{{activity.updateAt}}</text>
 		</view>
 		<view class=" fh-padding-30">
+			<view class="uni-title"  style="font-weight: 600;"><text>{{activity.title}}</text></view>
 			<view class="uni-title"><text>活动开始时间：{{activity.startTime}}</text></view>
 			<view class="uni-title"><text>活动结束时间：{{activity.endTime}}</text></view>
 			<view class="uni-title"><text>活动人数：{{activity.headcount}}</text></view>
@@ -79,9 +80,9 @@
 						}
 
 						if(self.activity.payRule =='2'){
-							self.activity.priceDesc = '男：'+ content.malePrice+'/人，'+'女：'+content.femalePrice+'/人'
+							self.activity.priceDesc = '男：'+ content.malePrice+' 元/人，'+'女：'+content.femalePrice+' 元/人'
 						}else{
-							self.activity.priceDesc = content.price + '/人'
+							self.activity.priceDesc = content.price + ' 元/人'
 						}
 						uni.setNavigationBarTitle({
 							title: self.activity.title

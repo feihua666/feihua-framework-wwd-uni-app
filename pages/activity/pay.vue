@@ -68,10 +68,10 @@
 						}
 
 						if(content.malePrice == content.femalePrice){
-                            self.activity.priceDesc = content.price + '/人'
+                            self.activity.priceDesc = content.price + ' 元/人'
 
 						}else{
-                            self.activity.priceDesc = '男：'+ content.malePrice+'/人，'+'女：' + content.femalePrice + '/人'
+                            self.activity.priceDesc = '男：'+ content.malePrice+' 元/人，'+'女：' + content.femalePrice + ' 元/人'
 						}
                         self.activity.totalFee = ''
 						// TODO 该支付的费用 判断自定义性别

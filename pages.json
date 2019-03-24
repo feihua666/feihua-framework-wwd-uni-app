@@ -162,6 +162,12 @@
 		    "style" : {
 		        "navigationBarTitleText" : "活动支付"
 		    }
+		},
+		{
+		    "path" : "pages/participate/participate",
+		    "style" : {
+		        "navigationBarTitleText" : "我的活动"
+		    }
 		}
     ],
     "tabBar" : {
