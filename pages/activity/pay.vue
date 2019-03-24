@@ -10,6 +10,11 @@
 				<view class="uni-title"><text>报名费用：{{activity.priceDesc}}</text></view>
 				<view class="uni-title"><text>活动地点：{{activity.addr}}</text></view>
 			</view>
+					<view>
+				<checkbox-group class="uni-flex" name="loves">
+					<checkbox :checked="agreement" /><navigator url="/pages/agreement/agreement"><label>活动相关协议</label></navigator>
+				</checkbox-group>
+			</view>
 		</view>
 	</view>
 	<view class=" fh-padding-30"><button v-on:click="doPay()" type="primary" :loading="payLoading">去支付</button></view>
@@ -21,6 +26,7 @@
 	export default {
 		data() {
 			return {
+				agreement: true,
 				payLoading: false,
 				activity: {
 				    id: '',
@@ -98,6 +104,13 @@
 			// 支付
 			doPay() {
 				let self = this
+				if(!self.agreement){
+					   uni.showToast({
+					    title:"请同意相关活动协议后继续",
+					    icon:'none'
+					})
+					return
+				}
 				let payForm = {}
                 	payForm.id = self.activity.id
 					//商品描述

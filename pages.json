@@ -168,6 +168,12 @@
 		    "style" : {
 		        "navigationBarTitleText" : "我的活动"
 		    }
+		},
+		{
+		    "path" : "pages/agreement/agreement",
+		    "style" : {
+		        "navigationBarTitleText" : "活动相关协议"
+		    }
 		}
     ],
     "tabBar" : {
