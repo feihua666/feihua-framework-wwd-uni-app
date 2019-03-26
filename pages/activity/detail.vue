@@ -13,7 +13,7 @@
 			<view class="uni-title"  style="font-weight: 600;"><text>{{activity.title}}</text></view>
 			<view class="uni-title"><text>活动开始时间：{{activity.startTime}}</text></view>
 			<view class="uni-title"><text>活动结束时间：{{activity.endTime}}</text></view>
-			<view class="uni-title"><text>活动人数：{{activity.headcount}}</text></view>
+			<view class="uni-title"><text>活动人数：{{activity.headcountDesc}}</text></view>
 			<view class="uni-title"><text>报名费用：{{activity.priceDesc}}</text></view>
 			<view class="uni-title"><text>活动地点：{{activity.addr}}</text></view>
 

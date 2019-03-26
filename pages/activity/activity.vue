@@ -43,7 +43,7 @@
 						</navigator>
                 	</view>
                 	<view class="uni-card-footer">
-                		<view class="uni-card-link">{{item.wwdParticipateDtos?item.wwdParticipateDtos.length:'0'}}/{{item.headcount}} 人 </view>
+                		<view class="uni-card-link">{{item.wwdParticipateDtos?item.wwdParticipateDtos.length:'0'}}/{{item.headcount=='0'?'不限人数':item.headcount}} 人 </view>
                 		<view class="uni-card-link"><uni-tag  :text="$dictUtils.getLabelByValue('activity_status',item.status)"  inverted="true" type="danger" size="small"></uni-tag></view>
                 		<view class="uni-card-link"><navigator :url="'/pages/activity/detail?id=' + item.id"><uni-tag text="我要报名" inverted="true" type="warning" size="small"></uni-tag></navigator></view>
                 	</view>
