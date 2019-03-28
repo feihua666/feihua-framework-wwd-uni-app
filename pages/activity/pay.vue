@@ -11,13 +11,13 @@
 				<view class="uni-title"><text>活动地点：{{activity.addr}}</text></view>
 			</view>
 					<view>
-				<checkbox-group class="uni-flex" name="loves">
-					<checkbox :checked="agreement" /><navigator url="/pages/agreement/agreement"><label>活动相关协议</label></navigator>
+				<checkbox-group class="uni-flex" name="loves" @change="change">
+					<checkbox value="agreement" checked  /><navigator url="/pages/agreement/agreement"><text class="uni-link"> 活动相关协议</text></navigator>
 				</checkbox-group>
 			</view>
 		</view>
 	</view>
-	<view class=" fh-padding-30"><button v-on:click="doPay()" type="primary" :loading="payLoading">去支付</button></view>
+	<view class=" fh-padding-30"><button v-on:click="doPay()" :disabled="!agreement" type="primary" :loading="payLoading">去支付</button></view>
 </view>
 </template>
 
@@ -36,7 +36,8 @@
                     endTime: '',
                     addr: '',
                     headcountDesc: ''
-				}
+				},
+                participateId:''
 			}
 		},
 		onShareAppMessage() {
@@ -48,10 +49,20 @@
 		},
 		onLoad(options) {
 			let self = this
-		    self.activity.id = options.id
+		    self.activity.id = options.activityId
+			self.participateId = options.participateId
 			self.getDetail()
 		},
+		watch :{
+		},
 		methods: {
+            change(e){
+                if(e.detail.value.length > 0){
+                    this.agreement = true
+				}else{
+                    this.agreement = false
+				}
+            },
 			getDetail() {
 				let self = this
                 self.$http.get('/wwd/activity/' + self.activity.id, {
@@ -112,16 +123,16 @@
 					return
 				}
 				let payForm = {}
-                	payForm.id = self.activity.id
+                	payForm.participateId = self.participateId
 					//商品描述
 					payForm.desc = '活动报名费用'
                 	payForm.which = self.$config.which
 					//// 订单结果通知, 微信主动回调此接口
-					payForm.notifyUrl = self.$config.hostApi + '/wwd/activity/order/success'
+					payForm.notifyUrl = self.$config.hostApi + '/wwd/activity/participate/order/success'
 
 				if(!self.payLoading){
 					self.payLoading = true
-					self.$http.post('/wwd/activity/' + self.activity.id + '/order',{
+					self.$http.post('/wwd/activity/participate/order',{
 					data: payForm,
 					success:function (response) {
 						let content = response.data.data.content
@@ -133,10 +144,12 @@
 								  // 使用以上方式判断前端返回,微信团队郑重提示：
 										//res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
                                     uni.showToast({
-                                        title:"支付完成",
+                                        title:"支付成功",
                                         icon:'none'
                                     })
-									uni.navigateBack()
+                                    uni.navigateBack({
+                                        delta: 2
+                                    });
 								  }
 							})
 
@@ -186,7 +199,6 @@
 			},
 			setTotalFee(fee){
                 this.activity.totalFee = fee
-                console.log(this.activity.totalFee);
             }
 		}
 	}

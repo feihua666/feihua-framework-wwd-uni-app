@@ -26,7 +26,7 @@
 		<fh-loadmore ref="loadmoreref">
             <view style="margin-top:10px;" class="uni-card" v-for="(item,index) in listData" :key="index">
                 	<view class="uni-card-content uni-list-cell">
-						<navigator :url="'/pages/activity/detail?id=' + item.id">
+						<navigator class="fh-width-100" :url="'/pages/activity/detail?id=' + item.id">
 						<view class="uni-media-list">
 							<view class="uni-media-list-logo">
 								<image  :src="$config.file.getDownloadUrl(item.titleUrl)"></image>
@@ -78,31 +78,15 @@
 			}
 		},
 		onLoad() {
-            console.log('onLoad index')
-            if (!this.hasLogin) {
-                if(this.forcedLogin){
-                    uni.navigateTo({
-                        url: '/pages/login/login'
-                    });
-                }
-            }
+
             let self = this
-            this.$bus.$off('activitySearch')
-            this.$bus.$on('activitySearch',(data) => {
+            this.$bus.$off('participateSearch')
+            this.$bus.$on('participateSearch',(data) => {
                 this.doSearch(data)
             })
 		},
         onReady() {
-        console.log('onLoad index')
-        if (!this.hasLogin) {
-           /* if(this.forcedLogin){
-                uni.navigateTo({
-                    url: '/pages/login/login'
-                });
-            }*/
-        }else{
             this.loadData(true)
-        }
     },
         onPullDownRefresh(){
             console.log('onPullDownRefresh');
@@ -131,6 +115,15 @@
                         }else{
                             self.listData = self.listData.concat(content);
                         }
+                    },
+                    fail:function (res) {
+                        let status = res.statusCode
+                        if(404 == status){
+                            uni.showToast({
+                                title:'没有匹配数据',
+                                icon:'none'
+                            })
+                        }
                     }
                 })
             },
@@ -141,7 +134,7 @@
             },
             goSearch(){
                 uni.navigateTo({
-                    url: '/pages/search/search?keyPrefix=activity&emitEvent=activitySearch&keyword=' + this.searchForm.keyword
+                    url: '/pages/search/search?keyPrefix=participate&emitEvent=participateSearch&keyword=' + this.searchForm.keyword
                 });
             }
 		},

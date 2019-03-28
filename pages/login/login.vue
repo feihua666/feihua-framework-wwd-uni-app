@@ -22,6 +22,7 @@
         <view class="uni-row uni-flex fh-padding-30 fh-justify-content-center">
             <button type="primary" size="mini" @tap="wxLoginBtnClick">微信直接登录</button>
         </view>
+
     </view>
 </template>
 
@@ -177,7 +178,7 @@
             //微信登录
             if (!this.hasLogin && uni.getStorageSync('wxLogin')) {
                 this.wxLoginAuto()
-            }
+            }else
             // 自动登录
             if (!this.hasLogin && uni.getStorageSync('wxLoginAuto')) {
                 this.wxLoginBtnClick()

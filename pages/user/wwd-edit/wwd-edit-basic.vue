@@ -25,7 +25,8 @@
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				性别
-				<text @tap="showDictPicker(form.wwdUser.gender,'gender','gender')">{{$dictUtils.getLabelByValue('gender',form.wwdUser.gender,'未填写')}}</text>
+				<text v-if="form.wwdUser.gender =='male' || form.wwdUser.gender =='female' ">{{$dictUtils.getLabelByValue('gender',form.wwdUser.gender,'未填写')}}</text>
+				<text v-else @tap="showDictPicker(form.wwdUser.gender,'gender','gender')">{{$dictUtils.getLabelByValue('gender',form.wwdUser.gender,'未填写')}}</text>
 			</view>
 		</view>
 		<view class="uni-list-cell">

@@ -29,7 +29,7 @@
 		<fh-loadmore ref="loadmoreref">
             <view style="margin-top:10px;" class="uni-card" v-for="(item,index) in listData" :key="index">
                 	<view class="uni-card-content uni-list-cell">
-						<navigator :url="'/pages/activity/detail?id=' + item.id">
+						<navigator class="fh-width-100" :url="'/pages/activity/detail?id=' + item.id">
 						<view class="uni-media-list">
 							<view class="uni-media-list-logo">
 								<image  :src="$config.file.getDownloadUrl(item.titleUrl)"></image>
@@ -37,7 +37,7 @@
 							<view class="uni-media-list-body">
 								<view class="uni-media-list-text-top">{{item.title}}</view>
 								<view class="uni-media-list-text-body uni-text">{{$utils.dateFomatWeek(item.startTime)}}</view>
-								<view class="uni-media-list-text-bottom uni-ellipsis">{{item.introduced}}</view>
+								<view class="uni-media-list-text-bottom uni-ellipsis"><text>{{item.introduced}}</text></view>
 							</view>
 						</view>
 						</navigator>
@@ -76,20 +76,12 @@
                 listData: [],
                 searchForm: {
                     includePic: true,
-					status: '1,2',
+					status: 'signing,signfull',
                     keyword:'', // 查询关键字
                 }
 			}
 		},
 		onLoad() {
-            console.log('onLoad index')
-            if (!this.hasLogin) {
-                if(this.forcedLogin){
-                    uni.navigateTo({
-                        url: '/pages/login/login'
-                    });
-                }
-            }
             let self = this
             this.$bus.$off('activitySearch')
             this.$bus.$on('activitySearch',(data) => {
@@ -97,17 +89,8 @@
             })
 		},
         onReady() {
-        console.log('onLoad index')
-        if (!this.hasLogin) {
-           /* if(this.forcedLogin){
-                uni.navigateTo({
-                    url: '/pages/login/login'
-                });
-            }*/
-        }else{
             this.loadData(true)
-        }
-    },
+        },
         onPullDownRefresh(){
             console.log('onPullDownRefresh');
             this.loadData(true)
@@ -134,6 +117,15 @@
                             self.listData = content
                         }else{
                             self.listData = self.listData.concat(content);
+                        }
+                    },
+                    fail:function (res) {
+                        let status = res.statusCode
+                        if(404 == status){
+                            uni.showToast({
+                                title:'没有匹配数据',
+                                icon:'none'
+                            })
                         }
                     }
                 })

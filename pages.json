@@ -148,7 +148,17 @@
 		{
 		    "path" : "pages/activity/activity",
 		    "style" : {
-		        "navigationBarTitleText" : "活动"
+		        "navigationBarTitleText" : "活动",
+                "enablePullDownRefresh" : true, //开启下拉刷新
+                "h5" : {
+                    "titleNView" : {
+                        "titleText" : "活动"
+                    },
+                    "pullToRefresh" : {
+                        // color offset 两个配置项
+                        "offset" : "60px"
+                    }
+                }
 		    }
 		},
 		{
@@ -166,7 +176,17 @@
 		{
 		    "path" : "pages/participate/participate",
 		    "style" : {
-		        "navigationBarTitleText" : "我的活动"
+		        "navigationBarTitleText" : "我的活动",
+                "enablePullDownRefresh" : true, //开启下拉刷新
+                "h5" : {
+                    "titleNView" : {
+                        "titleText" : "我的活动"
+                    },
+                    "pullToRefresh" : {
+                        // color offset 两个配置项
+                        "offset" : "60px"
+                    }
+                }
 		    }
 		},
 		{
@@ -174,7 +194,13 @@
 		    "style" : {
 		        "navigationBarTitleText" : "活动相关协议"
 		    }
-		}
+		},
+        {
+            "path" : "pages/activity/signup",
+            "style" : {
+                "navigationBarTitleText" : "活动报名联系信息"
+            }
+        }
     ],
     "tabBar" : {
         "list" : [

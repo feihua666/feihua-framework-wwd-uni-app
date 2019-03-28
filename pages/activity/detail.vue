@@ -23,8 +23,8 @@
 		</view>
 
 		<view class="fh-padding-30">
-			<button v-if="!participate && activity.status == '1'" class="btn-submit" @tap="goPay" type="primary">我要报名</button>
-			<button v-if="participate">已报名</button>
+			<button v-if="!participate && activity.status == 'signing'" class="btn-submit" @tap="goSignup" type="primary">我要报名</button>
+			<button v-if="participate" disabled>已报名</button>
 		</view>
 
 	</view>
@@ -56,9 +56,9 @@
             self.isParticipate()
 		},
 		methods: {
-			goPay() {
+			goSignup() {
 				uni.navigateTo({
-				    url: '/pages/activity/pay?id=' + this.activity.id
+				    url: '/pages/activity/signup?activityId=' + this.activity.id
 				})
 			},
 			getDetail() {
