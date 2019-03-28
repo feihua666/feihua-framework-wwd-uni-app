@@ -16,17 +16,19 @@
 				<view class="uni-list-cell">
 					<view class="uni-list-cell-navigate">
 						性别
-						<text @tap="showDictPicker(form.gender,'gender','gender')">{{$dictUtils.getLabelByValue('gender',form.gender,'不限')}}</text>
+						<view  @tap="showDictPicker(form.gender,'gender','gender')">
+							<fh-dict-text  type="gender" :val="form.gender" text="不限"></fh-dict-text>
+						</view>
 					</view>
 				</view>
 				<view class="uni-list-cell">
 					<view class="uni-list-cell-navigate">
 						年龄
-							<picker mode="date" :value="form.ageStart" start="1960-01-01" :end="$utils.nowDate()"   @change="onAgeStartChange">
+							<picker mode="date" :value="form.ageStart" start="1960-01-01" :end="$utils.date.nowDate()"   @change="onAgeStartChange">
 								<text>{{form.ageStart || '不限'}}</text>
 							</picker>
 							-
-							<picker mode="date" :value="form.ageEnd" start="1960-01-01" :end="$utils.nowDate()"   @change="onAgeEndChange">
+							<picker mode="date" :value="form.ageEnd" start="1960-01-01" :end="$utils.date.nowDate()"   @change="onAgeEndChange">
 								<text>{{form.ageEnd || '不限'}}</text>
 							</picker>
 
@@ -36,7 +38,11 @@
 				<view class="uni-list-cell">
 					<view class="uni-list-cell-navigate">
 						学历
-						<text @tap="showDictPicker(form.education,'education_level','education')">{{$dictUtils.getLabelByValue('education_level',form.education,'不限')}}</text>
+						<view  @tap="showDictPicker(form.education,'education_level','education')">
+							<fh-dict-text type="education_level" :val="form.education" text="不限"></fh-dict-text>
+
+						</view>
+
 					</view>
 				</view>
 				<view class="uni-list-cell">
@@ -77,13 +83,15 @@
     import UniIcon from "../../components/uni-icon";
     import fhDictPicker from '@/fh-components/fh-dict-picker.vue';
     import fhAreaPicker from '@/fh-components/fh-area-picker.vue';
+    import fhDictText from '@/fh-components/fh-dict-text.vue';
     const keyPrefix = 'index'
     export default {
         components: {
             UniIcon,
             uniTag,
             fhDictPicker,
-            fhAreaPicker
+            fhAreaPicker,
+            fhDictText
         },
 	    computed:{
 		},
@@ -111,10 +119,10 @@
 				},
 				form:{
                     keyword:'',
-					gender:null,
+					gender:'',
 					ageStart:'',
 					ageEnd:'',
-                    education:null,
+                    education:'',
                     homeProvinceId:null,
                     homeCityId:null,
                     homeDistrictId:null,
@@ -171,6 +179,10 @@
             onAgeStartChange(e){
                 console.log(e);
                 this.form.ageStart = e.detail.value
+                if (this.form.ageStart && this.form.ageStart.length == 4){
+                    this.form.ageStart = this.form.ageStart + '-01-01'
+                }
+
 				if(!this.form.ageEnd){
                     this.form.ageEnd = this.form.ageStart
 				}
@@ -178,6 +190,9 @@
             },
             onAgeEndChange(e){
                 this.form.ageEnd = e.detail.value
+                if (this.form.ageEnd && this.form.ageEnd.length == 4){
+                    this.form.ageEnd = this.form.ageEnd + '-01-01'
+                }
                 if(!this.form.ageStart){
                     this.form.ageStart = this.form.ageEnd
                 }
@@ -198,7 +213,47 @@
 				temp.form = this.form
 				temp.areaIds = this.areaIds
 				temp.areaLabel= this.areaLabel
-                this.saveKeyword(temp)
+				let self = this
+				if(self.form.gender){
+                    self.$http.getDictByValue('gender',self.form.gender)
+						.then(function (dict) {
+                            temp.genderLabel = dict.name
+                            if(self.form.education){
+                                self.$http.getDictByValue('education_level',self.form.education)
+                                    .then(function (dict) {
+                                        temp.educationLabel = dict.name
+                                    }).catch(function () {
+										self.saveKeyword(temp)
+									})
+                            }else {
+                                self.saveKeyword(temp)
+							}
+                        }).catch(function () {
+							self.saveKeyword(temp)
+						})
+				}else if(self.form.education){
+                    self.$http.getDictByValue('education_level',self.form.education)
+                        .then(function (dict) {
+                            temp.educationLabel = dict.name
+                            if(self.form.gender){
+                                self.$http.getDictByValue('gender',self.form.gender)
+                                    .then(function (dict) {
+                                        temp.genderLabel = dict.name
+                                    }).catch(function () {
+										self.saveKeyword(temp)
+									})
+                            }else {
+                                self.saveKeyword(temp)
+							}
+                        }).catch(function () {
+							self.saveKeyword(temp)
+						})
+                }else {
+
+                    this.saveKeyword(temp)
+				}
+
+
 
                 this.$bus.$emit('indexSearch',this.form)
                 uni.navigateBack({
@@ -272,13 +327,13 @@
 
 				r += (obj.form.keyword ||'')
 
-				r += (this.$dictUtils.getLabelByValue('gender',obj.form.gender,''))
+				r += (obj.genderLabel || '')
 
 				if(obj.form.ageStart && obj.form.ageEnd){
                     r += (obj.form.ageStart + '-'+ obj.form.ageEnd)
                 }
 
-				r += (this.$dictUtils.getLabelByValue('education_level',obj.form.education,''))
+				r += (obj.educationLabel || '')
 
 				r += obj.areaLabel.now
 				r += obj.areaLabel.home

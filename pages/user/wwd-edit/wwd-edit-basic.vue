@@ -7,7 +7,10 @@
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				婚姻状况
-				<text @tap="showDictPicker(form.wwdUser.maritalStatus,'married_status','maritalStatus')">{{$dictUtils.getLabelByValue('married_status',form.wwdUser.maritalStatus,'未填写')}}</text>
+				<view @tap="showDictPicker(form.wwdUser.maritalStatus,'married_status','maritalStatus')">
+					<fh-dict-text :type="'married_status'" :val="form.wwdUser.maritalStatus" text="未填写"></fh-dict-text>
+				</view>
+
 			</view>
 		</view>
 		<view class="uni-list-cell">
@@ -25,15 +28,19 @@
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				性别
-				<text v-if="form.wwdUser.gender =='male' || form.wwdUser.gender =='female' ">{{$dictUtils.getLabelByValue('gender',form.wwdUser.gender,'未填写')}}</text>
-				<text v-else @tap="showDictPicker(form.wwdUser.gender,'gender','gender')">{{$dictUtils.getLabelByValue('gender',form.wwdUser.gender,'未填写')}}</text>
+				<view v-if="form.wwdUser.gender =='male' || form.wwdUser.gender =='female' ">
+					<fh-dict-text :type="'gender'" :val="form.wwdUser.gender" text="未填写"></fh-dict-text>
+				</view>
+				<view v-else @tap="showDictPicker(form.wwdUser.gender,'gender','gender')">
+					<fh-dict-text :type="'gender'" :val="form.wwdUser.gender" text="未填写"></fh-dict-text>
+				</view>
 			</view>
 		</view>
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				生日
-				<picker mode="date" :value="$utils.dateFomat(form.wwdUser.birthDay) || '1990-01-01'" start="1960-01-01" :end="$utils.nowDate()" @change="onBirthdayChange">
-					<text>{{$utils.dateFomat(form.wwdUser.birthDay) || '未填写'}}</text>
+				<picker mode="date" :value="$utils.date.dateFomat(form.wwdUser.birthDay) || '1990-01-01'" start="1960-01-01" :end="$utils.date.nowDate()" @change="onBirthdayChange">
+					<text>{{$utils.date.dateFomat(form.wwdUser.birthDay) || '未填写'}}</text>
 				</picker>
 
 			</view>
@@ -41,7 +48,9 @@
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				星座
-				<text @tap="showDictPicker(form.wwdUser.constellation,'constellation_type','constellation')">{{$dictUtils.getLabelByValue('constellation_type',form.wwdUser.constellation,'未填写')}}</text>
+				<view @tap="showDictPicker(form.wwdUser.constellation,'constellation_type','constellation')">
+					<fh-dict-text :type="'constellation_type'" :val="form.wwdUser.constellation" text="未填写"></fh-dict-text>
+				</view>
 			</view>
 		</view>
 		<view class="uni-list-cell">
@@ -60,7 +69,9 @@
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				学历
-				<text @tap="showDictPicker(form.wwdUser.education,'education_level','education')">{{$dictUtils.getLabelByValue('education_level',form.wwdUser.education,'未填写')}}</text>
+				<view @tap="showDictPicker(form.wwdUser.education,'education_level','education')">
+					<fh-dict-text :type="'education_level'" :val="form.wwdUser.education" text="未填写"></fh-dict-text>
+				</view>
 			</view>
 		</view>
 		<view class="uni-list-cell">
@@ -72,13 +83,17 @@
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				车
-				<text @tap="showDictPicker(form.wwdUser.hasCar,'has_car_status','hasCar')">{{$dictUtils.getLabelByValue('has_car_status',form.wwdUser.hasCar,'未填写')}}</text>
+				<view @tap="showDictPicker(form.wwdUser.hasCar,'has_car_status','hasCar')">
+					<fh-dict-text :type="'has_car_status'" :val="form.wwdUser.hasCar" text="未填写"></fh-dict-text>
+				</view>
 			</view>
 		</view>
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				房
-				<text @tap="showDictPicker(form.wwdUser.hasHourse,'has_hourse_status','hasHourse')">{{$dictUtils.getLabelByValue('has_hourse_status',form.wwdUser.hasHourse,'未填写')}}</text>
+				<view @tap="showDictPicker(form.wwdUser.hasHourse,'has_hourse_status','hasHourse')">
+					<fh-dict-text :type="'has_hourse_status'" :val="form.wwdUser.hasHourse" text="未填写"></fh-dict-text>
+				</view>
 
 			</view>
 		</view>
@@ -109,13 +124,17 @@
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				抽烟
-				<text @tap="showDictPicker(form.wwdUser.smoking,'smoking_status','smoking')">{{$dictUtils.getLabelByValue('smoking_status',form.wwdUser.smoking,'未填写')}}</text>
+				<view @tap="showDictPicker(form.wwdUser.smoking,'smoking_status','smoking')">
+					<fh-dict-text :type="'smoking_status'" :val="form.wwdUser.smoking" text="未填写"></fh-dict-text>
+				</view>
 			</view>
 		</view>
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				喝酒
-				<text @tap="showDictPicker(form.wwdUser.drinking,'drinking_status','drinking')">{{$dictUtils.getLabelByValue('drinking_status',form.wwdUser.drinking,'未填写')}}</text>
+				<view @tap="showDictPicker(form.wwdUser.drinking,'drinking_status','drinking')">
+					<fh-dict-text :type="'drinking_status'" :val="form.wwdUser.drinking" text="未填写"></fh-dict-text>
+				</view>
 			</view>
 		</view>
 		<view class="uni-list-cell">
@@ -157,8 +176,11 @@
     import fhDictPicker from '@/fh-components/fh-dict-picker.vue';
     import fhAreaPicker from '@/fh-components/fh-area-picker.vue';
     import ChatInput from "../../../components/im-chat/chatinput";
+    import fhDictText from '@/fh-components/fh-dict-text.vue';
+
     export default {
         components: {
+            fhDictText,
             ChatInput,
             fhImageUpload,
             fhDictPicker,
@@ -224,21 +246,17 @@
 
 			loadWwdUser(){
                 let self = this
-                self.$http.get('/wwd/user/current', {
-                    success: res => {
-                        let content = res.data.data.content
-						self.form.wwdUser = content
-                    }
+                self.$http.get('/wwd/user/current').then( res => {
+                    let content = res.data.data.content
+                    self.form.wwdUser = content
                 })
 			},
             //加载区域，家乡和当前所在地
             loadArea(){
                 let self = this
-                self.$http.get('/wwd/user/current/area', {
-                    success: function (response) {
-                        let content = response.data.data.content
-                        self.userArea = content
-                    }
+                self.$http.get('/wwd/user/current/area').then(function (response) {
+                    let content = response.data.data.content
+                    self.userArea = content
                 })
             },
 			// 保存
@@ -250,15 +268,12 @@
                 data.homeAreaIds = this.form.homeAreaIds
 
 				this.saveLoading = true
-                this.$http.put('/wwd/user/current', {
-                    data: data,
-                    success: function (res) {
-                        uni.showToast({
-                            title: '保存成功',
-                            icon:'none'
-                        })
-                        self.saveLoading = false
-                    }
+                this.$http.put('/wwd/user/current',data).then(function (res) {
+                    uni.showToast({
+                        title: '保存成功',
+                        icon:'none'
+                    })
+                    self.saveLoading = false
                 })
 			}
 		},

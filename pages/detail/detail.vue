@@ -9,13 +9,17 @@
 		<view class="fh-padding-30">
 			<view><text class="iconfont" :class="$utils.genderIcon(wwdUser.wwdUserDto.gender)"><text class="fh-inline-space-10"></text>{{wwdUser.wwdUserDto.nickname}}</text></view>
 			<view>
-				<text class='iconfont icon-shengri fh-margin-right-30'><text class="fh-inline-space-10"></text>{{$utils.dateFomat(wwdUser.wwdUserDto.birthDay)}}</text>
-				<text class='iconfont icon-xingzuo fh-margin-right-30'><text class="fh-inline-space-10"></text>{{$dictUtils.getLabelByValue('constellation_type',wwdUser.wwdUserDto.constellation)}}</text>
+				<text class='iconfont icon-shengri fh-margin-right-30'><text class="fh-inline-space-10"></text>{{$utils.date.dateFomat(wwdUser.wwdUserDto.birthDay)}}</text>
+				<text class='iconfont icon-xingzuo fh-margin-right-30'><text class="fh-inline-space-10"></text>
+					<fh-dict-text type="constellation_type" :val="wwdUser.wwdUserDto.constellation"></fh-dict-text>
+				</text>
 				<text class='iconfont icon-shengao fh-margin-right-30'><text class="fh-inline-space-10"></text>{{wwdUser.wwdUserDto.height}}</text>
 				<text class='iconfont icon-tizhong fh-margin-right-30'><text class="fh-inline-space-10"></text>{{wwdUser.wwdUserDto.weight}}</text>
 			</view>
 			<view>
-				<text class='iconfont icon-daxuemingcheng'><text class="fh-inline-space-10"></text>{{$dictUtils.getLabelByValue('education_level',wwdUser.wwdUserDto.education)}} {{wwdUser.wwdUserDto.college}} {{wwdUser.wwdUserDto.major}}</text>
+				<text class='iconfont icon-daxuemingcheng'><text class="fh-inline-space-10"></text>
+					<fh-dict-text type="education_level" :val="wwdUser.wwdUserDto.education"></fh-dict-text> {{wwdUser.wwdUserDto.college}} {{wwdUser.wwdUserDto.major}}
+				</text>
 			</view>
 			<view>
 				<text class='iconfont icon-weizhi'><text class="fh-inline-space-10"></text>{{wwdUser.userArea.nowProvinceName}} {{wwdUser.userArea.nowCityName}} {{wwdUser.userArea.nowDistrictName}}</text>
@@ -28,12 +32,20 @@
 			<view>生活信息</view>
 			<view>
 				<view class="uni-flex uni-row">
-					<text class='iconfont icon-cheliang uni-flex-item '><text class="fh-inline-space-10"></text>{{$dictUtils.getLabelByValue('has_car_status',wwdUser.wwdUserDto.hasCar)}}</text>
-					<text class='iconfont icon-icon-test1 uni-flex-item'><text class="fh-inline-space-10"></text>{{$dictUtils.getLabelByValue('has_hourse_status',wwdUser.wwdUserDto.hasHourse)}}</text>
+					<text class='iconfont icon-cheliang uni-flex-item '><text class="fh-inline-space-10"></text>
+						<fh-dict-text type="has_car_status" :val="wwdUser.wwdUserDto.hasCar"></fh-dict-text>
+					</text>
+					<text class='iconfont icon-icon-test1 uni-flex-item'><text class="fh-inline-space-10"></text>
+						<fh-dict-text type="has_hourse_status" :val="wwdUser.wwdUserDto.hasHourse"></fh-dict-text>
+					</text>
 				</view>
 				<view class="uni-flex uni-row">
-					<text class='iconfont icon-chouyan uni-flex-item '><text class="fh-inline-space-10"></text>{{$dictUtils.getLabelByValue('smoking_status',wwdUser.wwdUserDto.smoking)}}</text>
-					<text class='iconfont icon-hejiu uni-flex-item'><text class="fh-inline-space-10"></text>{{$dictUtils.getLabelByValue('drinking_status',wwdUser.wwdUserDto.drinking)}}</text>
+					<text class='iconfont icon-chouyan uni-flex-item '><text class="fh-inline-space-10"></text>
+						<fh-dict-text type="smoking_status" :val="wwdUser.wwdUserDto.smoking"></fh-dict-text>
+					</text>
+					<text class='iconfont icon-hejiu uni-flex-item'><text class="fh-inline-space-10"></text>
+						<fh-dict-text type="drinking_status" :val="wwdUser.wwdUserDto.drinking"></fh-dict-text>
+					</text>
 				</view>
 				<view class="uni-flex uni-row">
 					<text class='iconfont icon-qianmoney125 uni-flex-item '><text class="fh-inline-space-10"></text>{{wwdUser.wwdUserDto.monthSalary}}</text>
@@ -45,7 +57,9 @@
 			<view>标签信息</view>
 			<view>
 				<view v-for="tag in wwdUser.tags">
-					<text class='iconfont' :class="tagIcon(tag.type)"> {{$dictUtils.getLabelsByValues(tag.type,tag.content)}}</text>
+					<text class='iconfont' :class="tagIcon(tag.type)">
+						<fh-dict-text style="margin-right: 3px;" v-if="tag.content" v-for="dictValue in tag.content.split(',')" :type="tag.type" :val="dictValue"></fh-dict-text>
+					</text>
 				</view>
 			</view>
 		</view>
@@ -68,7 +82,12 @@
 </template>
 
 <script>
-	export default {
+    import fhDictText from '@/fh-components/fh-dict-text.vue';
+
+    export default {
+        components: {
+            fhDictText
+        },
 		data() {
 			return {
 				wwdUserId:null,
@@ -122,18 +141,13 @@
                 let self = this
                 // 发起对他有意思
 				self.enjoyLoading = true
-                self.$http.post('/wwd/user/current/enjoy/' + this.wwdUserId, {
-                    success: function(response){
-                        self.isEnjoy = false
-                        uni.showToast({
-                            title:'恭喜您已表示了对TA有意思',
-                            icon:'none'
-                        })
-
-                    },
-					complete:function () {
-						self.enjoyLoading = false
-                    }
+                self.$http.post('/wwd/user/current/enjoy/' + this.wwdUserId).then(function (res) {
+                    self.isEnjoy = false
+                    uni.showToast({
+                        title:'恭喜您已表示了对TA有意思',
+                        icon:'none'
+                    })
+                    self.enjoyLoading = false
                 })
 			},
 		    tagIcon(type){
@@ -171,64 +185,53 @@
 		    //加载图片
 		    loadPic(){
 		        let self = this
-                self.$http.get('/wwd/user/'+ self.wwdUserId +'/pic',{
-                    success:function (response) {
-                        let content = response.data.data.content
-                        self.wwdUser.picUrls = content
-                    }
+                self.$http.get('/wwd/user/'+ self.wwdUserId +'/pic').then(function (response) {
+                    let content = response.data.data.content
+                    self.wwdUser.picUrls = content
                 })
 			},
 			//加载详细基本信息
 			loadWwdUserDto(){
                 let self = this
-                self.$http.get('/wwd/user/' + self.wwdUserId, {
-                    success: function (response) {
-                        let content = response.data.data.content
-						self.wwdUser.wwdUserDto = content
-						self.wwdUser.photo = response.data.data.photo
-                    }
+                self.$http.get('/wwd/user/' + self.wwdUserId).then(function (response) {
+                    let content = response.data.data.content
+                    self.wwdUser.wwdUserDto = content
+                    self.wwdUser.photo = response.data.data.photo
                 })
 			},
 			//加载区域，家乡和当前所在地
 			loadArea(){
                 let self = this
-                self.$http.get('/wwd/user/' + self.wwdUserId +'/area', {
-                    success: function (response) {
-                        let content = response.data.data.content
-                        self.wwdUser.userArea = content
-                    }
+                self.$http.get('/wwd/user/' + self.wwdUserId +'/area').then( function (response) {
+                    let content = response.data.data.content
+                    self.wwdUser.userArea = content
                 })
 			},
 			//加载是否已对他/她有意思
 			loadEnjoy(){
                 let self = this
-                self.$http.get('/wwd/user/current/enjoy/' + self.wwdUserId, {
-                    success: function (response) {
-                        let content = response.data.data.content
-                        // 存在数据表示已有意思
-                        if (content){
-                        }
-                        //不存在数据，可以点击有意思
-                        else{
-                            self.isEnjoy = true
-                        }
-                    },
-                    fail: res=>{
-                        // 不存在，可以点击有意思
-                        let status = res.statusCode
-                        if (status ==404 ){
-                            self.isEnjoy = true
-                        }
+                self.$http.get('/wwd/user/current/enjoy/' + self.wwdUserId).then(function (response) {
+                    let content = response.data.data.content
+                    // 存在数据表示已有意思
+                    if (content){
+                    }
+                    //不存在数据，可以点击有意思
+                    else{
+                        self.isEnjoy = true
+                    }
+                }).catch( res=>{
+                    // 不存在，可以点击有意思
+                    let status = res.statusCode
+                    if (status ==404 ){
+                        self.isEnjoy = true
                     }
                 })
 			},
             loadTags: function () {
                 let self = this
-                self.$http.get('/wwd/user/' + self.wwdUserId +'/tags', {
-                    success: function (res) {
-                        let tagContent = res.data.data.content
-                        self.wwdUser.tags = tagContent
-                    }
+                self.$http.get('/wwd/user/' + self.wwdUserId +'/tags').then(function (res) {
+                    let tagContent = res.data.data.content
+                    self.wwdUser.tags = tagContent
                 })
             }
 		}

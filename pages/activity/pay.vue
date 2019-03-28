@@ -22,7 +22,7 @@
 </template>
 
 <script>
-	import  payUtil from "@/common/payUtil.js"
+	import  payUtil from "@/utils/payUtil.js"
 	export default {
 		data() {
 			return {
@@ -65,51 +65,48 @@
             },
 			getDetail() {
 				let self = this
-                self.$http.get('/wwd/activity/' + self.activity.id, {
-                    success: function (response) {
-                        let content = response.data.data.content
-						self.activity.startTime = content.startTime
-						self.activity.endTime = content.endTime
-						self.activity.addr = content.addr
+                self.$http.get('/wwd/activity/' + self.activity.id).then(function (response) {
 
-						let headcountDesc = ''
-						if(content.headcount==0){
-							headcountDesc = '不限人数'
-						}else{
-							headcountDesc = content.headcount + ' 人'
-						}
-						if(content.headcountDesc){
-							self.activity.headcountDesc = headcountDesc + ' (' + content.headcountDesc + ')'
-						}else{
-							self.activity.headcountDesc= headcountDesc
-						}
+                    let content = response.data.data.content
+                    self.activity.startTime = content.startTime
+                    self.activity.endTime = content.endTime
+                    self.activity.addr = content.addr
 
-						if(content.malePrice == content.femalePrice){
-                            self.activity.priceDesc = content.price + ' 元/人'
-
-						}else{
-                            self.activity.priceDesc = '男：'+ content.malePrice+' 元/人，'+'女：' + content.femalePrice + ' 元/人'
-						}
-                        self.activity.totalFee = ''
-						// TODO 该支付的费用 判断自定义性别
-                        self.$http.get('/wwd/user/current', {
-                            success: res => {
-                                let wwdusercontent = res.data.data.content
-                                if('male' == wwdusercontent.gender){
-                                    self.activity.totalFee = content.malePrice
-                                    self.setTotalFee(content.malePrice)
-                                }else if('female' == wwdusercontent.gender){
-                                    self.activity.totalFee = content.femalePrice
-                                    self.setTotalFee(content.femalePrice)
-                                }else{
-                                    uni.showToast({
-                                        title:"未能匹配到支付金额，请确认已填写性别",
-                                        icon:'none'
-                                    })
-								}
-                            }
-                        })
+                    let headcountDesc = ''
+                    if(content.headcount==0){
+                        headcountDesc = '不限人数'
+                    }else{
+                        headcountDesc = content.headcount + ' 人'
                     }
+                    if(content.headcountDesc){
+                        self.activity.headcountDesc = headcountDesc + ' (' + content.headcountDesc + ')'
+                    }else{
+                        self.activity.headcountDesc= headcountDesc
+                    }
+
+                    if(content.malePrice == content.femalePrice){
+                        self.activity.priceDesc = content.price + ' 元/人'
+
+                    }else{
+                        self.activity.priceDesc = '男：'+ content.malePrice+' 元/人，'+'女：' + content.femalePrice + ' 元/人'
+                    }
+                    self.activity.totalFee = ''
+                    // TODO 该支付的费用 判断自定义性别
+                    self.$http.get('/wwd/user/current').then(function (res) {
+                        let wwdusercontent = res.data.data.content
+                        if('male' == wwdusercontent.gender){
+                            self.activity.totalFee = content.malePrice
+                            self.setTotalFee(content.malePrice)
+                        }else if('female' == wwdusercontent.gender){
+                            self.activity.totalFee = content.femalePrice
+                            self.setTotalFee(content.femalePrice)
+                        }else{
+                            uni.showToast({
+                                title:"未能匹配到支付金额，请确认已填写性别",
+                                icon:'none'
+                            })
+                        }
+                    })
                 })
 			},
 			// 支付
@@ -132,17 +129,16 @@
 
 				if(!self.payLoading){
 					self.payLoading = true
-					self.$http.post('/wwd/activity/participate/order',{
-					data: payForm,
-					success:function (response) {
-						let content = response.data.data.content
-						if(content){
-							// 调起微信支付
-							payUtil.onBridgeReady(content,function(res){
+					self.$http.post('/wwd/activity/participate/order',payForm).then(function (response) {
+
+                        let content = response.data.data.content
+                        if(content){
+                            // 调起微信支付
+                            payUtil.onBridgeReady(content,function(res){
                                 self.payLoading = false
-								if(res.err_msg == "get_brand_wcpay_request:ok" ){
-								  // 使用以上方式判断前端返回,微信团队郑重提示：
-										//res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                                if(res.err_msg == "get_brand_wcpay_request:ok" ){
+                                    // 使用以上方式判断前端返回,微信团队郑重提示：
+                                    //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
                                     uni.showToast({
                                         title:"支付成功",
                                         icon:'none'
@@ -150,17 +146,17 @@
                                     uni.navigateBack({
                                         delta: 2
                                     });
-								  }
-							})
+                                }
+                            })
 
-						}else{
+                        }else{
                             uni.showToast({
                                 title:"未获取到预支付信息",
                                 icon:'none'
                             })
-						}
-					},
-					fail:function (response) {
+                        }
+                    }).catch(function (response) {
+
                         let code = response.data.code
                         let status = response.statusCode
                         if(status == 404){
@@ -189,11 +185,7 @@
                             }
                         }
                         self.payLoading = false
-					},
-						complete:function () {
-
-                        }
-					})
+                    })
 				}
 
 			},

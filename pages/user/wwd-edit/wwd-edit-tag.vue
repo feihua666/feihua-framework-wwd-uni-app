@@ -5,10 +5,18 @@
 		<view class="uni-list-cell-divider">
 			标签信息
 		</view>
-		<view class="uni-list-cell" @tap="$utils.ngt('/pages/user/wwd-edit/tag-edit?type='+item.type + '&id=' + item.id)" :class="{'uni-list-cell-last':index == tagsBind.length -1}" hover-class="uni-list-cell-hover" v-for="(item,index) in tagsBind">
+		<view class="uni-list-cell" @tap="$utils.n.ngt('/pages/user/wwd-edit/tag-edit?type='+item.type + '&id=' + item.id)"
+			  :class="{'uni-list-cell-last':index == tagsBind.length -1}"
+			  hover-class="uni-list-cell-hover"
+			  v-for="(item,index) in tagsBind">
 			<view class="uni-list-cell-navigate uni-navigate-right uni-navigate-badge">
 				{{item.name}}
 				<text >{{item.value}}</text>
+				<template v-for="tag in tags" v-if="tag.type == item.type && tag.content">
+					<view>
+						<fh-dict-text style="margin-right: 3px;" v-for="dictValue in tag.content.split(',')" :type="tag.type + ''" :val="dictValue" text=""></fh-dict-text>
+					</view>
+				</template>
 			</view>
 		</view>
 
@@ -16,9 +24,11 @@
 </template>
 
 <script>
+    import fhDictText from '@/fh-components/fh-dict-text.vue';
 
     export default {
         components: {
+            fhDictText
         },
 		data() {
 			return {
@@ -26,33 +36,27 @@
 				tagsBind:[
 					{
 					    type:'nature_type',
-                        name:'性格',
-						value:''
+                        name:'性格'
 					},
 					{
 					    type:'hobby_type',
-                        name:'爱好',
-                        value:''
+                        name:'爱好'
                     },
 					{
 					    type:'food_type',
-            			name:'美食',
-                        value:''
+            			name:'美食'
 					},
                     {
                         type:'movie_type',
-            			name:'电影',
-                        value:''
+            			name:'电影'
 					},
                     {
                         type:'trip_type',
-            			name:'旅行',
-                        value:''
+            			name:'旅行'
 					},
                     {
                         type:'sport_type',
-            			name:'运动',
-                        value:''
+            			name:'运动'
                     }
 				]
 			};
@@ -63,11 +67,9 @@
 
             loadTags: function () {
                 let self = this
-                self.$http.get('/wwd/user/current/tags', {
-                    success: function (res) {
-                        let tagContent = res.data.data.content
-                        self.tags = tagContent
-                    }
+                self.$http.get('/wwd/user/current/tags').then(function (res) {
+                    let tagContent = res.data.data.content
+                    self.tags = tagContent
                 })
             },
             tagName(type){
@@ -103,17 +105,6 @@
             });
 		},
 		watch:{
-            tags(){
-                for(let i = 0;i<this.tags.length;i++){
-                    for(let j = 0;j<this.tagsBind.length;j++){
-                        if(this.tags[i].type == this.tagsBind[j].type){
-                            this.tagsBind[j].value = this.$dictUtils.getLabelsByValues(this.tags[i].type,this.tags[i].content)
-                            this.tagsBind[j].id = this.tags[i].id
-							this.$set(this.tagsBind,j,this.tagsBind[j])
-						}
-					}
-				}
-			}
 		}
 	}
 </script>

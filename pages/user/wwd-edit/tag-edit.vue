@@ -34,16 +34,14 @@
 		    loadTags(){
                 // 加载标签
 				let self = this
-                this.$http.get('/wwd/user/current/tag/' + self.type,{
-                    success: function(res) {
-                        let _content = res.data.data.content
-                        let selected = []
-                        if (_content.content){
-                            selected = _content.content.split(',')
-                        }
-                            self.tagSelf = _content.selfContent
-                            self.tagSelected = selected
+                this.$http.get('/wwd/user/current/tag/' + self.type).then( function(res) {
+                    let _content = res.data.data.content
+                    let selected = []
+                    if (_content.content){
+                        selected = _content.content.split(',')
                     }
+                    self.tagSelf = _content.selfContent
+                    self.tagSelected = selected
                 })
 			},
             // 保存
@@ -56,15 +54,9 @@
                 }
                 if (self.isUpdateChange){
                     if (!this.id){
-                        self.$http.post('/wwd/user/current/tag/' + self.type, {
-                            data:data,
-                            success: success
-                        })
+                        self.$http.post('/wwd/user/current/tag/' + self.type,data).then(success)
                     } else if (!!this.id) {
-						self.$http.put('/wwd/user/current/tag/' + self.type, {
-							data: data,
-							success: success
-						})
+						self.$http.put('/wwd/user/current/tag/' + self.type,data).then(success)
                     }
                 }
 
@@ -73,7 +65,10 @@
 		onLoad(options){
 		    this.type = options.type
 		    this.id = options.id
-			this.tagList = this.$dictUtils.getDictByType(this.type)
+			let self = this
+			self.$http.getDictsByType(this.type).then(function (dicts) {
+				self.tagList = dicts
+            })
 			this.loadTags()
 		}
 	}

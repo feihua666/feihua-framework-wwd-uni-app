@@ -40,7 +40,10 @@
         mounted(){
             console.log('dictpickerload')
             if(this.type){
-                this.dictConvertToPicker(this.$dictUtils.getDictByType(this.type))
+                let self = this
+                self.$http.getDictsByType(this.type).then(function (dictItems) {
+                    self.dictConvertToPicker(dictItems)
+                })
             }
         },
         methods: {
@@ -61,6 +64,7 @@
                 this.$refs.mpvuePicker.show()
             },
             onConfirm(obj){
+                obj.value = obj.value[0]
                 this.$emit('onConfirm', obj);
             },
             onCancel(obj){
@@ -69,21 +73,28 @@
         },
         watch:{
             valueDefault(oldValue,newVaule){
-                let exist = false
-                for(let i = 0;i<this.$dictUtils.getDictByType(this.type).length;i++){
-                    if(this.valueDefault == this.$dictUtils.getDictByType(this.type)[i].value){
-                        this.mpvuePicker.pickerValueDefault = [i]
-                        exist = true
-                        return
+                let self = this
+                self.$http.getDictsByType(this.type).then(function (dictItems) {
+                    let exist = false
+                    for(let i = 0;i<dictItems.length;i++){
+                        if(self.valueDefault == dictItems[i].value){
+                            self.mpvuePicker.pickerValueDefault = [i]
+                            exist = true
+                            return
+                        }
                     }
-                }
-                if(exist == false){
-                    this.mpvuePicker.pickerValueDefault = [0]
-                }
+                    if(exist == false){
+                        self.mpvuePicker.pickerValueDefault = [0]
+                    }
+                })
             },
             type(oldValue,newVaule){
                 if(this.type){
-                    this.dictConvertToPicker(this.$dictUtils.getDictByType(this.type))
+                    let self = this
+                    self.$http.getDictsByType(this.type).then(function (dictItems) {
+                        self.dictConvertToPicker(dictItems)
+
+                    })
                 }
             }
         }

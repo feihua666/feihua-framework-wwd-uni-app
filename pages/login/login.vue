@@ -27,12 +27,8 @@
 </template>
 
 <script>
-    import {
-        mapState,
-        mapMutations
-    } from 'vuex'
     //来自 graceUI 的表单验证， 使用说明见手册 http://grace.hcoder.net/doc/info/73-3.html
-    import  graceChecker from "@/common/graceChecker.js"
+    import  graceChecker from "@/utils/graceChecker.js"
     export default {
         components: {
         },
@@ -42,7 +38,7 @@
                 loginLoading:false,
 				form: {
 				  loginType: 'ACCOUNT',
-				  loginClient: 'h5',
+				  loginClient: this.$config.loginClient,
 				  principal: '',
 				  password: '',
 				  captcha: '',
@@ -50,7 +46,7 @@
 				},
                 wxLoginForm:{
                     loginType: 'WX_PLATFORM',
-                    loginClient: 'h5',
+                    loginClient: this.$config.loginClient,
                     type:this.$config.which,
                     rememberMe: false
                 },
@@ -58,65 +54,51 @@
         },
         // 点击导航返回和接口调用navigateBack都回调，注意getCurrentPages 长度为1时（只有当前页面）不回调
         onBackPress() {
-            if (!this.hasLogin && this.$config.forcedLogin) {
-                return true;
-            }
         },
-        computed: mapState(['hasLogin']),
         methods: {
-            ...mapMutations(['setGlobalDataInit']),
             loginBtnClick() {
                 if(!this.checkLoginForm()){
                     return
                 }
-				let self = this
+                let self = this
                 self.loginLoading = true
-				this.$http.post('/login',{
-					data:this.form,
-                    checkLogin:false,
-					success: async function (infoRes) {
-                        self.loginLoading = false
-                        self.loginSuccess()
-                    },
-					fail:function(res){
-						let statusCode = res.statusCode;
-						if(statusCode == 401){
-							uni.showToast({
-								title:'用户名或密码错误',
-								icon:'none'
-							})
-						}else if(statusCode == 400){
-							// 需要验证码,后台禁用
-							if(res.data.data.code == 'E400_100005'){
+                this.$http.post('/login',this.form).then(function (res) {
+                    self.loginLoading = false
+                    self.loginSuccess()
+                }).catch(function (res) {
+                    let statusCode = res.statusCode;
+                    if(statusCode == 401){
+                        uni.showToast({
+                            title:'用户名或密码错误',
+                            icon:'none'
+                        })
+                    }else if(statusCode == 400){
+                        // 需要验证码,后台已禁用，不需要处理
+                        if(res.data.data.code == 'E400_100005'){
 
-							}
-						}
-                        self.loginLoading = false
-					}
-				})
+                        }
+                    }
+                    self.loginLoading = false
+                })
             },
             wxLoginAuto(){
                 let self = this
-                this.$http.post('/login',{
-                    data:this.wxLoginForm,
-                    checkLogin:false,
-                    success: function (infoRes) {
-                        uni.setStorage({
-                            key:'wxLoginAuto',
-                            data:true
-                        })
-                        self.loginSuccess()
-                    },
-                    fail:function(res){
-                        uni.showToast({
-                            title:'登录失败',
-                            icon:'none'
-                        })
-                    },
-                    complete:function () {
-                        // 完成后清除
-                        uni.removeStorage({key:'wxLogin'});
-                    }
+                this.$http.post('/login',this.wxLoginForm).then(function () {
+                    // 完成后清除
+                    uni.removeStorage({key:'wxLogin'});
+
+                    uni.setStorage({
+                        key:'wxLoginAuto',
+                        data:true
+                    })
+                    self.loginSuccess()
+                }).catch(function () {
+                    // 完成后清除
+                    uni.removeStorage({key:'wxLogin'});
+                    uni.showToast({
+                        title:'登录失败',
+                        icon:'none'
+                    })
                 })
             },
             // 登录成功调用,用于初始化基础数据
@@ -126,15 +108,8 @@
                     icon: 'none',
                     duration:1000
                 });
-                let self = this
-                self.$http.initGobalData(true,function () {
-                    self.navigateBack()
-                })
-            },
-            navigateBack() {
-
                 let pages = getCurrentPages();
-                if(pages && pages.length>1){
+                if(pages && pages.length > 1){
                     uni.navigateBack({
                         delta: 1
                     });
@@ -143,8 +118,7 @@
                         url:'/pages/index/index'
                     })
                 }
-
-			},
+            },
             checkLoginForm(){
                 let rule = [
                     {name:"principal", checkType : "notnull", checkRule:"",  errorMsg:"请输入帐号"},
@@ -154,22 +128,17 @@
                 return checkRes
             },
             wxLoginBtnClick(){
-
                 let self = this
                 self.$http.get('/publicplatform/authAuthorizePageUrl/' + self.$config.which,{
-                    data:{
-                        scope:'snsapi_userinfo',
-                        state:'STATE',
-                        redirectUrl:self.$config.hostApi + '/publicplatform/getAuthUserInfo/'+ self.$config.which +'?redirectUrl=' + self.$config.host + '/uni-app'
-                    },
-                    success:function (res) {
-                        let url = res.data.data.content
-                        uni.setStorageSync('wxLogin',true)
-                        window.location.href = url
-                    }
+                    scope:'snsapi_userinfo',
+                    state:'STATE',
+                    redirectUrl:self.$config.hostApi + '/publicplatform/getAuthUserInfo/'+ self.$config.which +'?redirectUrl=' + self.$config.host + '/uni-app'
+                }).then(function (res) {
+                    let url = res.data.data.content
+                    uni.setStorageSync('wxLogin',true)
+                    window.location.href = url
                 })
-
-            },
+            }
         },
         watch:{
         },

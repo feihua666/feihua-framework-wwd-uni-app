@@ -33,7 +33,7 @@
 							</view>
 							<view class="uni-media-list-body">
 								<view class="uni-media-list-text-top">{{item.title}}</view>
-								<view class="uni-media-list-text-body uni-text">{{$utils.dateFomatWeek(item.startTime)}}</view>
+								<view class="uni-media-list-text-body uni-text">{{$utils.date.dateFomatWeek(item.startTime)}}</view>
 								<view class="uni-media-list-text-bottom uni-ellipsis">{{item.introduced}}</view>
 							</view>
 						</view>
@@ -41,7 +41,11 @@
                 	</view>
                 	<view class="uni-card-footer">
                 		<view class="uni-card-link">{{item.wwdParticipateDtos?item.wwdParticipateDtos.length:'0'}}/{{item.headcount}} 人 </view>
-                		<view class="uni-card-link"><uni-tag  :text="$dictUtils.getLabelByValue('activity_status',item.status)"  inverted="true" type="danger" size="small"></uni-tag></view>
+                		<view class="uni-card-link">
+                            <fh-uni-tag inverted="true" type="danger" size="small">
+                                <fh-dict-text :type="'activity_status'" :val="item.status"  text="不限"></fh-dict-text>
+                            </fh-uni-tag>
+                        </view>
                 		<view class="uni-card-link"><navigator :url="'/pages/activity/detail?id=' + item.id"><uni-tag text="已报名" inverted="true" type="warning" size="small"></uni-tag></navigator></view>
                 	</view>
             </view>
@@ -50,22 +54,21 @@
 </template>
 
 <script>
-    import {
-        mapState
-    } from 'vuex'
     import uniNavBar from '@/components/uni-nav-bar.vue'
     import uniIcon from '@/components/uni-icon.vue'
     import fhLoadmore from '@/fh-components/fh-loadmore.vue'
 	import uniTag from '@/components/uni-tag.vue'
-	export default {
+    import fhUniTag from '@/fh-components/uni-tag.vue';
+
+    export default {
         components: {
             uniNavBar,
             fhLoadmore,
             uniIcon,
+            fhUniTag,
 			uniTag
         },
         computed: {
-            ...mapState(['forcedLogin', 'hasLogin','userinfo'])
         },
 		data() {
 			return {
@@ -107,23 +110,21 @@
                 }
                 this.$refs.loadmoreref.loadData('/wwd/myActivitys',{
                     pullDownRefresh:!!pullDownRefresh,
-                    data: self.searchForm,
-                    success:function (res) {
-                        let content = res.data.data.content
-                        if(pullDownRefresh){
-                            self.listData = content
-                        }else{
-                            self.listData = self.listData.concat(content);
-                        }
-                    },
-                    fail:function (res) {
-                        let status = res.statusCode
-                        if(404 == status){
-                            uni.showToast({
-                                title:'没有匹配数据',
-                                icon:'none'
-                            })
-                        }
+                    data: self.searchForm
+                }).then(function (res) {
+                    let content = res.data.data.content
+                    if(pullDownRefresh){
+                        self.listData = content
+                    }else{
+                        self.listData = self.listData.concat(content);
+                    }
+                }).catch(function (res) {
+                    let status = res.statusCode
+                    if(404 == status){
+                        uni.showToast({
+                            title:'没有匹配数据',
+                            icon:'none'
+                        })
                     }
                 })
             },

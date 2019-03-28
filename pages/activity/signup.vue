@@ -17,12 +17,8 @@
 </template>
 
 <script>
-    import {
-        mapState,
-        mapMutations
-    } from 'vuex'
     //来自 graceUI 的表单验证， 使用说明见手册 http://grace.hcoder.net/doc/info/73-3.html
-    import  graceChecker from "@/common/graceChecker.js"
+    import  graceChecker from "@/utils/graceChecker.js"
     export default {
         components: {
         },
@@ -36,7 +32,6 @@
                 }
             }
         },
-        computed: mapState(['regs']),
         onLoad (options) {
             this.form.activityId = options.activityId
         },
@@ -48,48 +43,44 @@
                 }
                 let self = this
                 self.btnLoading = true
-                self.$http.post('/wwd/participate/user/current',{
-                    data:self.form,
-                    success:function (res) {
-                        let content = res.data.data.content
-                        uni.showToast({
-                            icon: 'none',
-                            title: '恭喜报名成功'
-                        });
-                        self.btnLoading = false
-                        uni.navigateTo({
-                            url: '/pages/activity/pay?participateId=' + content.id + '&activityId=' + self.form.activityId
-                        })
-                    },
-                    fail:function (res) {
-                        let statusCode = res.statusCode
-                        let _data = res.data.data;
-                        if(statusCode == 409){
-                            if(_data.code == 'headcount=enough'){
-                                uni.showToast({
-                                    icon: 'none',
-                                    title: '报名人数已满'
-                                });
-                            }else if(_data.code == 'payStatus=paid'){
-                                uni.showToast({
-                                    title:"你已支付，请勿重复支付",
-                                    icon:'none'
-                                })
-                            }
-                        }else if(statusCode == 404){
+                self.$http.post('/wwd/participate/user/current',self.form).then(function (res) {
+                    let content = res.data.data.content
+                    uni.showToast({
+                        icon: 'none',
+                        title: '恭喜报名成功'
+                    });
+                    self.btnLoading = false
+                    uni.navigateTo({
+                        url: '/pages/activity/pay?participateId=' + content.id + '&activityId=' + self.form.activityId
+                    })
+                }).catch(function (res) {
+                    let statusCode = res.statusCode
+                    let _data = res.data.data;
+                    if(statusCode == 409){
+                        if(_data.code == 'headcount=enough'){
                             uni.showToast({
                                 icon: 'none',
-                                title: '活动不存在'
+                                title: '报名人数已满'
                             });
+                        }else if(_data.code == 'payStatus=paid'){
+                            uni.showToast({
+                                title:"你已支付，请勿重复支付",
+                                icon:'none'
+                            })
                         }
-                        self.btnLoading = false
+                    }else if(statusCode == 404){
+                        uni.showToast({
+                            icon: 'none',
+                            title: '活动不存在'
+                        });
                     }
+                    self.btnLoading = false
                 })
             },
             checkRegistForm(){
                 let rule = [
                     {name:"name", checkType : "notnull", checkRule:"",  errorMsg:"请填写姓名"},
-                    {name:"mobile", checkType : "reg", checkRule:this.regs.mobile,  errorMsg:"请填写正确格式手机号"}
+                    {name:"mobile", checkType : "mobile", checkRule:"",  errorMsg:"请填写正确格式手机号"}
                 ];
                 let checkRes = graceChecker.checkForm(this.form, rule);
                 return checkRes

@@ -3,7 +3,7 @@
         <view class="uni-list">
             <view class="uni-list-cell-divider"></view>
             <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
-                <view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.ngt('/pages/user/userinfo')">
+                <view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.n.ngt('/pages/user/userinfo')">
                         <view class="uni-media-list-logo">
                             <image v-if="userinfo && userinfo.photo" :src="$config.file.getDownloadUrl(userinfo.photo)"></image>
                         </view>
@@ -15,7 +15,7 @@
             </view>
             <view class="uni-list-cell-divider"></view>
             <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
-                <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.ngt('/pages/user/wwd-edit/edit-type-list')">
+                <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.n.ngt('/pages/user/wwd-edit/edit-type-list')">
                     编辑资料
                 </view>
             </view>
@@ -28,12 +28,12 @@
                 </view>
             </view>
             <view class="uni-list-cell" hover-class="uni-list-cell-hover">
-                <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.ngt('/pages/user/invitedFriends')">
+                <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.n.ngt('/pages/user/invitedFriends')">
                     我邀请的朋友
                 </view>
             </view>
 			<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
-			    <view class="uni-list-cell-navigate uni-navigate-right" @click="$utils.ngt('/pages/participate/participate')">
+			    <view class="uni-list-cell-navigate uni-navigate-right" @click="$utils.n.ngt('/pages/participate/participate')">
 			        我的活动
 			    </view>
 			</view>
@@ -41,25 +41,25 @@
             <view class="uni-list-cell-divider">
             </view>
             <view class="uni-list-cell" hover-class="uni-list-cell-hover">
-                <view class="uni-list-cell-navigate uni-navigate-right" @click="$utils.ngt('/pages/user/cardImage')">
+                <view class="uni-list-cell-navigate uni-navigate-right" @click="$utils.n.ngt('/pages/user/cardImage')">
                     我的卡片
                 </view>
             </view>
             <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
-                <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.ngt('/pages/user/textInfo')">
+                <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.n.ngt('/pages/user/textInfo')">
                     复制我的信息
                 </view>
             </view>
 
             <view class="uni-list-cell-divider"></view>
             <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
-                <view class="uni-list-cell-navigate uni-navigate-right" @click="$utils.ngt('/pages/enjoy/enjoy')">
+                <view class="uni-list-cell-navigate uni-navigate-right" @click="$utils.n.ngt('/pages/enjoy/enjoy')">
                     有意思
                 </view>
             </view>
             <view class="uni-list-cell-divider"></view>
             <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
-                <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.ngt('/pages/setting/setting')">
+                <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.n.ngt('/pages/setting/setting')">
                     设置
                 </view>
             </view>
@@ -69,36 +69,35 @@
 </template>
 
 <script>
-    import {
-        mapState,
-    } from 'vuex'
     import uniBadge from "@/components/uni-badge.vue";
     export default {
         components:{uniBadge},
         data () {
             return {
-                inviteCode:null
+                inviteCode:null,
+                userinfo: null
             }
         },
         computed: {
-            ...mapState(['userinfo'])
         },
         methods: {
             // 加载邀请码
             loadInviteCode(){
                 let self = this
                 //获取邀请码
-                this.$http.get('/wwd/user/current/invitation', {
-                    success: function (res) {
-                        let content = res.data.data.content
-                        self.inviteCode = content[0].code
-                    }
+                this.$http.get('/wwd/user/current/invitation').then(function (res) {
+                    let content = res.data.data.content
+                    self.inviteCode = content[0].code
                 })
             }
         },
         watch:{
         },
         onLoad(){
+            let self = this
+            self.$http.getCurrentUserinfo().then(function (content) {
+                self.userinfo = content
+            })
             this.loadInviteCode()
         }
     }

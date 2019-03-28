@@ -36,11 +36,9 @@
 			},
 		    loadWwdUser(){
 		        let self = this
-                self.$http.get('/wwd/user/current',{
-                    success: res => {
-                        let content = res.data.data.content
-                        self.wwdUser = content
-                    }
+                self.$http.get('/wwd/user/current').then( res => {
+                    let content = res.data.data.content
+                    self.wwdUser = content
                 })
 			},
             setShowInList:function(e){
@@ -54,17 +52,14 @@
                     return
                 }
                 self.$http.put('/wwd/user/current/showinlist',{
-                    data: {
-                        showInList: self.showInList == true ? 'N' : 'Y'
-                    },
-                    fail: function (res){
-                        let status = res.statusCode
-                        if (status == 409 && self.data.showInList){
-                            uni.showToast({
-                                icon:'none',
-                                title: '先完善资料才能开启哦'
-                            })
-                        }
+                    showInList: self.showInList == true ? 'N' : 'Y'
+                }).catch(function (res){
+                    let status = res.statusCode
+                    if (status == 409 && self.data.showInList){
+                        uni.showToast({
+                            icon:'none',
+                            title: '先完善资料才能开启哦'
+                        })
                     }
                 })
             },

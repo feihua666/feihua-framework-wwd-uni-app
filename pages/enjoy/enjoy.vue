@@ -9,13 +9,13 @@
 					<template v-for=" item in listData1">
 						<view class="uni-list-cell-divider"></view>
 						<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
-							<view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.ngt('/pages/detail/detail?wwdUserId=' + item.id)">
+							<view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.id)">
 								<view class="uni-media-list-logo">
 									<image :src="$config.file.getDownloadUrl(getPic(item.id,1).picUrl)"></image>
 								</view>
 								<view class="uni-media-list-body">
 									<view class="uni-media-list-text-top">{{item.nickname}}</view>
-									<view class="uni-media-list-text-bottom uni-ellipsis">{{$dictUtils.getLabelByValue('gender',item.gender)}}</view>
+									<view class="uni-media-list-text-bottom uni-ellipsis"><fh-dict-text type="gender" :val="item.gender"></fh-dict-text></view>
 								</view>
 							</view>
 						</view>
@@ -27,13 +27,13 @@
 					<template v-for=" item in listData2">
 						<view class="uni-list-cell-divider"></view>
 						<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
-							<view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.ngt('/pages/detail/detail?wwdUserId=' + item.id)">
+							<view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.id)">
 								<view class="uni-media-list-logo">
 									<image :src="$config.file.getDownloadUrl(getPic(item.id,1).picUrl)"></image>
 								</view>
 								<view class="uni-media-list-body">
 									<view class="uni-media-list-text-top">{{item.nickname}}</view>
-									<view class="uni-media-list-text-bottom uni-ellipsis">{{$dictUtils.getLabelByValue('gender',item.gender)}}</view>
+									<view class="uni-media-list-text-bottom uni-ellipsis"><fh-dict-text type="gender" :val="item.gender"></fh-dict-text></view>
 								</view>
 							</view>
 						</view>
@@ -45,13 +45,15 @@
 					<template v-for=" item in listData3">
 						<view class="uni-list-cell-divider"></view>
 						<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
-							<view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.ngt('/pages/detail/detail?wwdUserId=' + item.id)">
+							<view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.id)">
 								<view class="uni-media-list-logo">
 									<image :src="$config.file.getDownloadUrl(getPic(item.id,1).picUrl)"></image>
 								</view>
 								<view class="uni-media-list-body">
 									<view class="uni-media-list-text-top">{{item.nickname}}</view>
-									<view class="uni-media-list-text-bottom uni-ellipsis">{{$dictUtils.getLabelByValue('gender',item.gender)}}</view>
+									<view class="uni-media-list-text-bottom uni-ellipsis">
+										<fh-dict-text type="gender" :val="item.gender"></fh-dict-text>
+									</view>
 								</view>
 							</view>
 						</view>
@@ -64,10 +66,11 @@
 
 <script>
     import uniSegmentedControl from '@/components/uni-segmented-control.vue';
-
+    import fhDictText from '@/fh-components/fh-dict-text.vue';
     export default {
         components: {
-            uniSegmentedControl
+            uniSegmentedControl,
+            fhDictText
         },
 		data() {
 			return {
@@ -141,22 +144,19 @@
                 }else{
                     return
 				}
-                this.$http.get('/wwd/user/current/enjoys/' + (this.segmentedControl.current + 1), {
-                    data: {},
-                    success: function (response) {
+                this.$http.get('/wwd/user/current/enjoys/' + (this.segmentedControl.current + 1)).then(function (response) {
 
-                        let content = response.data.data.content
-                        let listPic = response.data.data.pic
-                        if (index == "1"){
-                                self.listData1 = content
-                                self.listPic1 = listPic
-                        } else if (index == "2") {
-                            self.listData2 = content
-                            self.listPic2 = listPic
-                        }else if (index == "3") {
-                            self.listData3 = content
-                            self.listPic3 = listPic
-                        }
+                    let content = response.data.data.content
+                    let listPic = response.data.data.pic
+                    if (index == "1"){
+                        self.listData1 = content
+                        self.listPic1 = listPic
+                    } else if (index == "2") {
+                        self.listData2 = content
+                        self.listPic2 = listPic
+                    }else if (index == "3") {
+                        self.listData3 = content
+                        self.listPic3 = listPic
                     }
                 })
             }

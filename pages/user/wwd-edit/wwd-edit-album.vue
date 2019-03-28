@@ -49,10 +49,8 @@
             // 删除
             deleteImage(item){
                 let self = this
-                this.$http.delete('/wwd/user/current/pic/' + item.id,{
-                    success:function(res) {
-                        self.loadPicData()
-                    }
+                this.$http.delete('/wwd/user/current/pic/' + item.id).then(function(res) {
+                    self.loadPicData()
                 })
 			},
 			onImageUploadMain(res){
@@ -67,30 +65,23 @@
                 let content = data.data.content
                 // 更新图片
                 self.$http.post('/wwd/user/current/pic',{
-                    data:{
-                        url:content.path,
-                        type:type,
-                        sequence:self.picData.length + 1,
-						t:new Date().getTime()
-                    },
-                    success:res => {
-                        // 添加完成
-                        self.loadPicData()
-                    }
+                    url:content.path,
+                    type:type,
+                    sequence:self.picData.length + 1,
+                    t:new Date().getTime()
+                }).then(res => {
+                    // 添加完成
+                    self.loadPicData()
                 })
 			},
             loadPicData:function(){
                 let self = this;
                 //加载图片
-                this.$http.get('/wwd/user/current/pic', {
-                    data: { orderby: 'create_at' ,t:new Date().getTime()},
-                    success: function (res) {
-                        let content = res.data.data.content
-                        self.picData = content
-                    },
-					fail:function () {
-                        self.picData = []
-                    }
+                this.$http.get('/wwd/user/current/pic', { orderby: 'create_at' ,t:new Date().getTime()}).then(function (res) {
+                    let content = res.data.data.content
+                    self.picData = content
+                }).catch(function () {
+                    self.picData = []
                 })
             }
 		},

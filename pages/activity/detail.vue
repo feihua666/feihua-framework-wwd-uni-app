@@ -63,47 +63,42 @@
 			},
 			getDetail() {
 				let self = this
-                self.$http.get('/wwd/activity/' + self.activity.id, {
-                    success: function (response) {
-                        let content = response.data.data.content
-						self.activity = content
-						let headcountDesc = ''
-						if(content.headcount==0){
-							headcountDesc = '不限人数'
-						}else{
-							headcountDesc = content.headcount + ' 人'
-						}
-						if(content.headcountDesc){
-							self.activity.headcountDesc = headcountDesc + ' (' + content.headcountDesc + ')'
-						}else{
-							self.activity.headcountDesc= headcountDesc
-						}
-
-						if(self.activity.payRule =='2'){
-							self.activity.priceDesc = '男：'+ content.malePrice+' 元/人，'+'女：'+content.femalePrice+' 元/人'
-						}else{
-							self.activity.priceDesc = content.price + ' 元/人'
-						}
-						uni.setNavigationBarTitle({
-							title: self.activity.title
-						})
+                self.$http.get('/wwd/activity/' + self.activity.id).then(function (response) {
+                    let content = response.data.data.content
+                    self.activity = content
+                    let headcountDesc = ''
+                    if(content.headcount==0){
+                        headcountDesc = '不限人数'
+                    }else{
+                        headcountDesc = content.headcount + ' 人'
                     }
+                    if(content.headcountDesc){
+                        self.activity.headcountDesc = headcountDesc + ' (' + content.headcountDesc + ')'
+                    }else{
+                        self.activity.headcountDesc= headcountDesc
+                    }
+
+                    if(self.activity.payRule =='2'){
+                        self.activity.priceDesc = '男：'+ content.malePrice+' 元/人，'+'女：'+content.femalePrice+' 元/人'
+                    }else{
+                        self.activity.priceDesc = content.price + ' 元/人'
+                    }
+                    uni.setNavigationBarTitle({
+                        title: self.activity.title
+                    })
                 })
 			},
 			isParticipate(){
                 let self = this
-                self.$http.get('/wwd/activity/' + self.activity.id + '/participate', {
-                    success: function (res) {
-                        let content = res.data.data.content
-						if('paid' == content.payStatus){
-                            self.participate = true
-						}else{
-                            self.participate = false
-						}
-                    },
-					fail: function (res) {
+                self.$http.get('/wwd/activity/' + self.activity.id + '/participate').then(function (res) {
+                    let content = res.data.data.content
+                    if('paid' == content.payStatus){
+                        self.participate = true
+                    }else{
                         self.participate = false
                     }
+                }).catch(function () {
+                    self.participate = false
                 })
 			}
 		}

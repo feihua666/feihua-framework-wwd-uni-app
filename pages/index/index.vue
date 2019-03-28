@@ -41,7 +41,7 @@
                 </view>
                 <view class="uni-card-footer">
                     <view>
-                        <text class=' iconfont icon-shengri'> {{$utils.dateFomat(item.wwdUserDto.birthDay)}}</text>
+                        <text class=' iconfont icon-shengri'> {{$utils.date.dateFomat(item.wwdUserDto.birthDay)}}</text>
                     </view>
                     <view><text class="iconfont icon-shengao"> {{item.wwdUserDto.height}}</text></view>
                     <view class="uni-card-link"><navigator :url="'/pages/detail/detail?wwdUserId=' + item.wwdUserDto.id">详情</navigator></view>
@@ -52,9 +52,6 @@
 </template>
 
 <script>
-    import {
-        mapState
-    } from 'vuex'
     import uniNavBar from '@/components/uni-nav-bar.vue'
     import uniIcon from '@/components/uni-icon.vue'
     import fhLoadmore from '@/fh-components/fh-loadmore.vue'
@@ -65,7 +62,6 @@
             uniIcon
         },
         computed: {
-            ...mapState(['forcedLogin', 'hasLogin','userinfo'])
         },
 		data() {
 			return {
@@ -110,29 +106,26 @@
             },
             loadData:function(pullDownRefresh){
                 console.log('loaddata')
-                console.log('loaddata')
                 let self = this
                 if(!this.$refs.loadmoreref){
                     return
                 }
                 this.$refs.loadmoreref.loadData('/wwd/users',{
                     pullDownRefresh:!!pullDownRefresh,
-                    data: self.searchForm,
-                    success:function (res) {
-                        let content = res.data.data.content
-                        if(pullDownRefresh){
-                            self.listData = content
-                        }else{
-                            self.listData = self.listData.concat(content);
-                        }
-                        for(let key in res.data.data.photo){
-                            self.photo[key] = res.data.data.photo[key]
-                        }
-                    },fail:function (res) {
-                        let status = res.statusCode
-                        if(status == 404){
-                            self.listData = []
-                        }
+                    data: self.searchForm}).then(function (res) {
+                    let content = res.data.data.content
+                    if(pullDownRefresh){
+                        self.listData = content
+                    }else{
+                        self.listData = self.listData.concat(content);
+                    }
+                    for(let key in res.data.data.photo){
+                        self.photo[key] = res.data.data.photo[key]
+                    }
+                }).catch(function (res) {
+                    let status = res.statusCode
+                    if(status == 404){
+                        self.listData = []
                     }
                 })
             },
@@ -155,87 +148,51 @@
 
             // 以下是页面跳转相关逻辑 ***************************
             pageLogical(){
-                console.log('pageLogical')
                 let self = this
-                // let splashShowed = uni.getStorageSync('splashShowed')
-                // 禁用闪屏
-                let splashShowed = true
+                let splashShowed = this.$storageUtils.getSync('splashShowed')
                 // 先判断引导页是否需要展示，如果需要展示，展示引导页
                 if(!splashShowed){
                     uni.reLaunch({
                         url:'/pages/splash/splash'
                     })
                 }else{
-                    console.log('this.hasLogin='+ this.hasLogin)
-                    if (!this.hasLogin) {
-                        // 获取用户信息以判断是否已经登录
-                        self.$http.get('/base/user/current',{
-                            success:function (res) {
-                                let content = res.data.data.content
-                                //self.$http.initGobalData()
-                                console.log('loaduserinfo success')
-                                self.$http.initGobalData(true,function () {
-                                    self.pageLogical_hasLogin()
-                                })
-
-                            },
-                            fail:function (res) {
-                                let status = res.statusCode
-                                if(status == 401 || self.$http.isTimeout(res)){
-                                    if(self.$config.forcedLogin){
-                                        uni.reLaunch({
-                                            url: '/pages/login/login'
-                                        });
-                                    }else{
-                                        uni.showModal({
-                                            title: '未登录',
-                                            content: '您未登录，需要登录后才能继续享受更多服务',
-                                            /**
-                                             * 如果需要强制登录，不显示取消按钮
-                                             */
-                                            showCancel: true,
-                                            success: (res) => {
-                                                if (res.confirm) {
-                                                    uni.navigateTo({
-                                                        url: '/pages/login/login'
-                                                    });
-                                                }
-                                            }
-                                        });
-                                    }
-                                }
-                            }
-                        })
-
-                    }else{
-
+                    this.$http.hasLogin().then(function () {
+                        // 已登录
                         self.pageLogical_hasLogin()
-                    }
+                    }).catch(function (res) {
+                        console.log(res);
+                        // 未登录
+                        if(self.$config.forcedLogin){
+                            uni.reLaunch({
+                                url: '/pages/login/login'
+                            });
+                        }
+                    })
                 }
             },
             pageLogical_hasLogin(){
                 console.log('pageLogical_hasLogin')
                 let self = this
-                // 已经登录，判断是否被邀请
-                // 跳转到邀请页面
-                if(uni.getStorageSync('invited' + self.userinfo.id)){
-                    self.loadData(true)
-                    return
-                }
+                self.$http.getCurrentUserinfo().then(function (userinfo) {
+                    // 已经登录，判断是否被邀请
+                    // 跳转到邀请页面
+                    if(uni.getStorageSync('invited' + userinfo.id)){
+                        self.loadData(true)
+                        return
+                    }
 
-                self.$http.get('/wwd/user/current/invited',{
-                    success:function (res) {
+                    self.$http.get('/wwd/user/current/invited').then(function (res) {
                         // 有数据，已被邀请
                         self.loadData(true)
-                        uni.setStorageSync('invited' + self.userinfo.id,true)
-                    },
-                    fail:function () {
+                        uni.setStorageSync('invited' + userinfo.id,true)
+                    }).catch(function () {
                         // 跳转到输入邀请码页面
                         uni.reLaunch({
                             url: '/pages/invitation/invitation'
                         });
-                    }
+                    })
                 })
+
             }
 		},
         watch:{

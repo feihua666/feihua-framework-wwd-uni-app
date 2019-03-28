@@ -22,12 +22,8 @@
 </template>
 
 <script>
-    import {
-        mapState,
-        mapMutations
-    } from 'vuex'
     //来自 graceUI 的表单验证， 使用说明见手册 http://grace.hcoder.net/doc/info/73-3.html
-    import  graceChecker from "@/common/graceChecker.js"
+    import  graceChecker from "@/utils/graceChecker.js"
     export default {
         components: {
         },
@@ -40,7 +36,6 @@
             }
         },
         methods: {
-            ...mapMutations(['removeUserinfo']),
             doAcceptInvited() {
 
                 if(!this.checkRegistForm()){
@@ -48,34 +43,30 @@
                 }
                 let self = this
                 self.inviteBtnLoading = true
-                self.$http.post('/wwd/user/acceptInvited',{
-                    data:self.form,
-                    success:function (res) {
+                self.$http.post('/wwd/user/acceptInvited',self.form).then(function (res) {
+                    uni.showToast({
+                        icon: 'none',
+                        title: '恭喜被邀请成功'
+                    });
+                    self.inviteBtnLoading = false
+                    uni.reLaunch({
+                        url:'/pages/index/index'
+                    })
+                }).catch(function (res) {
+                    let statusCode = res.statusCode
+                    let _data = res.data.data;
+                    if(statusCode == 404){
                         uni.showToast({
                             icon: 'none',
-                            title: '恭喜被邀请成功'
+                            title: '邀请码不正确'
                         });
-                        self.inviteBtnLoading = false
-                        uni.reLaunch({
-                            url:'/pages/index/index'
-                        })
-                    },
-                    fail:function (res) {
-                        let statusCode = res.statusCode
-                        let _data = res.data.data;
-                        if(statusCode == 404){
-                            uni.showToast({
-                                icon: 'none',
-                                title: '邀请码不正确'
-                            });
-                        }else if(statusCode == 409){
-                            uni.showToast({
-                                icon: 'none',
-                                title: '您已经被邀请过，请勿重复接收邀请'
-                            });
-                        }
-                        self.inviteBtnLoading = false
+                    }else if(statusCode == 409){
+                        uni.showToast({
+                            icon: 'none',
+                            title: '您已经被邀请过，请勿重复接收邀请'
+                        });
                     }
+                    self.inviteBtnLoading = false
                 })
             },
             checkRegistForm(){
@@ -97,23 +88,21 @@
                     showCancel: true,
                     success: (res) => {
                         if (res.confirm) {
-                            self.removeUserinfo();
-                            uni.clearStorage()
-                            uni.removeStorageSync('store_userinfo');
                             //退出登录
-                            self.$http.post('/logout')
-                            /**
-                             * 如果需要强制登录跳转回登录页面
-                             */
-                            if (self.forcedLogin) {
-                                uni.navigateTo({
-                                    url: '/pages/login/login',
-                                });
-                            }else{
-                                uni.reLaunch({
-                                    url: '/pages/index/index',
-                                });
-                            }
+                            self.$http.post('/logout').then(function () {
+                                /**
+                                 * 如果需要强制登录跳转回登录页面
+                                 */
+                                if (self.$config.forcedLogin) {
+                                    uni.navigateTo({
+                                        url: '/pages/login/login',
+                                    });
+                                }else{
+                                    uni.reLaunch({
+                                        url: '/pages/index/index',
+                                    });
+                                }
+                            })
                         }
                     }
                 });
