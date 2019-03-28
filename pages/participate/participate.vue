@@ -43,7 +43,7 @@
                 		<view class="uni-card-link">{{item.wwdParticipateDtos?item.wwdParticipateDtos.length:'0'}}/{{item.headcount}} 人 </view>
                 		<view class="uni-card-link">
                             <fh-uni-tag inverted="true" type="danger" size="small">
-                                <fh-dict-text :type="'activity_status'" :val="item.status"  text="不限"></fh-dict-text>
+                                <fh-dict-text :type="'activity_status'" :val="item.status"></fh-dict-text>
                             </fh-uni-tag>
                         </view>
                 		<view class="uni-card-link"><navigator :url="'/pages/activity/detail?id=' + item.id"><uni-tag text="已报名" inverted="true" type="warning" size="small"></uni-tag></navigator></view>
@@ -58,7 +58,8 @@
     import uniIcon from '@/components/uni-icon.vue'
     import fhLoadmore from '@/fh-components/fh-loadmore.vue'
 	import uniTag from '@/components/uni-tag.vue'
-    import fhUniTag from '@/fh-components/uni-tag.vue';
+    import fhUniTag from '@/fh-components/uni-tag.vue'
+	import fhDictText from '@/fh-components/fh-dict-text.vue';
 
     export default {
         components: {
@@ -66,7 +67,8 @@
             fhLoadmore,
             uniIcon,
             fhUniTag,
-			uniTag
+			uniTag,
+            fhDictText
         },
         computed: {
         },
