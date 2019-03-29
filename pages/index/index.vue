@@ -156,7 +156,8 @@
             // 以下是页面跳转相关逻辑 ***************************
             pageLogical(){
                 let self = this
-                let splashShowed = this.$storageUtils.getSync('splashShowed')
+                //let splashShowed = this.$storageUtils.getSync('splashShowed')
+                let splashShowed = true
                 // 先判断引导页是否需要展示，如果需要展示，展示引导页
                 if(!splashShowed){
                     uni.reLaunch({
