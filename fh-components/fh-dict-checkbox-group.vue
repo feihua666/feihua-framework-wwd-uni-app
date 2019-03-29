@@ -1,5 +1,5 @@
 <template>
-	<view class="uni-list">
+	<view class="uni-list background-color-after-none background-color-before-none">
 		<checkbox-group @change="checkboxChange">
 			<label class="uni-list-cell uni-list-cell-pd" v-for="(item,index) in dictItems" :key="item.value">
 				<view>

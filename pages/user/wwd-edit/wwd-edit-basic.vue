@@ -1,7 +1,6 @@
 <template>
-
-	<view class="uni-list fh-width-100">
-		<view class="uni-list-cell-divider">
+	<view class="uni-list fh-width-100 background-color-after-none background-color-before-none">
+		<view class="uni-list-cell-divider background-color-after-none background-color-before-none">
 			基本信息
 		</view>
 		<view class="uni-list-cell">
@@ -150,18 +149,20 @@
 			</view>
 		</view>
 
-		<view class="uni-list-cell-divider">
+		<view class="uni-list-cell-divider background-color-after-none background-color-before-none">
 			个人介绍
 		</view>
-		<view class="uni-list-cell">
-			<textarea auto-height v-model="form.wwdUser.description" placeholder="未填写"/>
+		<view class="uni-list-cell uni-list-cell-last">
+			<textarea  class="fh-padding-30" auto-height v-model="form.wwdUser.description" placeholder="未填写"/>
 
 		</view>
-		<view class="uni-list-cell-divider">
+		<view class="uni-list-cell-divider background-color-after-none background-color-before-none">
 			择偶标准
 		</view>
-		<view class="uni-list-cell">
-			<textarea auto-height v-model="form.wwdUser.standard" placeholder="未填写"/>
+		<view class="uni-list-cell uni-list-cell-last">
+			<textarea class="fh-padding-30" auto-height v-model="form.wwdUser.standard" placeholder="未填写"/>
+		</view>
+		<view class="uni-list-cell-divider background-color-after-none background-color-before-none">
 		</view>
 		<view class="fh-padding-30">
 			<button type="primary" @tap="save" :loading="saveLoading">保存</button>
@@ -169,6 +170,7 @@
 		<fh-dict-picker ref="fhDictPicker" :type="dictPicker.type" :value-default="dictPicker.valueDefault" @onConfirm="onDictPickerConfirm"></fh-dict-picker>
 		<fh-area-picker ref="fhAreaPicker" @onConfirm="onAreaPickerConfirm" :picker-value-default="areaPicker.valueDefault"></fh-area-picker>
 	</view>
+
 </template>
 
 <script>

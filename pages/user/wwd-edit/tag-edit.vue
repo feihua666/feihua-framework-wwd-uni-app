@@ -1,5 +1,8 @@
 <template>
-	<fh-dict-checkbox-group @onChange="checkboxChange" :type="type" :max="5" :value-default="tagSelected"></fh-dict-checkbox-group>
+	<view class=" fh-width-100 background-color">
+		<fh-dict-checkbox-group @onChange="checkboxChange" :type="type" :max="5" :value-default="tagSelected"></fh-dict-checkbox-group>
+
+	</view>
 </template>
 
 <script>

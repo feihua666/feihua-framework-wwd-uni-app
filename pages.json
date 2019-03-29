@@ -53,7 +53,8 @@
         {
             "path" : "pages/user/user",
             "style" : {
-                "navigationBarTitleText" : "我的"
+                "navigationBarTitleText" : "我的",
+                "navigationStyle" : "custom"
             }
         },
         {
@@ -101,7 +102,17 @@
         {
             "path" : "pages/enjoy/enjoy",
             "style" : {
-                "navigationBarTitleText" : "有意思"
+                "navigationBarTitleText" : "有意思",
+                "enablePullDownRefresh" : true, //开启下拉刷新
+                "h5" : {
+                    "titleNView" : {
+                        "titleText" : "有意思"
+                    },
+                    "pullToRefresh" : {
+                        // color offset 两个配置项
+                        "offset" : "60px"
+                    }
+                }
             }
         },
         {
@@ -149,6 +160,7 @@
 		    "path" : "pages/activity/activity",
 		    "style" : {
 		        "navigationBarTitleText" : "活动",
+                "navigationStyle" : "custom",
                 "enablePullDownRefresh" : true, //开启下拉刷新
                 "h5" : {
                     "titleNView" : {

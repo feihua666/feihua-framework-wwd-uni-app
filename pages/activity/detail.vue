@@ -4,18 +4,18 @@
 			<image class="banner-img" mode="aspectFill" :src="$config.file.getDownloadUrl(activity.titleUrl)"></image>
 			<!-- <view class="banner-title">{{activity.title}}</view> -->
 		</view>
-		<view class="article-meta">
+		<view class="fh-padding-30">
 			<text class="article-author">{{activity.author}}</text>
 			<text class="article-text">创建于</text>
 			<text class="article-time">{{activity.updateAt}}</text>
 		</view>
 		<view class=" fh-padding-30">
-			<view class="uni-title"  style="font-weight: 600;"><text>{{activity.title}}</text></view>
-			<view class="uni-title"><text>活动开始时间：{{activity.startTime}}</text></view>
-			<view class="uni-title"><text>活动结束时间：{{activity.endTime}}</text></view>
-			<view class="uni-title"><text>活动人数：{{activity.headcountDesc}}</text></view>
-			<view class="uni-title"><text>报名费用：{{activity.priceDesc}}</text></view>
-			<view class="uni-title"><text>活动地点：{{activity.addr}}</text></view>
+			<view class="font-size-lg view-line-height"><text>{{activity.title}}</text></view>
+			<view class="font-size-sm view-line-height"><text>活动开始时间：{{activity.startTime}}</text></view>
+			<view class="font-size-sm view-line-height"><text>活动结束时间：{{activity.endTime}}</text></view>
+			<view class="font-size-sm view-line-height"><text>活动人数：{{activity.headcountDesc}}</text></view>
+			<view class="font-size-sm view-line-height"><text>报名费用：{{activity.priceDesc}}</text></view>
+			<view class="font-size-sm view-line-height"><text>活动地点：{{activity.addr}}</text></view>
 
 		</view>
 		<view class="article-content">

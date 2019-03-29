@@ -1,7 +1,7 @@
 <template>
-    <view class="uni-column uni-flex uni-flex-item">
-        <view class="uni-list">
-            <view class="uni-list-cell-divider"></view>
+    <view class="uni-column uni-flex uni-flex-item background-color">
+        <view class="uni-list  background-color-after-none background-color-before-none">
+            <view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
             <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
                 <view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.n.ngt('/pages/user/userinfo')">
                         <view class="uni-media-list-logo">
@@ -13,14 +13,14 @@
                         </view>
                 </view>
             </view>
-            <view class="uni-list-cell-divider"></view>
+            <view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
             <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
                 <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.n.ngt('/pages/user/wwd-edit/edit-type-list')">
                     编辑资料
                 </view>
             </view>
 
-            <view class="uni-list-cell-divider"></view>
+            <view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
             <view class="uni-list-cell" hover-class="uni-list-cell-hover">
                 <view class="uni-list-cell-navigate" @tap="$utils.copy(inviteCode)">
                     我的邀请码
@@ -38,7 +38,7 @@
 			    </view>
 			</view>
 
-            <view class="uni-list-cell-divider">
+            <view class="uni-list-cell-divider background-color-after-none background-color-before-none">
             </view>
             <view class="uni-list-cell" hover-class="uni-list-cell-hover">
                 <view class="uni-list-cell-navigate uni-navigate-right" @click="$utils.n.ngt('/pages/user/cardImage')">
@@ -51,19 +51,19 @@
                 </view>
             </view>
 
-            <view class="uni-list-cell-divider"></view>
+            <view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
             <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
                 <view class="uni-list-cell-navigate uni-navigate-right" @click="$utils.n.ngt('/pages/enjoy/enjoy')">
                     有意思
                 </view>
             </view>
-            <view class="uni-list-cell-divider"></view>
+            <view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
             <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
                 <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.n.ngt('/pages/setting/setting')">
                     设置
                 </view>
             </view>
-            <view class="uni-list-cell-divider"></view>
+            <view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
         </view>
     </view>
 </template>

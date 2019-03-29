@@ -1,13 +1,13 @@
 <template>
-	<view class=" fh-width-100">
+	<view class=" fh-width-100 background-color">
 		<view class="fh-width-100">
 			<uni-segmented-control :current="segmentedControl.current" :values="segmentedControl.items" v-on:clickItem="onClickItem" styleType="text"></uni-segmented-control>
 		</view>
 		<view class="content">
 			<view v-show="segmentedControl.current === 0">
-				<view class="uni-list">
+				<view class="uni-list background-color-after-none background-color-before-none">
 					<template v-for=" item in listData1">
-						<view class="uni-list-cell-divider"></view>
+						<view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
 						<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
 							<view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.id)">
 								<view class="uni-media-list-logo">
@@ -23,9 +23,9 @@
 				</view>
 			</view>
 			<view v-show="segmentedControl.current === 1">
-				<view class="uni-list">
+				<view class="uni-list background-color-after-none background-color-before-none">
 					<template v-for=" item in listData2">
-						<view class="uni-list-cell-divider"></view>
+						<view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
 						<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
 							<view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.id)">
 								<view class="uni-media-list-logo">
@@ -41,9 +41,9 @@
 				</view>
 			</view>
 			<view v-show="segmentedControl.current === 2">
-				<view class="uni-list">
+				<view class="uni-list background-color-after-none background-color-before-none">
 					<template v-for=" item in listData3">
-						<view class="uni-list-cell-divider"></view>
+						<view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
 						<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
 							<view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.id)">
 								<view class="uni-media-list-logo">
@@ -93,6 +93,10 @@
 		onLoad(){
             this.loadData()
 		},
+        onPullDownRefresh(){
+            console.log('onPullDownRefresh');
+            this.loadData(true)
+        },
 		methods:{
             onClickItem(index) {
                 if (this.segmentedControl.current !== index) {
@@ -126,7 +130,7 @@
 
                 return null
             },
-            loadData: function () {
+            loadData: function (pulldownRefresh) {
                 let self = this
 				let index = this.segmentedControl.current + 1
                 if (index == "1"){
@@ -146,6 +150,9 @@
 				}
                 this.$http.get('/wwd/user/current/enjoys/' + (this.segmentedControl.current + 1)).then(function (response) {
 
+                    if(pulldownRefresh){
+                        uni.stopPullDownRefresh();
+					}
                     let content = response.data.data.content
                     let listPic = response.data.data.pic
                     if (index == "1"){
@@ -157,6 +164,10 @@
                     }else if (index == "3") {
                         self.listData3 = content
                         self.listPic3 = listPic
+                    }
+                }).catch(function () {
+                    if(pulldownRefresh){
+                        uni.stopPullDownRefresh();
                     }
                 })
             }

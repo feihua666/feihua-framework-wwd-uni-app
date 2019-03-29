@@ -1,13 +1,13 @@
 <template>
 
 	<view class="uni-list fh-width-100">
-		<view class="uni-list-cell-divider">
+		<view class="uni-list-cell-divider background-color-after-none background-color-before-none">
 			主图
 		</view>
 		<view class="fh-padding-30">
 			<fh-image-upload :images="images.main" path="/wwd" item-style="width:100%;height:220px;" :on-delete="deleteImage" :on-upload-success="onImageUploadMain"></fh-image-upload>
 		</view>
-		<view class="uni-list-cell-divider">
+		<view class="uni-list-cell-divider background-color-after-none background-color-before-none">
 			其它图片（8张）
 		</view>
 		<view class="fh-padding-30">

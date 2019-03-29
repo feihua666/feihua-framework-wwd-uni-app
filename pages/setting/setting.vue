@@ -1,16 +1,16 @@
 <template>
-		<view class="uni-list">
-			<view class="uni-list-cell-divider"></view>
+		<view class="uni-list background-color-after-none background-color-before-none">
+			<view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
 			<view class="uni-list-cell uni-list-cell-last uni-list-cell-pd">
 				<view class="uni-list-cell-db">展示到列表</view>
 				<switch :checked="showInList" @change="setShowInList"/>
 			</view>
-			<view class="uni-list-cell-divider"></view>
+			<view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
 			<view class="uni-list-cell uni-list-cell-last uni-list-cell-pd">
 				<view class="uni-list-cell-db">微信自动登录</view>
 				<switch :checked="wxLoginAuto" @change="setWxLoginAuto"/>
 			</view>
-			<view class="uni-list-cell-divider"></view>
+			<view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
 		</view>
 </template>
 

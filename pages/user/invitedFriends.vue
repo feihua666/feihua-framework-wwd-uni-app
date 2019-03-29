@@ -1,8 +1,8 @@
 <template>
-	<fh-loadmore  class="fh-width-100" ref="loadmoreref">
-		<view class="uni-list">
+	<fh-loadmore  class="fh-width-100  background-color" ref="loadmoreref">
+		<view class="uni-list background-color-after-none background-color-before-none">
 			<template v-for=" item in listData">
-				<view class="uni-list-cell-divider"></view>
+				<view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
 				<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
 					<view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.id)">
 						<view class="uni-media-list-logo">

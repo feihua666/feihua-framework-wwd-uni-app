@@ -1,7 +1,7 @@
 <template>
-	<view class="fh-width-100">
+	<view class="fh-width-100 background-color">
         <!-- 固定在顶部的导航栏 -->
-        <uni-nav-bar fixed="true" :left-container="false" :right-container="false">
+       <!-- <uni-nav-bar fixed="true" :left-container="false" :right-container="false">
             <view class="uni-flex fh-align-items-center fh-justify-content-center fh-height-100  fh-width-100">
                 <view class="fh-search-view uni-flex fh-align-items-center" @tap="goSearch">
                     <view class="uni-swiper-msg">
@@ -23,11 +23,11 @@
 
             </view>
 
-        </uni-nav-bar>
+        </uni-nav-bar>-->
         <!-- 使用非原生导航栏后需要在页面顶部占位 -->
-        <view style="height:40px;"></view>
-		<fh-loadmore ref="loadmoreref">
-            <view style="margin-top:10px;" class="uni-card" v-for="(item,index) in listData" :key="index">
+        <!--<view style="height:40px;"></view>-->
+		<fh-loadmore ref="loadmoreref" class="background-color">
+            <view style="margin-top:10px;" class="uni-card box-shadow-none" v-for="(item,index) in listData" :key="index">
                 	<view class="uni-card-content uni-list-cell">
 						<navigator class="fh-width-100" :url="'/pages/activity/detail?id=' + item.id">
 						<view class="uni-media-list">
@@ -35,9 +35,9 @@
 								<image  :src="$config.file.getDownloadUrl(item.titleUrl)"></image>
 							</view>
 							<view class="uni-media-list-body">
-								<view class="uni-media-list-text-top">{{item.title}}</view>
-								<view class="uni-media-list-text-body uni-text">{{$utils.date.dateFomatWeek(item.startTime)}}</view>
-								<view class="uni-media-list-text-bottom uni-ellipsis"><text>{{item.introduced}}</text></view>
+								<view class="uni-media-list-text-top font-size-md">{{item.title}}</view>
+								<view class="uni-media-list-text-body uni-text  font-size-sm">{{$utils.date.dateFomatWeek(item.startTime)}}</view>
+								<view class="uni-media-list-text-bottom uni-ellipsis font-size-sm"><text>{{item.introduced}}</text></view>
 							</view>
 						</view>
 						</navigator>

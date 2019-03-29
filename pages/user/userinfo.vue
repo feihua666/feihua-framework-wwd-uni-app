@@ -1,7 +1,7 @@
 <template>
-    <view class="uni-column uni-flex uni-flex-item">
-        <view class="uni-list">
-            <view class="uni-list-cell-divider">
+    <view class="uni-column uni-flex uni-flex-item background-color">
+        <view class="uni-list  background-color-after-none background-color-before-none">
+            <view class="uni-list-cell-divider background-color-after-none background-color-before-none">
 
             </view>
             <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
@@ -15,7 +15,7 @@
                         </view>
                 </view>
             </view>
-            <view class="uni-list-cell-divider">
+            <view class="uni-list-cell-divider background-color-after-none background-color-before-none">
 
             </view>
             <view class="uni-list-cell" hover-class="uni-list-cell-hover">

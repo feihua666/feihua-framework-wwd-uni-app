@@ -6,73 +6,128 @@
 			</swiper-item>
 		</swiper>
 		<!-- 基本信息 -->
-		<view class="fh-padding-30">
-			<view><text class="iconfont" :class="$utils.genderIcon(wwdUser.wwdUserDto.gender)"><text class="fh-inline-space-10"></text>{{wwdUser.wwdUserDto.nickname}}</text></view>
+		<view class="fh-padding-30 ">
 			<view>
-				<text class='iconfont icon-shengri fh-margin-right-30'><text class="fh-inline-space-10"></text>{{$utils.date.dateFomat(wwdUser.wwdUserDto.birthDay)}}</text>
+				<text class="iconfont" :class="$utils.genderIcon(wwdUser.wwdUserDto.gender)">
+				<text class="fh-inline-space-10"></text>
+					{{wwdUser.wwdUserDto.nickname}}
+				</text>
+			</view>
+			<view class="view-line"></view>
+			<view  class="view-line-height">
+				<text class='iconfont icon-shengri fh-margin-right-30'>
+					<text class="fh-inline-space-10"></text>
+					<text class=" font-size-sm">
+						{{$utils.date.dateFomat(wwdUser.wwdUserDto.birthDay)}}
+					</text>
+				</text>
 				<text class='iconfont icon-xingzuo fh-margin-right-30'><text class="fh-inline-space-10"></text>
-					<fh-dict-text type="constellation_type" :val="wwdUser.wwdUserDto.constellation"></fh-dict-text>
+					<fh-dict-text class=" font-size-sm" type="constellation_type" :val="wwdUser.wwdUserDto.constellation"></fh-dict-text>
 				</text>
-				<text class='iconfont icon-shengao fh-margin-right-30'><text class="fh-inline-space-10"></text>{{wwdUser.wwdUserDto.height}}</text>
-				<text class='iconfont icon-tizhong fh-margin-right-30'><text class="fh-inline-space-10"></text>{{wwdUser.wwdUserDto.weight}}</text>
+				<text class='iconfont icon-shengao fh-margin-right-30'>
+					<text class="fh-inline-space-10"></text>
+					<text class=" font-size-sm">
+						{{wwdUser.wwdUserDto.height}}
+					</text>
+
+				</text>
+				<text class='iconfont icon-tizhong fh-margin-right-30'>
+					<text class="fh-inline-space-10"></text>
+
+					<text class=" font-size-sm">
+						{{wwdUser.wwdUserDto.weight}}
+					</text>
+				</text>
 			</view>
-			<view>
+			<view class="view-line-height">
 				<text class='iconfont icon-daxuemingcheng'><text class="fh-inline-space-10"></text>
-					<fh-dict-text type="education_level" :val="wwdUser.wwdUserDto.education"></fh-dict-text> {{wwdUser.wwdUserDto.college}} {{wwdUser.wwdUserDto.major}}
+					<fh-dict-text class=" font-size-sm" type="education_level" :val="wwdUser.wwdUserDto.education"></fh-dict-text>
+
+					<text class=" font-size-sm">
+						{{wwdUser.wwdUserDto.college}} {{wwdUser.wwdUserDto.major}}
+					</text>
 				</text>
 			</view>
-			<view>
-				<text class='iconfont icon-weizhi'><text class="fh-inline-space-10"></text>{{wwdUser.userArea.nowProvinceName}} {{wwdUser.userArea.nowCityName}} {{wwdUser.userArea.nowDistrictName}}</text>
+			<view class="view-line-height">
+				<text class='iconfont icon-weizhi'><text class="fh-inline-space-10"></text>
+
+					<text class=" font-size-sm">
+						{{wwdUser.userArea.nowProvinceName}} {{wwdUser.userArea.nowCityName}} {{wwdUser.userArea.nowDistrictName}}
+					</text>
+				</text>
 			</view>
-			<view>
-				<text class='iconfont icon-fl-jia'><text class="fh-inline-space-10"></text>{{wwdUser.userArea.homeProvinceName}} {{wwdUser.userArea.homeCityName}} {{wwdUser.userArea.homeDistrictName}}</text>
+			<view class="view-line-height">
+				<text class='iconfont icon-fl-jia'><text class="fh-inline-space-10"></text>
+
+					<text class=" font-size-sm">
+						{{wwdUser.userArea.homeProvinceName}} {{wwdUser.userArea.homeCityName}} {{wwdUser.userArea.homeDistrictName}}
+					</text>
+				</text>
 			</view>
 		</view>
 		<view class="fh-padding-30">
 			<view>生活信息</view>
+			<view class="view-line"></view>
 			<view>
-				<view class="uni-flex uni-row">
+				<view class="uni-flex uni-row view-line-height">
 					<text class='iconfont icon-cheliang uni-flex-item '><text class="fh-inline-space-10"></text>
-						<fh-dict-text type="has_car_status" :val="wwdUser.wwdUserDto.hasCar"></fh-dict-text>
+						<fh-dict-text class=" font-size-sm" type="has_car_status" :val="wwdUser.wwdUserDto.hasCar"></fh-dict-text>
 					</text>
 					<text class='iconfont icon-icon-test1 uni-flex-item'><text class="fh-inline-space-10"></text>
-						<fh-dict-text type="has_hourse_status" :val="wwdUser.wwdUserDto.hasHourse"></fh-dict-text>
+						<fh-dict-text class=" font-size-sm" type="has_hourse_status" :val="wwdUser.wwdUserDto.hasHourse"></fh-dict-text>
 					</text>
 				</view>
-				<view class="uni-flex uni-row">
+				<view class="uni-flex uni-row view-line-height">
 					<text class='iconfont icon-chouyan uni-flex-item '><text class="fh-inline-space-10"></text>
-						<fh-dict-text type="smoking_status" :val="wwdUser.wwdUserDto.smoking"></fh-dict-text>
+						<fh-dict-text class=" font-size-sm" type="smoking_status" :val="wwdUser.wwdUserDto.smoking"></fh-dict-text>
 					</text>
 					<text class='iconfont icon-hejiu uni-flex-item'><text class="fh-inline-space-10"></text>
-						<fh-dict-text type="drinking_status" :val="wwdUser.wwdUserDto.drinking"></fh-dict-text>
+						<fh-dict-text class=" font-size-sm" type="drinking_status" :val="wwdUser.wwdUserDto.drinking"></fh-dict-text>
 					</text>
 				</view>
-				<view class="uni-flex uni-row">
-					<text class='iconfont icon-qianmoney125 uni-flex-item '><text class="fh-inline-space-10"></text>{{wwdUser.wwdUserDto.monthSalary}}</text>
-					<text class='iconfont icon-qianmoney113 uni-flex-item'><text class="fh-inline-space-10"></text>{{wwdUser.wwdUserDto.yearSalary}}</text>
+				<view class="uni-flex uni-row view-line-height">
+					<text class='iconfont icon-qianmoney125 uni-flex-item '>
+						<text class="fh-inline-space-10"></text>
+
+						<text class=" font-size-sm">
+							{{wwdUser.wwdUserDto.monthSalary}}
+						</text>
+					</text>
+					<text class='iconfont icon-qianmoney113 uni-flex-item'>
+						<text class="fh-inline-space-10"></text>
+						<text class=" font-size-sm">
+							{{wwdUser.wwdUserDto.yearSalary}}
+						</text>
+
+					</text>
 				</view>
 			</view>
 		</view>
 		<view class="fh-padding-30">
 			<view>标签信息</view>
+			<view class="view-line"></view>
 			<view>
-				<view v-for="tag in wwdUser.tags">
+				<view v-for="tag in wwdUser.tags" class="view-line-height">
 					<text class='iconfont' :class="tagIcon(tag.type)">
-						<fh-dict-text style="margin-right: 3px;" v-if="tag.content" v-for="dictValue in tag.content.split(',')" :type="tag.type" :val="dictValue"></fh-dict-text>
 					</text>
+					<text class="fh-inline-space-10"></text>
+					<fh-dict-text class=" font-size-sm" style="margin-right: 3px;" v-if="tag.content" v-for="dictValue in tag.content.split(',')" :type="tag.type" :val="dictValue"></fh-dict-text>
+
 				</view>
 			</view>
 		</view>
 		<view class="fh-padding-30">
 			<view>个人介绍</view>
+			<view class="view-line"></view>
 			<view>
-				<text>{{wwdUser.wwdUserDto.description}}</text>
+				<text class=" font-size-sm">{{wwdUser.wwdUserDto.description}}</text>
 			</view>
 		</view>
 		<view class="fh-padding-30">
 			<view>择偶标准</view>
+			<view class="view-line"></view>
 			<view>
-				<text>{{wwdUser.wwdUserDto.standard}}</text>
+				<text class=" font-size-sm">{{wwdUser.wwdUserDto.standard}}</text>
 			</view>
 		</view>
 		<view class="fh-padding-30">

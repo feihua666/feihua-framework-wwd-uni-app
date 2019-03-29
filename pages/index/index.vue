@@ -1,7 +1,7 @@
 <template>
-	<view class="fh-width-100">
+	<view class="fh-width-100 background-color">
         <!-- 固定在顶部的导航栏 -->
-        <uni-nav-bar fixed="true" :left-container="false" :right-container="false">
+        <uni-nav-bar fixed="true" class="box-shadow-none" :left-container="false" :right-container="false">
             <view class="uni-flex fh-align-items-center fh-justify-content-center fh-height-100  fh-width-100">
                 <view class="fh-search-view uni-flex fh-align-items-center" @tap="goSearch">
                     <view class="uni-swiper-msg">
@@ -10,7 +10,7 @@
                         </view>
                         <view v-if="searchForm.keyword">{{searchForm.keyword}}</view>
                         <swiper v-else vertical="true" autoplay="true" circular="true" interval="9000">
-                            <swiper-item>
+                            <swiper-item class="font-size-sm">
                                 点击搜索
                             </swiper-item>
                         </swiper>
@@ -23,27 +23,34 @@
         </uni-nav-bar>
         <!-- 使用非原生导航栏后需要在页面顶部占位 -->
         <view style="height:50px;"></view>
-		<fh-loadmore ref="loadmoreref">
-            <view style="margin-top:10px;" class="uni-card" v-for="(item,index) in listData" :key="index">
+		<fh-loadmore ref="loadmoreref" class="background-color">
+            <view style="margin-top:10px;" class="uni-card box-shadow-none" v-for="(item,index) in listData" :key="index">
                 <view class="uni-card-header uni-card-media">
                     <image class="uni-card-media-logo" :src="$config.file.getDownloadUrl(photo[item.wwdUserDto.userId])"></image>
                     <view class="uni-card-media-body">
                         <text class="uni-card-media-text-top">
-                            <text class="iconfont" :class="$utils.genderIcon(item.wwdUserDto.gender)"> {{item.wwdUserDto.nickname}}</text>
-
+                            <text class="iconfont" :class="$utils.genderIcon(item.wwdUserDto.gender)">
+                            </text>
+                            <text class="fh-inline-space-10"></text>
+                            {{item.wwdUserDto.nickname}}
                         </text>
-                        <text class="uni-card-media-text-bottom">
-                            <text class=' iconfont icon-weizhi'></text> {{item.wwdUserAreaDto.nowProvinceName}} {{item.wwdUserAreaDto.nowCityName}}</text>
+                        <text class="uni-card-media-text-bottom font-size-sm">
+                            <text class=' iconfont icon-weizhi'></text>
+                            <text class="fh-inline-space-10"></text>
+                            {{item.wwdUserAreaDto.nowProvinceName}} {{item.wwdUserAreaDto.nowCityName}}
+                        </text>
                     </view>
                 </view>
                 <view class="uni-card-content fh-image-view">
                     <image @tap="previewImage($config.file.getDownloadUrl(pic.picOriginUrl))" lazy-load mode="aspectFill" v-for="(pic,i) in item.wwdUserPicDtos" v-if="pic.type == 'main'" :src="$config.file.getDownloadUrl(pic.picOriginUrl)" class="image height100"></image>
                 </view>
-                <view class="uni-card-footer">
-                    <view>
-                        <text class=' iconfont icon-shengri'> {{$utils.date.dateFomat(item.wwdUserDto.birthDay)}}</text>
+                <view class="uni-card-footer" >
+                    <view class="font-size-sm">
+                        <text class=' iconfont icon-shengri'></text>
+                        <text class="fh-inline-space-10"></text>
+                        {{$utils.date.dateFomat(item.wwdUserDto.birthDay)}}
                     </view>
-                    <view><text class="iconfont icon-shengao"> {{item.wwdUserDto.height}}</text></view>
+                    <view class="font-size-sm"><text class="iconfont icon-shengao"></text><text class="fh-inline-space-10"></text>{{item.wwdUserDto.height}}</view>
                     <view class="uni-card-link"><navigator :url="'/pages/detail/detail?wwdUserId=' + item.wwdUserDto.id">详情</navigator></view>
                 </view>
             </view>
@@ -218,7 +225,7 @@
     }
 
     .fh-image-view {
-        height: 480upx;
+        height: 440upx;
         overflow: hidden;
     }
 

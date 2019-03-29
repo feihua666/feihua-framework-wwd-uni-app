@@ -2,19 +2,19 @@
 	<view class="uni-flex uni-flex-item uni-column">
 		<view class="fh-search-view uni-flex fh-width-100 fh-padding-30 fh-justify-content-space-between" >
 			<view style="width:70%;">
-				<input type="text" focus class="uni-input fh-padding-0"  placeholder="关键字" v-model="form.keyword" @confirm="doSearch"
+				<input type="text" focus class="uni-input fh-padding-0 font-size-sm"  placeholder="关键字" v-model="form.keyword" @confirm="doSearch"
 					   placeholder-class="placeholder-class" confirm-type="search">
 			</view>
-			<view style="width:25%;" class="uni-link">
-				<text style="margin-right: 10px;"  @tap="doSearch">搜索</text>
+			<view style="width:25%;" class="uni-link font-size-sm">
+				<text style="margin-right: 10px;"   @tap="doSearch">搜索</text>
 				<text  @tap="resetSearch">重置</text>
 			</view>
 
 		</view>
 		<view class="fh-height-100">
-			<view class="uni-list">
+			<view class="uni-list background-color-after-none background-color-before-none">
 				<view class="uni-list-cell">
-					<view class="uni-list-cell-navigate">
+					<view class="uni-list-cell-navigate font-size-sm">
 						性别
 						<view  @tap="showDictPicker(form.gender,'gender','gender')">
 							<fh-dict-text  type="gender" :val="form.gender" text="不限"></fh-dict-text>
@@ -22,7 +22,7 @@
 					</view>
 				</view>
 				<view class="uni-list-cell">
-					<view class="uni-list-cell-navigate">
+					<view class="uni-list-cell-navigate font-size-sm">
 						年龄
 							<picker mode="date" :value="form.ageStart" start="1960-01-01" :end="$utils.date.nowDate()"   @change="onAgeStartChange">
 								<text>{{form.ageStart || '不限'}}</text>
@@ -36,7 +36,7 @@
 					</view>
 				</view>
 				<view class="uni-list-cell">
-					<view class="uni-list-cell-navigate">
+					<view class="uni-list-cell-navigate font-size-sm">
 						学历
 						<view  @tap="showDictPicker(form.education,'education_level','education')">
 							<fh-dict-text type="education_level" :val="form.education" text="不限"></fh-dict-text>
@@ -46,13 +46,13 @@
 					</view>
 				</view>
 				<view class="uni-list-cell">
-					<view class="uni-list-cell-navigate">
+					<view class="uni-list-cell-navigate font-size-sm">
 						目前在
 						<text @tap="showAreaPicker(areaIds.now,'now')">{{areaLabel.now || '不限'}}</text>
 					</view>
 				</view>
 				<view class="uni-list-cell">
-					<view class="uni-list-cell-navigate">
+					<view class="uni-list-cell-navigate font-size-sm">
 						家乡在
 						<text @tap="showAreaPicker(areaIds.home,'home')">{{areaLabel.home || '不限'}}</text>
 					</view>
@@ -61,7 +61,7 @@
 
 			<view v-if="oldKeywordList.length>0">
 				<view class="uni-flex fh-justify-content-space-between fh-padding-30">
-					<text>历史搜索</text>
+					<text class="font-size-sm">历史搜索</text>
 					<view>
 						<uni-icon type="trash" @tap="oldDelete"></uni-icon>
 					</view>

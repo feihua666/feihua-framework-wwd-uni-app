@@ -15,7 +15,7 @@
         }
 	}
 </script>
-<style>
+<style lang="scss">
 
 	/*每个页面公共css */
     /* uni.css - 通用组件、模板样式库，可以当作一套ui库应用 */
@@ -45,6 +45,10 @@
     }
     /* #endif */
 
+    button[size=mini][loading]:before{
+        width:25upx !important;
+        height:25upx !important;
+    }
 
     .fh-padding-30{
         padding:30upx;
@@ -109,8 +113,40 @@
         display: inline-block;
         width: 15px;
     }
-    button[size=mini][loading]:before{
-        width:25upx !important;
-        height:25upx !important;
+
+
+    .box-shadow-none{
+        box-shadow: none !important;
+    }
+    .background-color, .uni-app--showtabbar uni-page-wrapper:after{
+        background-color: #f8f8f8;
+    }
+    .background-color-before-none:before, .background-color-after-none:after{
+        background-color: unset !important;
+    }
+
+    .uni-card-footer:before, .uni-card-header:after{
+        background-color: rgba(227, 227, 227, 0.16);
+    }
+
+
+    .font-size-sm{
+        font-size: 24upx;
+    }
+    .font-size-md{
+        font-size: 28upx;
+    }
+    .font-size-lg{
+        font-size: 40upx;
+    }
+
+    .view-line{
+        width:100%;
+        height: 2px;
+        border: 0;
+        background-color: #f8f8f8;
+    }
+    .view-line-height{
+        line-height: 2.3;
     }
 </style>
