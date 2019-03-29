@@ -42,7 +42,7 @@
                     </view>
                 </view>
                 <view class="uni-card-content fh-image-view">
-                    <image @tap="previewImage($config.file.getDownloadUrl(pic.picOriginUrl))" lazy-load mode="aspectFill" v-for="(pic,i) in item.wwdUserPicDtos" v-if="pic.type == 'main'" :src="$config.file.getDownloadUrl(pic.picOriginUrl)" class="image height100"></image>
+                    <image @tap="previewImage($config.file.getDownloadUrl(pic.picOriginUrl) + '?x-oss-process=image/auto-orient,1')" lazy-load mode="aspectFill" v-for="(pic,i) in item.wwdUserPicDtos" v-if="pic.type == 'main'" :src="$config.file.getDownloadUrl(pic.picOriginUrl) + '?x-oss-process=image/auto-orient,1/resize,h_528'" class="image height100"></image>
                 </view>
                 <view class="uni-card-footer" >
                     <view class="font-size-sm">

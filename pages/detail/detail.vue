@@ -2,7 +2,7 @@
 	<view class="fh-width-100">
 		<swiper class="swiper"  :indicator-dots="true" :autoplay="true" :interval="2000" :duration="500">
 			<swiper-item v-for="pic in wwdUser.picUrls">
-				<image @tap="previewImage($config.file.getDownloadUrl(pic.picOriginUrl))" mode="aspectFill" :src="$config.file.getDownloadUrl(pic.picOriginUrl)" class="fh-height-100 fh-width-100"></image>
+				<image @tap="previewImage($config.file.getDownloadUrl(pic.picOriginUrl) + '?x-oss-process=image/auto-orient,1')" mode="aspectFill" :src="$config.file.getDownloadUrl(pic.picOriginUrl) + '?x-oss-process=image/auto-orient,1/resize,h_528'" class="fh-height-100 fh-width-100"></image>
 			</swiper-item>
 		</swiper>
 		<!-- 基本信息 -->
@@ -163,7 +163,7 @@
 		        let urls = []
 				for(let i=0;i < this.wwdUser.picUrls.length;i++){
 				    let pic = this.wwdUser.picUrls[i]
-					urls.push(this.$config.file.getDownloadUrl(pic.picOriginUrl))
+					urls.push(this.$config.file.getDownloadUrl(pic.picOriginUrl) + '?x-oss-process=image/auto-orient,1')
 				}
 				return urls;
 			}
