@@ -147,6 +147,6 @@
         background-color: #f8f8f8;
     }
     .view-line-height{
-        line-height: 2.3;
+        line-height: 2;
     }
 </style>

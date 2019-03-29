@@ -7,11 +7,15 @@
 		</swiper>
 		<!-- 基本信息 -->
 		<view class="fh-padding-30 ">
-			<view>
-				<text class="iconfont" :class="$utils.genderIcon(wwdUser.wwdUserDto.gender)">
-				<text class="fh-inline-space-10"></text>
-					{{wwdUser.wwdUserDto.nickname}}
-				</text>
+			<view class="uni-flex fh-justify-content-space-between">
+				<view>
+					<text class="iconfont" :class="$utils.genderIcon(wwdUser.wwdUserDto.gender)">
+						<text class="fh-inline-space-10"></text>
+						{{wwdUser.wwdUserDto.nickname}}
+					</text>
+				</view>
+
+				<fh-dict-text class="font-size-sm" type="married_status" :val="wwdUser.wwdUserDto.maritalStatus"></fh-dict-text>
 			</view>
 			<view class="view-line"></view>
 			<view  class="view-line-height">

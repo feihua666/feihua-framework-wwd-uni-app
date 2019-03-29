@@ -24,7 +24,7 @@
         <!-- 使用非原生导航栏后需要在页面顶部占位 -->
         <view style="height:50px;"></view>
 		<fh-loadmore ref="loadmoreref" class="background-color">
-            <view style="margin-top:10px;" class="uni-card box-shadow-none" v-for="(item,index) in listData" :key="index">
+            <view style="margin-top:10px;" class="uni-card box-shadow-none" @tap="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.wwdUserDto.id)" v-for="(item,index) in listData" :key="index">
                 <view class="uni-card-header uni-card-media">
                     <image class="uni-card-media-logo" :src="$config.file.getDownloadUrl(photo[item.wwdUserDto.userId])"></image>
                     <view class="uni-card-media-body">
@@ -38,11 +38,16 @@
                             <text class=' iconfont icon-weizhi'></text>
                             <text class="fh-inline-space-10"></text>
                             {{item.wwdUserAreaDto.nowProvinceName}} {{item.wwdUserAreaDto.nowCityName}}
+                            <text class="fh-inline-space-10"></text>
+                            <text class='iconfont icon-daxuemingcheng'>
+                            </text>
+                            <text class="fh-inline-space-10"></text>
+                            {{item.wwdUserDto.college}}
                         </text>
                     </view>
                 </view>
                 <view class="uni-card-content fh-image-view">
-                    <image @tap="previewImage($config.file.getDownloadUrl(pic.picOriginUrl) + '?x-oss-process=image/auto-orient,1')" lazy-load mode="aspectFill" v-for="(pic,i) in item.wwdUserPicDtos" v-if="pic.type == 'main'" :src="$config.file.getDownloadUrl(pic.picOriginUrl) + '?x-oss-process=image/auto-orient,1/resize,h_528'" class="image height100"></image>
+                    <image lazy-load mode="aspectFill" v-for="(pic,i) in item.wwdUserPicDtos" v-if="pic.type == 'main'" :src="$config.file.getDownloadUrl(pic.picOriginUrl) + '?x-oss-process=image/auto-orient,1/resize,h_528'" class="image height100"></image>
                 </view>
                 <view class="uni-card-footer" >
                     <view class="font-size-sm">
@@ -51,7 +56,13 @@
                         {{$utils.date.dateFomat(item.wwdUserDto.birthDay)}}
                     </view>
                     <view class="font-size-sm"><text class="iconfont icon-shengao"></text><text class="fh-inline-space-10"></text>{{item.wwdUserDto.height}}</view>
-                    <view class="uni-card-link"><navigator :url="'/pages/detail/detail?wwdUserId=' + item.wwdUserDto.id">详情</navigator></view>
+                    <text class='iconfont icon-tizhong fh-margin-right-30'>
+                        <text class="fh-inline-space-10"></text>
+
+                        <text class=" font-size-sm">
+                            {{item.wwdUserDto.weight}}
+                        </text>
+                    </text>
                 </view>
             </view>
         </fh-loadmore>
@@ -62,10 +73,13 @@
     import uniNavBar from '@/components/uni-nav-bar.vue'
     import uniIcon from '@/components/uni-icon.vue'
     import fhLoadmore from '@/fh-components/fh-loadmore.vue'
-	export default {
+    import fhDictText from '@/fh-components/fh-dict-text.vue';
+
+    export default {
         components: {
             uniNavBar,
             fhLoadmore,
+            fhDictText,
             uniIcon
         },
         computed: {
@@ -107,10 +121,6 @@
             this.loadData()
         },
         methods: {
-            previewImage:function(url){
-                if(url)
-                uni.previewImage({urls:[url]})
-            },
             loadData:function(pullDownRefresh){
                 console.log('loaddata')
                 let self = this
