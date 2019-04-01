@@ -7,7 +7,6 @@ import { getMsg } from '@/utils/httpReponseCode.js'
  */
 let noneMessageStatus = {
     404: [],
-    401: [],
 }
 
 function handlerError (status, code) {
