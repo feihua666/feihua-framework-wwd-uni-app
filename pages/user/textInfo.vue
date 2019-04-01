@@ -64,8 +64,8 @@
                 self.$http.getDictByValue('drinking_status',self.wwdUser.wwdUserDto.drinking).then(function (dict) {
                     self.copyMyinfo.push('喝酒：' + dict.name)
                 })
-				self.copyMyinfo.push('自我描述：' + self.wwdUser.wwdUserDto.description)
-                self.copyMyinfo.push('理想类型：' + self.wwdUser.wwdUserDto.standard)
+				self.copyMyinfo.push('自我描述：' + self.wwdUser.wwdUserDto.description||'')
+                self.copyMyinfo.push('理想类型：' + self.wwdUser.wwdUserDto.standard||'')
 
             },
             //加载详细基本信息，复制我的信息用

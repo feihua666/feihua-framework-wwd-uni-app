@@ -18,8 +18,8 @@
 			<view class="font-size-sm view-line-height"><text>活动地点：{{activity.addr}}</text></view>
 
 		</view>
-		<view class="article-content">
-			<rich-text :nodes="activity.content"></rich-text>
+		<view class="article-content activity-detail-content-img-width100 uni-center">
+			<view v-html="activity.content"></view>
 		</view>
 
 		<view class="fh-padding-30">
@@ -159,4 +159,5 @@
 	.uni-title {
 		padding: 3px 0;
 	}
+
 </style>

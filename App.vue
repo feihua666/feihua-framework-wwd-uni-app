@@ -149,4 +149,8 @@
     .view-line-height{
         line-height: 2;
     }
+    /* activity-detail-content-img-width100 活动富文本内容图片专用 */
+    .activity-detail-content-img-width100 img{
+        max-width: 100% !important;
+    }
 </style>
