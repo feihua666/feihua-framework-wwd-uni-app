@@ -92,10 +92,10 @@
                         self.activity.headcountDesc= headcountDesc
                     }
 
-                    if(self.activity.payRule =='2'){
-                        self.activity.priceDesc = '男：'+ content.malePrice+' 元/人，'+'女：'+content.femalePrice+' 元/人'
-                    }else{
+                    if(content.malePrice == content.femalePrice){
                         self.activity.priceDesc = content.price + ' 元/人'
+                    }else{
+                        self.activity.priceDesc = '男：'+ content.malePrice+' 元/人，'+'女：' + content.femalePrice + ' 元/人'
                     }
                     uni.setNavigationBarTitle({
                         title: self.activity.title
