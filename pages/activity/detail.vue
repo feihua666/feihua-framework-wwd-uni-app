@@ -22,11 +22,15 @@
 			<view v-html="activity.content"></view>
 		</view>
 
-		<view class="fh-padding-30">
+		<view class="fh-padding-30" style="width: 90%;">
 			<button v-if="!participate && activity.status == 'signing'" class="btn-submit" @tap="goSignup" type="primary">我要报名</button>
 			<button v-if="participate" disabled>已报名</button>
 		</view>
-
+		 <view class="uni-padding-wrap">
+		    <view class="icon-item" v-for="(item,index) in participates" :key="index" @tap="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.wwdUserDto.id)" style="display: inline-block;width: 20%;">
+				<image class="uni-grid-9-image" :src="$config.file.getDownloadUrl(item.baseUserDto.photo)" style="border-radius: 50%;width: 50px;height: 50px;"></image>
+		    </view>
+		</view>
 	</view>
 </template>
 
@@ -35,7 +39,16 @@
 		data() {
 			return {
 				activity: {},
-				participate:true
+				participateForm: {
+					orderable: true,
+					orderby: 'update_at-desc',
+					pageable: false,
+					wwdActivityId: null,
+					payStatus: 'paid',
+					status: 'normal,alternate'
+				},
+				participates: [],
+				participate: true
 			}
 		},
 		onShareAppMessage() {
@@ -48,8 +61,9 @@
 		onLoad(options) {
 			let self = this
 		    self.activity.id = options.id
-
+			self.participateForm.wwdActivityId = options.id
 			self.getDetail()
+			self.getParticipates()
 		},
         onShow(){
             let self = this
@@ -99,6 +113,15 @@
                     }
                 }).catch(function () {
                     self.participate = false
+                })
+			},
+			getParticipates(activityId){
+                let self = this
+                self.$http.get('/wwd/participates',self.participateForm).then(function (res) {
+                    let content = res.data.data.content
+					self.participates = content
+                   console.log(content)
+                }).catch(function () {
                 })
 			}
 		}
@@ -158,6 +181,11 @@
 	}
 	.uni-title {
 		padding: 3px 0;
+	}
+	.uni-padding-wrap{
+		border-top: 1px solid #ccc;
+		padding: 6px 5px 0 13px;
+		margin-bottom: 10px;
 	}
 
 </style>
