@@ -20,8 +20,8 @@
 		</view>
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
-				姓名
-				<input class="fh-text-align-right" v-model="form.wwdUser.name" placeholder="未填写"/>
+				昵称
+				<input class="fh-text-align-right" v-model="form.wwdUser.nickname" placeholder="未填写"/>
 			</view>
 		</view>
 		<view class="uni-list-cell">
@@ -146,6 +146,27 @@
 			<view class="uni-list-cell-navigate">
 				家乡在
 				<text @tap="showAreaPicker(form.homeAreaIds,'home')">{{userAreaLabel.home}}</text>
+			</view>
+		</view>
+		<view class="uni-list-cell-divider background-color-after-none background-color-before-none">
+			活动报名信息
+		</view>
+		<view class="uni-list-cell">
+			<view class="uni-list-cell-navigate">
+				姓名
+				<input class="fh-text-align-right" v-model="form.wwdUser.name" placeholder="未填写"/>
+			</view>
+		</view>
+		<view class="uni-list-cell">
+			<view class="uni-list-cell-navigate">
+				手机号
+				<input class="fh-text-align-right" v-model="form.wwdUser.mobile" placeholder="未填写"/>
+			</view>
+		</view>
+		<view class="uni-list-cell  uni-list-cell-last">
+			<view class="uni-list-cell-navigate">
+				身份证
+				<input class="fh-text-align-right" v-model="form.wwdUser.idCardNo" placeholder="未填写"/>
 			</view>
 		</view>
 

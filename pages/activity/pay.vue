@@ -10,7 +10,7 @@
 				<view class="uni-title"><text>报名费用：{{activity.priceDesc}}</text></view>
 				<view class="uni-title"><text>活动地点：{{activity.addr}}</text></view>
 			</view>
-					<view>
+			<view>
 				<checkbox-group class="uni-flex" name="loves" @change="change">
 					<checkbox value="agreement" checked  /><navigator url="/pages/agreement/agreement"><text class="uni-link"> 活动相关协议</text></navigator>
 				</checkbox-group>

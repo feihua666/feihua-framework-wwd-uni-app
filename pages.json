@@ -186,7 +186,7 @@
 		    }
 		},
 		{
-		    "path" : "pages/participate/participate",
+		    "path" : "pages/user/participate/participate",
 		    "style" : {
 		        "navigationBarTitleText" : "我的活动",
                 "enablePullDownRefresh" : true, //开启下拉刷新

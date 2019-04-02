@@ -33,7 +33,7 @@
                 </view>
             </view>
 			<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
-			    <view class="uni-list-cell-navigate uni-navigate-right" @click="$utils.n.ngt('/pages/participate/participate')">
+			    <view class="uni-list-cell-navigate uni-navigate-right" @click="$utils.n.ngt('/pages/user/participate/participate')">
 			        我的活动
 			    </view>
 			</view>

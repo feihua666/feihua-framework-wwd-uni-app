@@ -58,7 +58,7 @@
 		methods: {
 			goSignup() {
 				uni.navigateTo({
-				    url: '/pages/activity/signup?activityId=' + this.activity.id
+				    url: '/pages/activity/signup?activityId=' + this.activity.id + '&requireIdCard=' + this.activity.requireIdCard
 				})
 			},
 			getDetail() {

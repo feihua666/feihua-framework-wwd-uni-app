@@ -1,4 +1,6 @@
+
 <template>
+    <!-- 活动报名 -->
     <view class="uni-column uni-flex uni-flex-item ">
         <view class="uni-input-group">
             <view class="uni-input-row">
@@ -8,6 +10,17 @@
             <view class="uni-input-row">
                 <text class="uni-label">手机号：</text>
                 <input type="text" clearable v-model="form.mobile" placeholder="手机号"></input>
+            </view>
+            <view class="uni-input-row">
+                <text class="uni-label">身份证：</text>
+                <input type="text" clearable v-model="form.idCardNo" placeholder="身份证号"></input>
+            </view>
+            <view  class="uni-input-row">
+                <checkbox-group class="uni-flex" name="loves" @change="change">
+                    <checkbox value="agreement"  >
+                    <text class="uni-link">将该信息同步到我的资料中</text>
+                    </checkbox>
+                </checkbox-group>
             </view>
         </view>
         <view class="fh-padding-30">
@@ -28,14 +41,39 @@
                 form:{
                     name: '',
                     mobile: '',
-                    activityId: ''
-                }
+                    idCardNo: '',
+                    activityId: '',
+                    saveToInfo: 'N'
+                },
+                requireIdCard: 'N',
+                wwdUser: {}
             }
         },
         onLoad (options) {
             this.form.activityId = options.activityId
+            this.requireIdCard = options.requireIdCard
+            this.loadWwdUser()
+        },
+        computed: {
         },
         methods: {
+            change(e){
+                if(e.detail.value.length > 0){
+                    this.form.saveToInfo = 'Y'
+                }else{
+                    this.form.saveToInfo = 'N'
+                }
+            },
+            loadWwdUser(){
+                let self = this
+                self.$http.get('/wwd/user/current').then( res => {
+                    let content = res.data.data.content
+                    self.wwdUser = content
+                    self.form.name = self.wwdUser.name
+                    self.form.mobile = self.wwdUser.mobile
+                    self.form.idCardNo = self.wwdUser.idCardNo
+                })
+            },
             signup() {
 
                 if(!this.checkRegistForm()){
@@ -82,6 +120,9 @@
                     {name:"name", checkType : "notnull", checkRule:"",  errorMsg:"请填写姓名"},
                     {name:"mobile", checkType : "mobile", checkRule:"",  errorMsg:"请填写正确格式手机号"}
                 ];
+                if(this.requireIdCard == 'Y'){
+                    rule.push({name:"idCardNo", checkType : "notnull", checkRule:"",  errorMsg:"该活动必填身份证号"})
+                }
                 let checkRes = graceChecker.checkForm(this.form, rule);
                 return checkRes
             }
