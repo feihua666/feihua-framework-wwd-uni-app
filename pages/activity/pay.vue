@@ -85,8 +85,7 @@
                     }
 
                     if(content.malePrice == content.femalePrice){
-                        self.activity.priceDesc = content.price + ' 元/人'
-
+                        self.activity.priceDesc = content.malePrice + ' 元/人'
                     }else{
                         self.activity.priceDesc = '男：'+ content.malePrice+' 元/人，'+'女：' + content.femalePrice + ' 元/人'
                     }
