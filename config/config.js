@@ -19,7 +19,7 @@ const config = {
                     return this.downloadUrl + path
                 }
             }
-            return this.downloadUrl
+            return ''
         }
     },
     // 是否需要强制登录
