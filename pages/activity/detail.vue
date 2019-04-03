@@ -23,10 +23,13 @@
 		</view>
 
 		<view class="fh-padding-30" style="width: 90%;">
-			<button v-if="!participate && activity.status == 'signing'" class="btn-submit" @tap="goSignup" type="primary">我要报名</button>
+
 			<button v-if="participate" disabled>已报名</button>
+			<template v-else>
+				<button v-if="activity.status == 'signing' && (activity.headcountRule == 'unlimited' || isCustomNotFull)" class="btn-submit" @tap="goSignup" type="primary">我要报名</button>
+			</template>
 		</view>
-		<view class=" fh-padding-30" v-if="participates.length >0" style="border-top: 1px solid #ccc;width: 90%;">
+		<view class="fh-padding-30" v-if="participates.length >0" style="border-top: 1px solid #ccc;width: 90%;">
 			<view class="font-size-sm view-line-height" style="color: red;"><text>{{activity.signDesc}}</text></view>
 		</view>
 		 <view class="uni-padding-wrap">
@@ -53,14 +56,24 @@
 					status: 'normal,alternate'
 				},
 				participates: [],
-				participate: true
+				participate: true,
+                wwdUser: {}
 			}
 		},
-		onShareAppMessage() {
-			let self = this
-			return {
-				title: self.activity.title,
-				path: '/pages/activity/detail?id=' + self.activity.id
+		computed: {
+            isCustomNotFull () {
+                if (activity.headcountRule == 'custom'){
+                    if('male' == this.wwdUser.gender){
+                        if(this.maleCount >=  this.activity.headcountMale){
+                            return true
+						}
+                    }else if('female' == this.wwdUser.gender){
+                        if(this.femaleCount >=  this.activity.headcountFemale){
+                            return true
+                        }
+                    }
+				}
+                return false
 			}
 		},
 		onLoad(options) {
@@ -68,7 +81,7 @@
 		    self.activity.id = options.id
 			self.participateForm.wwdActivityId = options.id
 			self.getDetail()
-			
+			self.loadWwdUser()
 		},
         onShow(){
             let self = this
@@ -146,7 +159,14 @@
 					}
                 }).catch(function () {
                 })
-			}
+			},
+            loadWwdUser(){
+                let self = this
+                self.$http.get('/wwd/user/current').then( res => {
+                    let content = res.data.data.content
+                    self.wwdUser = content
+                })
+            }
 		}
 	}
 </script>

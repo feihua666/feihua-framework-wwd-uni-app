@@ -105,6 +105,11 @@
                                 title:"你已支付，请勿重复支付",
                                 icon:'none'
                             })
+                        }else if(_data.code == 'headcountRule=invalie'){
+                            uni.showToast({
+                                title:"未设置人数规则",
+                                icon:'none'
+                            })
                         }
                     }else if(statusCode == 404){
                         uni.showToast({

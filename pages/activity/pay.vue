@@ -176,7 +176,12 @@
                                 })
                             }
                         }else if(status == 409){
-                            if('payStatus=paid' == code){
+                            if(code == 'headcount=enough'){
+                                uni.showToast({
+                                    icon: 'none',
+                                    title: '报名人数已满'
+                                });
+                            }else if(code == 'payStatus=paid'){
                                 uni.showToast({
                                     title:"你已支付，请勿重复支付",
                                     icon:'none'
