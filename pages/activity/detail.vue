@@ -1,7 +1,7 @@
 <template>
 	<view style="width: 100%;">
 		<view class="banner">
-			<image class="banner-img" mode="aspectFill" :src="$config.file.getDownloadUrl(activity.titleUrl) + '?x-oss-process=image/auto-orient,1/resize,h_528'"></image>
+			<image class="banner-img" mode="aspectFill" :src="$config.file.getDownloadUrl(activity.titleUrl) + '?x-oss-process=image/resize,h_528/auto-orient,1'"></image>
 			<!-- <view class="banner-title">{{activity.title}}</view> -->
 		</view>
 		<view class="fh-padding-30">

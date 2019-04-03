@@ -1,7 +1,7 @@
 <template>
 		<view class="fh-picture-list fh-width-100 uni-flex fh-flex-wrap">
 			<view v-for="(item,index) in images"  class="fh-picture-item uni-center" :style="itemStyle">
-				<image class="fh-picture-item-imge fh-width-100 fh-height-100" :src="$config.file.getDownloadUrl(item.thumbUrl) + '?x-oss-process=image/auto-orient,1/resize,h_528'" @tap="$utils.pic.pvi($config.file.getDownloadUrl(item.originUrl) + '?x-oss-process=image/auto-orient,1')" mode="aspectFill"></image>
+				<image class="fh-picture-item-imge fh-width-100 fh-height-100" :src="$config.file.getDownloadUrl(item.thumbUrl) + '?x-oss-process=image/resize,h_528/auto-orient,1'" @tap="$utils.pic.pvi($config.file.getDownloadUrl(item.originUrl))" mode="aspectFill"></image>
 				<text class='fh-pickture-delete' @click='onDelete(item)' :data-index="index">x</text>
 			</view>
 			<view v-for="(item,index) in picList" :key="index" class="fh-picture-item uni-center" :style="itemStyle">

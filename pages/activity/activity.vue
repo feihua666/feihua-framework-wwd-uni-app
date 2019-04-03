@@ -32,7 +32,7 @@
 						<navigator class="fh-width-100" :url="'/pages/activity/detail?id=' + item.id">
 						<view class="uni-media-list">
 							<view class="uni-media-list-logo">
-								<image  :src="$config.file.getDownloadUrl(item.titleUrl) + '?x-oss-process=image/auto-orient,1/resize,h_528'"></image>
+								<image  :src="$config.file.getDownloadUrl(item.titleUrl) + '?x-oss-process=image/resize,h_528/auto-orient,1'"></image>
 							</view>
 							<view class="uni-media-list-body">
 								<view class="uni-media-list-text-top font-size-md">{{item.title}}</view>
