@@ -11,9 +11,9 @@
                 <text class="uni-label">手机号：</text>
                 <input type="text" clearable v-model="form.mobile" placeholder="手机号"></input>
             </view>
-            <view class="uni-input-row">
+            <view v-if="requireIdCard == 'Y'" class="uni-input-row">
                 <text class="uni-label">身份证：</text>
-                <input type="text" clearable v-model="form.idCardNo" placeholder="身份证号"></input>
+                <input type="text" clearable v-model="form.idCardNo" placeholder="身份证号（仅买保险用）"></input>
             </view>
             <view  class="uni-input-row">
                 <checkbox-group class="uni-flex" name="loves" @change="change">
