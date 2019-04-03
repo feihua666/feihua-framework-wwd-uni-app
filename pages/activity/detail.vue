@@ -26,6 +26,9 @@
 			<button v-if="!participate && activity.status == 'signing'" class="btn-submit" @tap="goSignup" type="primary">我要报名</button>
 			<button v-if="participate" disabled>已报名</button>
 		</view>
+		<view class=" fh-padding-30" v-if="participates.length >0" style="border-top: 1px solid #ccc;width: 90%;">
+			<view class="font-size-sm view-line-height" style="color: red;"><text>{{activity.signDesc}}</text></view>
+		</view>
 		 <view class="uni-padding-wrap">
 		    <view class="icon-item" v-for="(item,index) in participates" :key="index" @tap="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.wwdUserDto.id)" style="display: inline-block;width: 20%;">
 				<image class="uni-grid-9-image" :src="$config.file.getDownloadUrl(item.baseUserDto.photo)" style="border-radius: 50%;width: 50px;height: 50px;"></image>
@@ -38,6 +41,8 @@
 	export default {
 		data() {
 			return {
+				femaleCount: 0,
+				maleCount: 0,
 				activity: {},
 				participateForm: {
 					orderable: true,
@@ -63,7 +68,7 @@
 		    self.activity.id = options.id
 			self.participateForm.wwdActivityId = options.id
 			self.getDetail()
-			self.getParticipates()
+			
 		},
         onShow(){
             let self = this
@@ -93,13 +98,14 @@
                     }
 
                     if(content.malePrice == content.femalePrice){
-                        self.activity.priceDesc = content.price + ' 元/人'
+                        self.activity.priceDesc = content.malePrice + ' 元/人'
                     }else{
                         self.activity.priceDesc = '男：'+ content.malePrice+' 元/人，'+'女：' + content.femalePrice + ' 元/人'
                     }
                     uni.setNavigationBarTitle({
                         title: self.activity.title
                     })
+					self.getParticipates()
                 })
 			},
 			isParticipate(){
@@ -115,12 +121,29 @@
                     self.participate = false
                 })
 			},
-			getParticipates(activityId){
+			getParticipates(){
                 let self = this
                 self.$http.get('/wwd/participates',self.participateForm).then(function (res) {
                     let content = res.data.data.content
 					self.participates = content
-                   console.log(content)
+					if(content && content.length > 0){
+						let maleCount = 0
+						let femaleCount = 0
+						for(let i = 0; i< content.length; i++){
+							if(content[i].wwdUserDto.gender == 'male'){
+								maleCount ++
+							}else if (content[i].wwdUserDto.gender == 'female'){
+								femaleCount ++
+							}
+						}
+						self.maleCount = maleCount
+						self.femaleCount = femaleCount
+						if(self.activity.headcountRule && self.activity.headcountRule=='custom'){
+							self.activity.signDesc = ['已报名人数：男 ',maleCount,'/',self.activity.headcountMale,' 人; 女 ',femaleCount,'/',self.activity.headcountFemale ,'人'].join('')
+						}else{
+							self.activity.signDesc = ['已报名人数：男 ',maleCount,'人; 女 ',femaleCount,'人'].join('')
+						}
+					}
                 }).catch(function () {
                 })
 			}
