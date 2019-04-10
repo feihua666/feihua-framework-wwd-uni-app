@@ -106,9 +106,8 @@
                 }
 			}
 		},
-		onLoad() {
+		onLoad(options) {
             console.log('onLoad index')
-
 		},
         onReady(){
             this.pageLogical()
@@ -196,6 +195,7 @@
                     // 跳转到邀请页面
                     if(uni.getStorageSync('invited' + userinfo.id)){
                         self.loadData(true)
+                        self.navigateToPage()
                         return
                     }
 
@@ -203,6 +203,7 @@
                         // 有数据，已被邀请
                         self.loadData(true)
                         uni.setStorageSync('invited' + userinfo.id,true)
+                        self.navigateToPage()
                     }).catch(function () {
                         // 跳转到输入邀请码页面
                         uni.reLaunch({
@@ -211,6 +212,13 @@
                     })
                 })
 
+            },
+            navigateToPage(){
+                let page = uni.getStorageSync('navigateToPage')
+                uni.removeStorageSync('navigateToPage')
+                if(page){
+                    this.$utils.n.ngt(page)
+                }
             }
 		},
         watch:{

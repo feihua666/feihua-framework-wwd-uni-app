@@ -37,11 +37,17 @@
 				<image class="uni-grid-9-image" :src="$config.file.getDownloadUrl(item.baseUserDto.photo)" style="border-radius: 50%;width: 50px;height: 50px;"></image>
 		    </view>
 		</view>
+
+		<fh-wx-share-h5 ref="fhwxshare" :share-content="shareContent"></fh-wx-share-h5>
 	</view>
 </template>
 
 <script>
+    import fhWxShareH5 from '@/fh-components/fh-wx-share-h5.vue';
 	export default {
+        components: {
+            fhWxShareH5
+        },
 		data() {
 			return {
 				femaleCount: 0,
@@ -75,6 +81,13 @@
                     }
 				}
                 return false
+			},
+            shareContent () {
+                return  {
+                    title: this.activity.title,
+                    desc: this.activity.introduced,
+                    imgUrl: this.$config.file.getDownloadUrl(this.activity.titleUrl) + '?x-oss-process=image/resize,h_528/auto-orient,1',
+                }
 			}
 		},
 		onLoad(options) {

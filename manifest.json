@@ -62,10 +62,11 @@
             "port" : 8383,
             "disableHostCheck" : true
         },
-        "title" : "汪汪队"
+        "template" : "index.html",
+        "title" : "靠谱单身"
     },
-	"networkTimeout" : {
-		"uploadFile": 60000,
-		"request": 60000
-	}
+    "networkTimeout" : {
+        "uploadFile" : 60000,
+        "request" : 60000
+    }
 }
