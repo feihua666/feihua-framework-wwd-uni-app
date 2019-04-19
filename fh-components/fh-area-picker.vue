@@ -70,7 +70,7 @@
             // 数据结构转换
             areaConvertToPicker(areaArray){
 
-                let r = []
+                let r = [{label: '不限',value: ''}]
                 for(let i = 0;i<areaArray.length;i++){
                     r.push({
                         label:areaArray[i].name,
