@@ -108,19 +108,31 @@
 		},
 		onLoad() {
             console.log('onLoad index')
-
+			this.initSearchForm()
 		},
         onReady(){
             this.pageLogical()
         },
         onPullDownRefresh(){
-            console.log('onPullDownRefresh');
+            console.log('onPullDownRefresh')
             this.loadData(true)
         },
         onReachBottom() {
             this.loadData()
         },
         methods: {
+			initSearchForm: function(){
+				let self = this
+				self.$http.getCurrentUserinfo().then(function (content) {
+					 if(content){
+						 if(content.gender=='male'){
+							 self.searchForm.gender = 'female'
+						 }else if(content.gender=='female'){
+							  self.searchForm.gender = 'male'
+						 }
+					 }
+				})
+			},
             loadData:function(pullDownRefresh){
                 console.log('loaddata')
                 let self = this
