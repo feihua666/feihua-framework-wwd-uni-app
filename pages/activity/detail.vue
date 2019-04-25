@@ -32,16 +32,22 @@
 		<view class="fh-padding-30" v-if="participates.length >0" style="border-top: 1px solid #ccc;width: 90%;">
 			<view class="font-size-sm view-line-height" style="color: red;"><text>{{activity.signDesc}}</text></view>
 		</view>
-		 <view class="uni-padding-wrap">
+		 <view class="fh-padding-30">
 		    <view class="icon-item" v-for="(item,index) in participates" :key="index" @tap="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.wwdUserDto.id)" style="display: inline-block;width: 20%;">
 				<image class="uni-grid-9-image" :src="$config.file.getDownloadUrl(item.baseUserDto.photo)" style="border-radius: 50%;width: 50px;height: 50px;"></image>
 		    </view>
 		</view>
+
+		<fh-wx-share-h5 ref="fhwxshare" :share-content="shareContent"></fh-wx-share-h5>
 	</view>
 </template>
 
 <script>
+    import fhWxShareH5 from '@/fh-components/fh-wx-share-h5.vue';
 	export default {
+        components: {
+            fhWxShareH5
+        },
 		data() {
 			return {
 				femaleCount: 0,
@@ -49,7 +55,7 @@
 				activity: {},
 				participateForm: {
 					orderable: true,
-					orderby: 'update_at-desc',
+					orderby: 'update_at-asc',
 					pageable: false,
 					wwdActivityId: null,
 					payStatus: 'paid',
@@ -61,19 +67,27 @@
 			}
 		},
 		computed: {
+		    // 标识限制男女人数是否不满
             isCustomNotFull () {
-                if (activity.headcountRule == 'custom'){
+                if (this.activity.headcountRule == 'custom'){
                     if('male' == this.wwdUser.gender){
-                        if(this.maleCount >=  this.activity.headcountMale){
+                        if(parseInt(this.maleCount) <  parseInt(this.activity.headcountMale)){
                             return true
 						}
                     }else if('female' == this.wwdUser.gender){
-                        if(this.femaleCount >=  this.activity.headcountFemale){
+                        if(parseInt(this.femaleCount) <  parseInt(this.activity.headcountFemale)){
                             return true
                         }
                     }
 				}
                 return false
+			},
+            shareContent () {
+                return  {
+                    title: this.activity.title,
+                    desc: this.activity.introduced,
+                    imgUrl: this.$config.file.getDownloadUrl(this.activity.titleUrl) + '?x-oss-process=image/resize,h_528/auto-orient,1',
+                }
 			}
 		},
 		onLoad(options) {

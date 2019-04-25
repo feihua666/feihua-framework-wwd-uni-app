@@ -137,15 +137,19 @@
 		<view class="fh-padding-30">
 			<button type="primary" @tap="enjoy" :loading="enjoyLoading"  v-if="'married' != wwdUser.wwdUserDto.maritalStatus && isEnjoy">有意思</button>
 		</view>
+
+		<fh-wx-share-h5 ref="fhwxshare" :share-content="shareContent"></fh-wx-share-h5>
+
 	</view>
 </template>
 
 <script>
     import fhDictText from '@/fh-components/fh-dict-text.vue';
+    import fhWxShareH5 from '@/fh-components/fh-wx-share-h5.vue';
 
     export default {
         components: {
-            fhDictText
+            fhDictText, fhWxShareH5
         },
 		data() {
 			return {
@@ -170,7 +174,14 @@
 					urls.push(this.$config.file.getDownloadUrl(pic.picOriginUrl))
 				}
 				return urls;
-			}
+			},
+            shareContent () {
+                return  {
+                    title: this.wwdUser.wwdUserDto.nickname,
+                    desc: this.wwdUser.wwdUserDto.description,
+                    imgUrl: this.$config.file.getDownloadUrl(this.wwdUser.photo),
+                }
+            }
 		},
 		onLoad(options){
 		    this.wwdUserId = options.wwdUserId
