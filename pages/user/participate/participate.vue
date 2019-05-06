@@ -40,13 +40,17 @@
 						</navigator>
                 	</view>
                 	<view class="uni-card-footer">
-                		<view class="uni-card-link">{{item.wwdParticipateDtos?item.wwdParticipateDtos.length:'0'}}/{{item.headcount}} 人 </view>
+                		<view class="uni-card-link">{{item.wwdParticipateDtos?item.wwdParticipateDtos.length:'0'}}/{{item.headcountRule == 'unlimited' ? (item.headcount=='0'?'不限人数':item.headcount):(item.headcountMale + item.headcountFemale)}} 人 </view>
                 		<view class="uni-card-link">
                             <fh-uni-tag inverted="true" type="danger" size="small">
                                 <fh-dict-text :type="'activity_status'" :val="item.status"></fh-dict-text>
                             </fh-uni-tag>
                         </view>
-                		<view class="uni-card-link"><navigator :url="'/pages/activity/detail?id=' + item.id"><uni-tag text="已报名" inverted="true" type="warning" size="small"></uni-tag></navigator></view>
+                		<view class="uni-card-link"><uni-tag text="已报名" inverted="true" type="warning" size="small"></uni-tag>
+						<fh-uni-tag inverted="true" type="danger" size="small">
+						     <fh-dict-text :type="'wwd_pay_type'" :val="item.payType"></fh-dict-text>
+						</fh-uni-tag>
+						</view>
                 	</view>
             </view>
         </fh-loadmore>

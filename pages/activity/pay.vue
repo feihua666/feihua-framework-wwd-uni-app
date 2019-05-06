@@ -8,6 +8,7 @@
 				<view class="uni-title"><text>活动结束时间：{{activity.endTime}}</text></view>
 				<view class="uni-title"><text>活动人数：{{activity.headcountDesc}}</text></view>
 				<view class="uni-title"><text>报名费用：{{activity.priceDesc}}</text></view>
+				<view class="uni-title"><text>支付方式：<fh-dict-text class="font-size-sm" type="wwd_pay_type" :val="activity.payType"></fh-dict-text></text></view>
 				<view class="uni-title"><text>活动地点：{{activity.addr}}</text></view>
 			</view>
 			<view>
@@ -17,19 +18,27 @@
 			</view>
 		</view>
 	</view>
-	<view class=" fh-padding-30"><button v-on:click="doPay()" :disabled="!agreement" type="primary" :loading="payLoading">去支付</button></view>
+	<view class=" fh-padding-30">
+		<button v-if="activity.payType=='offline_pay'" v-on:click="doSignup()" :disabled="!agreement" type="primary" :loading="payLoading">线下支付报名</button>
+		<button  v-if="activity.payType=='online_pay'" v-on:click="doPay()" :disabled="!agreement" type="primary" :loading="payLoading">去支付</button>
+	</view>
 </view>
 </template>
 
 <script>
+	import fhDictText from '@/fh-components/fh-dict-text.vue';
 	import  payUtil from "@/utils/payUtil.js"
 	export default {
+		   components: {
+		    fhDictText
+		},
 		data() {
 			return {
 				agreement: true,
 				payLoading: false,
 				activity: {
 				    id: '',
+					payType: 'online_pay',
                     totalFee: '',
                     priceDesc: '',
                     startTime: '',
@@ -56,6 +65,64 @@
 		watch :{
 		},
 		methods: {
+			doSignup(){
+				let self = this
+				if(!self.agreement){
+					   uni.showToast({
+					    title:"请同意相关活动协议后继续",
+					    icon:'none'
+					})
+					return
+				}
+				let payForm = {}
+					payForm.participateId = self.participateId
+				if(!self.payLoading){
+					self.payLoading = true
+					self.$http.post('/wwd/activity/participate/offlineOrder',payForm).then(function (response) {
+				
+				        let content = response.data.data.content
+				        if(content){
+							uni.showToast({
+							    title:"报名成功",
+							    icon:'none'
+							})
+							uni.navigateBack({
+							    delta: 2
+							});
+				        }else{
+							uni.showToast({
+							    title:"报名失败",
+							    icon:'none'
+							})
+						}
+				    }).catch(function (response) {
+				
+				        let code = response.data.code
+				        let status = response.statusCode
+				        if(status == 404){
+				            if('fee_no' == code){
+				                uni.showToast({
+				                    title:"未能匹配到支付金额，请确认已填写性别",
+				                    icon:'none'
+				                })
+				            }else{
+				                uni.showToast({
+				                    title:"活动不存在",
+				                    icon:'none'
+				                })
+				            }
+				        }else if(status == 409){
+				            if(code == 'headcount=enough'){
+				                uni.showToast({
+				                    icon: 'none',
+				                    title: '报名人数已满'
+				                });
+				            }
+				        }
+				        self.payLoading = false
+				    })
+				}
+			},
             change(e){
                 if(e.detail.value.length > 0){
                     this.agreement = true
@@ -71,13 +138,13 @@
                     self.activity.startTime = content.startTime
                     self.activity.endTime = content.endTime
                     self.activity.addr = content.addr
-
+					self.activity.payType = content.payType
                     let headcountDesc = ''
-                    if(content.headcount==0){
-                        headcountDesc = '不限人数'
-                    }else{
-                        headcountDesc = content.headcount + ' 人'
-                    }
+				    if(content.headcount==0 || (content.headcountMale + content.headcountFemale) == 0){
+					   headcountDesc = '不限人数'
+					}else{
+					   headcountDesc = content.headcountRule == 'unlimited' ? content.headcount : (content.headcountMale + content.headcountFemale) + ' 人'
+					}
                     if(content.headcountDesc){
                         self.activity.headcountDesc = headcountDesc + ' (' + content.headcountDesc + ')'
                     }else{

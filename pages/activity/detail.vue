@@ -15,8 +15,9 @@
 			<view class="font-size-sm view-line-height"><text>活动结束时间：{{activity.endTime}}</text></view>
 			<view class="font-size-sm view-line-height"><text>活动人数：{{activity.headcountDesc}}</text></view>
 			<view class="font-size-sm view-line-height"><text>报名费用：{{activity.priceDesc}}</text></view>
+			<view class="font-size-sm view-line-height"><text>支付方式：<fh-dict-text class="font-size-sm" type="wwd_pay_type" :val="activity.payType"></fh-dict-text></text></view>
 			<view class="font-size-sm view-line-height"><text>活动地点：{{activity.addr}}</text></view>
-
+			
 		</view>
 		<view class="article-content activity-detail-content-img-width100 uni-center">
 			<view v-html="activity.content"></view>
@@ -43,10 +44,11 @@
 </template>
 
 <script>
+	import fhDictText from '@/fh-components/fh-dict-text.vue';
     import fhWxShareH5 from '@/fh-components/fh-wx-share-h5.vue';
 	export default {
         components: {
-            fhWxShareH5
+            fhDictText, fhWxShareH5
         },
 		data() {
 			return {
@@ -58,7 +60,7 @@
 					orderby: 'update_at-asc',
 					pageable: false,
 					wwdActivityId: null,
-					payStatus: 'paid',
+					payStatus: 'paid,offline_pay',
 					status: 'normal,alternate'
 				},
 				participates: [],
@@ -104,7 +106,7 @@
 		methods: {
 			goSignup() {
 				uni.navigateTo({
-				    url: '/pages/activity/signup?activityId=' + this.activity.id + '&requireIdCard=' + this.activity.requireIdCard
+				    url: '/pages/activity/signup?activityId=' + this.activity.id + '&requireIdCard=' + this.activity.requireIdCard + '&payType=' + this.activity.payType
 				})
 			},
 			getDetail() {
@@ -113,10 +115,10 @@
                     let content = response.data.data.content
                     self.activity = content
                     let headcountDesc = ''
-                    if(content.headcount==0){
+                    if(content.headcount==0 || (content.headcountMale + content.headcountFemale) == 0){
                         headcountDesc = '不限人数'
                     }else{
-                        headcountDesc = content.headcount + ' 人'
+                        headcountDesc = content.headcountRule == 'unlimited' ? content.headcount : (content.headcountMale + content.headcountFemale) + ' 人'
                     }
                     if(content.headcountDesc){
                         self.activity.headcountDesc = headcountDesc + ' (' + content.headcountDesc + ')'
@@ -139,7 +141,7 @@
                 let self = this
                 self.$http.get('/wwd/activity/' + self.activity.id + '/participate').then(function (res) {
                     let content = res.data.data.content
-                    if('paid' == content.payStatus){
+                    if('paid' == content.payStatus || 'offline_pay' == content.payStatus){
                         self.participate = true
                     }else{
                         self.participate = false
