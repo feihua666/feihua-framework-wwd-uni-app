@@ -1,26 +1,29 @@
 <template>
     <view class="uni-column uni-flex uni-flex-item ">
-        <view class="uni-input-group">
-            <view class="uni-input-row">
-                <text class="uni-label">账号：</text>
-                <input type="text" focus v-model="form.principal" placeholder="请输入账号"></input>
+        <view>
+            <view class="uni-input-group">
+                <view class="uni-input-row">
+                    <text class="uni-label">账号：</text>
+                    <input type="text" focus v-model="form.principal" placeholder="请输入账号"></input>
+                </view>
+                <view class="uni-input-row">
+                    <text class="uni-label">密码：</text>
+                    <input type="password" v-model="form.password" placeholder="请输入密码"></input>
+                </view>
             </view>
-            <view class="uni-input-row">
-                <text class="uni-label">密码：</text>
-                <input type="password" v-model="form.password" placeholder="请输入密码"></input>
+            <view class="fh-padding-30">
+                <button type="primary" :loading="loginLoading" @tap="loginBtnClick">登录</button>
             </view>
-        </view>
-        <view class="fh-padding-30">
-            <button type="primary" :loading="loginLoading" @tap="loginBtnClick">登录</button>
+
+            <view class="uni-row uni-flex fh-padding-30 fh-justify-content-center">
+                <navigator class="uni-link" url="/pages/regist/regist">注册账号</navigator>
+                <text>|</text>
+                <navigator class="uni-link" url="/pages/password/forget">忘记密码</navigator>
+            </view>
         </view>
 
-        <view class="uni-row uni-flex fh-padding-30 fh-justify-content-center">
-            <navigator class="uni-link" url="/pages/regist/regist">注册账号</navigator>
-            <text>|</text>
-            <navigator class="uni-link" url="/pages/password/forget">忘记密码</navigator>
-        </view>
-        <view class="uni-row uni-flex fh-padding-30 fh-justify-content-center">
-            <button type="primary" size="mini" @tap="wxLoginBtnClick">微信直接登录</button>
+        <view class="fh-padding-30">
+            <button type="primary" @tap="wxLoginBtnClick">微信授权登录(推荐)</button>
         </view>
 
     </view>
@@ -38,7 +41,7 @@
                 loginLoading:false,
 				form: {
 				  loginType: 'ACCOUNT',
-				  loginClient: this.$config.loginClient,
+				  client: this.$config.client,
 				  principal: '',
 				  password: '',
 				  captcha: '',
@@ -46,7 +49,7 @@
 				},
                 wxLoginForm:{
                     loginType: 'WX_PLATFORM',
-                    loginClient: this.$config.loginClient,
+                    client: this.$config.client,
                     type:this.$config.which,
                     rememberMe: false
                 },

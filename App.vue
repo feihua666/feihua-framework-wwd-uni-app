@@ -5,7 +5,16 @@
         },
 		onShow: function () {
 			console.log('App Show')
+            let self = this
             this.$http.hasLogin().then(function () {
+                self.$http.get('/wwd/user/current/invited').then(function (res) {
+                    // 有数据，已被邀请
+                }).catch(function () {
+                    // 跳转到输入邀请码页面
+                    uni.reLaunch({
+                        url: '/pages/invitation/invitation'
+                    });
+                })
             }).catch(function () {
                 let hash = window.location.hash
                 if(hash && hash.substring(1).indexOf('/pages') == 0){

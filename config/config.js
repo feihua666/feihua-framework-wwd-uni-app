@@ -1,6 +1,6 @@
 //const host = 'http://yangwei.ngrok.ahbdz.com'
 const host = 'http://api.51match.cn'
-//const host = ''
+//const host = 'http://wwd.com'
 const hostApi = host + '/api'
 const config = {
     host: host,
@@ -27,7 +27,7 @@ const config = {
     // 标识是小程序下是公众帐号，如果不是，可以配置为空
     which:'kaopudanshen',
     // 这里后端会加客户端配置
-    loginClient: 'uni-app',
+    client: 'h5',
     dictExcludeValue:{
         gender:['unknown']
     }
