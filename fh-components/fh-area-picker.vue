@@ -70,7 +70,7 @@
             // 数据结构转换
             areaConvertToPicker(areaArray){
 
-                let r = []
+                let r = [{value:'',label: '不限'}]
                 for(let i = 0;i<areaArray.length;i++){
                     r.push({
                         label:areaArray[i].name,
@@ -82,25 +82,10 @@
             init() {
                 let self = this
                 this.loadProvince(function () {
-                    let provinceId = self.province[0].id
-                    if(self.pickerValueDefault.length > 0){
-                        provinceId = self.pickerValueDefault[0]
-                    }
                     self.provinceDataList = self.areaConvertToPicker(self.province)
-
-                    self.loadCity(provinceId,function () {
-                        let cityId = self.city[0].id
-                        if(self.pickerValueDefault.length > 1){
-                            cityId = self.pickerValueDefault[1]
-                        }
-                        self.cityDataList = self.areaConvertToPicker(self.city)
-
-                        self.loadDistrict(cityId,function () {
-                            self.areaDataList = self.areaConvertToPicker(self.district)
-
-							self.areaValueDefaultToPickerValueDefault()
-                        })
-                    })
+					self.cityDataList = self.areaConvertToPicker([])
+					self.areaDataList = self.areaConvertToPicker([])
+					self.areaValueDefaultToPickerValueDefault()
                 })
             },
             // 一般只能district加载完成调用
@@ -139,29 +124,44 @@
             pickerChange(e) {
                 let self = this
                 let changePickerValue = e.mp.detail.value;
+				
                 if (this.pickerValue[0] !== changePickerValue[0]) {
-                    // 第一级发生滚动
-                    self.loadCity(self.province[changePickerValue[0]].id,function () {
-                        let cityId = self.city[0].id
-                        self.cityDataList = self.areaConvertToPicker(self.city)
-
-                        self.loadDistrict(cityId,function () {
-                            self.areaDataList = self.areaConvertToPicker(self.district)
-                            changePickerValue[1] = 0;
-                            changePickerValue[2] = 0;
-                            self.pickerValue = changePickerValue;
-                            self._$emit('onChange');
-                        })
-                    })
+					changePickerValue[1] = 0;
+					//默认的区域
+					self.areaDataList = self.areaConvertToPicker([])
+					changePickerValue[2] = 0;
+					 // 第一级发生滚动、、、加了不限优先取省份组装列表的ID
+					let provinceId = self.provinceDataList[changePickerValue[0]].value
+					
+					if(!provinceId){
+						//默认的城市
+						self.cityDataList = self.areaConvertToPicker([])
+						self.pickerValue = changePickerValue;
+						self._$emit('onChange');
+					}else {
+						self.loadCity(provinceId,function () {
+							self.cityDataList = self.areaConvertToPicker(self.city)
+							self.pickerValue = changePickerValue;
+							self._$emit('onChange');
+						})	
+					}
+				
                 } else if (this.pickerValue[1] !== changePickerValue[1]) {
-
-                    // 第二级滚动
-                    self.loadDistrict(self.city[changePickerValue[1]].id,function () {
-                        self.areaDataList = self.areaConvertToPicker(self.district)
-                        changePickerValue[2] = 0;
-                        self.pickerValue = changePickerValue;
-                        self._$emit('onChange');
-                    })
+					// 第二级滚动 、、、加了不限优先取城市组装列表的ID
+					let cityId  = self.cityDataList[changePickerValue[1]].value
+					changePickerValue[2] = 0;
+					if(!cityId){
+						//默认的区域
+						self.areaDataList = self.areaConvertToPicker([])
+						self.pickerValue = changePickerValue;
+						self._$emit('onChange');
+					}else{
+						self.loadDistrict(cityId,function () {
+						   self.areaDataList = self.areaConvertToPicker(self.district)
+						   self.pickerValue = changePickerValue;
+						   self._$emit('onChange');
+						})
+					}
                 }else if (this.pickerValue[2] !== changePickerValue[2]) {
                     // 三级滚动
                     self.pickerValue = changePickerValue;
@@ -181,7 +181,7 @@
                 let pcikerLabel = []
                 pcikerLabel.push(this.provinceDataList[this.pickerValue[0]].label)
                 pcikerLabel.push(this.cityDataList[this.pickerValue[1]].label)
-                    pcikerLabel.push(this.areaDataList[this.pickerValue[2]].label)
+                pcikerLabel.push(this.areaDataList[this.pickerValue[2]].label)
                 return pcikerLabel;
             },
             _getCityCode() {
@@ -196,7 +196,6 @@
                 let proviceStorage = uni.getStorageSync('area_province')
                 if (proviceStorage){
                     self.province = proviceStorage
-
                     if(success && typeof success == 'function'){
                         success()
                     }
