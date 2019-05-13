@@ -83,9 +83,29 @@
                 let self = this
                 this.loadProvince(function () {
                     self.provinceDataList = self.areaConvertToPicker(self.province)
-					self.cityDataList = self.areaConvertToPicker([])
-					self.areaDataList = self.areaConvertToPicker([])
-					self.areaValueDefaultToPickerValueDefault()
+					
+                    if(self.pickerValueDefault.length > 0){
+						//设置回显值
+						let  provinceId = self.pickerValueDefault[0]
+						self.loadCity(provinceId,function () {
+							let cityId = self.city[0].id
+							if(self.pickerValueDefault.length > 1){
+								cityId = self.pickerValueDefault[1]
+							}
+							self.cityDataList = self.areaConvertToPicker(self.city)
+						
+							self.loadDistrict(cityId,function () {
+								self.areaDataList = self.areaConvertToPicker(self.district)
+						
+								self.areaValueDefaultToPickerValueDefault()
+							})
+						})
+                    }else{
+						//设置默认值
+						self.cityDataList = self.areaConvertToPicker([])
+						self.areaDataList = self.areaConvertToPicker([])
+						self.areaValueDefaultToPickerValueDefault()
+					}
                 })
             },
             // 一般只能district加载完成调用
@@ -97,7 +117,7 @@
                     let provinceIndex = this.getIndexById(this.province,d[0])
                     let cityIndex = this.getIndexById(this.city,d[1])
                     let districtIndex = this.getIndexById(this.district,d[2])
-                    this.pickerValue = [provinceIndex,cityIndex,districtIndex]
+                    this.pickerValue = [provinceIndex +1,cityIndex +1,districtIndex +1]
 				}
             },
             show() {
