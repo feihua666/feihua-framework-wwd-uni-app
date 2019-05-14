@@ -69,7 +69,6 @@
             },
             // 数据结构转换
             areaConvertToPicker(areaArray){
-
                 let r = [{value:'',label: '不限'}]
                 for(let i = 0;i<areaArray.length;i++){
                     r.push({
@@ -84,12 +83,12 @@
                 this.loadProvince(function () {
                     self.provinceDataList = self.areaConvertToPicker(self.province)
 					
-                    if(self.pickerValueDefault.length > 0){
+                    if(self.pickerValueDefault.length > 0 && self.pickerValueDefault[0]){
 						//设置回显值
 						let  provinceId = self.pickerValueDefault[0]
 						self.loadCity(provinceId,function () {
 							let cityId = self.city[0].id
-							if(self.pickerValueDefault.length > 1){
+							if(self.pickerValueDefault.length > 1 && self.pickerValueDefault[1]){
 								cityId = self.pickerValueDefault[1]
 							}
 							self.cityDataList = self.areaConvertToPicker(self.city)
