@@ -74,7 +74,7 @@
 			</view>
 		</view>
 		<fh-dict-picker ref="fhDictPicker" :type="dictPicker.type" :value-default="dictPicker.valueDefault" @onConfirm="onDictPickerConfirm"></fh-dict-picker>
-		<fh-area-picker ref="fhAreaPicker" @onConfirm="onAreaPickerConfirm" :picker-value-default="areaPicker.valueDefault"></fh-area-picker>
+		<fh-area-picker ref="fhAreaPicker" :show-none="true"  @onConfirm="onAreaPickerConfirm" :picker-value-default="areaPicker.valueDefault"></fh-area-picker>
 	</view>
 </template>
 
@@ -105,9 +105,6 @@
                     valueDefault:[]
                 },
                 formDictAttr:null,
-                areaPicker:{
-                	valueDefault:[]
-            	},
             	areaPickerType:null,
                 areaLabel:{
                     now:'',
