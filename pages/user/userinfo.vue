@@ -69,6 +69,7 @@
                         if (res.confirm) {
                             //退出登录
                             self.$http.post('/logout').then(function () {
+                                uni.removeStorageSync('wxLoginAuto')
                                 /**
                                  * 如果需要强制登录跳转回登录页面
                                  */

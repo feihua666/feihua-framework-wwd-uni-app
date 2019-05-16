@@ -11,7 +11,7 @@
 						<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
 							<view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.id)">
 								<view class="uni-media-list-logo">
-									<image :src="$config.file.getDownloadUrl(getPic(item.id,1).picUrl)"></image>
+									<image :src="$config.file.getDownloadUrl(getPic(item.id,1))"></image>
 								</view>
 								<view class="uni-media-list-body">
 									<view class="uni-media-list-text-top">{{item.nickname}}</view>
@@ -109,21 +109,21 @@
                     for(let i=0;i<this.listPic1.length;i++){
                         let item = this.listPic1[i]
                         if(wwdUserId == item.wwdUserId){
-                            return item
+                            return item.picUrl
                         }
                     }
                 } else if (index == "2") {
                     for(let i=0;i<this.listPic2.length;i++){
                         let item = this.listPic2[i]
                         if(wwdUserId == item.wwdUserId){
-                            return item
+                            return item.picUrl
                         }
                     }
                 }else if (index == "3") {
                     for(let i=0;i<this.listPic3.length;i++){
                         let item = this.listPic3[i]
                         if(wwdUserId == item.wwdUserId){
-                            return item
+                            return item.picUrl
                         }
                     }
                 }

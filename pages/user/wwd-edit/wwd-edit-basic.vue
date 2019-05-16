@@ -139,13 +139,13 @@
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				目前在
-				<text @tap="showAreaPicker(form.nowAreaIds,'now')">{{userAreaLabel.now}}</text>
+				<text @tap="showAreaPicker(form.nowAreaIds,'now')">{{userAreaLabel.now || '未填写'}}</text>
 			</view>
 		</view>
 		<view class="uni-list-cell uni-list-cell-last">
 			<view class="uni-list-cell-navigate">
 				家乡在
-				<text @tap="showAreaPicker(form.homeAreaIds,'home')">{{userAreaLabel.home}}</text>
+				<text @tap="showAreaPicker(form.homeAreaIds,'home')">{{userAreaLabel.home || '未填写'}}</text>
 			</view>
 		</view>
 		<view class="uni-list-cell-divider background-color-after-none background-color-before-none">
@@ -189,7 +189,7 @@
 			<button type="primary" @tap="save" :loading="saveLoading">保存</button>
 		</view>
 		<fh-dict-picker ref="fhDictPicker" :type="dictPicker.type" :value-default="dictPicker.valueDefault" @onConfirm="onDictPickerConfirm"></fh-dict-picker>
-		<fh-area-picker ref="fhAreaPicker" @onConfirm="onAreaPickerConfirm" :picker-value-default="areaPicker.valueDefault"></fh-area-picker>
+		<fh-area-picker ref="fhAreaPicker" :show-none="false" @onConfirm="onAreaPickerConfirm" :picker-value-default="areaPicker.valueDefault"></fh-area-picker>
 	</view>
 
 </template>
@@ -306,8 +306,19 @@
 		},
 		watch:{
             userArea(){
-                this.userAreaLabel.now = `${this.userArea.nowProvinceName} ${this.userArea.nowCityName} ${this.userArea.nowDistrictName}`;
-                this.userAreaLabel.home = `${this.userArea.homeProvinceName} ${this.userArea.homeCityName} ${this.userArea.homeDistrictName}`;
+                this.userAreaLabel.now = `${this.userArea.nowProvinceName || ''} ${this.userArea.nowCityName || ''} ${this.userArea.nowDistrictName || ''}`;
+                this.userAreaLabel.home = `${this.userArea.homeProvinceName || ''} ${this.userArea.homeCityName || ''} ${this.userArea.homeDistrictName || ''}`;
+
+                if(this.userArea.nowProvinceName && this.userArea.nowCityName && this.userArea.nowDistrictName) {
+
+				}else {
+                    this.userAreaLabel.now = ''
+				}
+                if(this.userArea.homeProvinceName && this.userArea.homeCityName && this.userArea.homeDistrictName) {
+
+                }else {
+                    this.userAreaLabel.home = ''
+                }
                 let nowIds = [];
                 nowIds[0] = this.userArea.nowProvinceId
                 nowIds[1] = this.userArea.nowCityId

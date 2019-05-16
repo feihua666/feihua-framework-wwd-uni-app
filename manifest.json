@@ -67,6 +67,6 @@
     },
     "networkTimeout" : {
         "uploadFile" : 60000,
-        "request" : 60000
+        "request" : 600000
     }
 }

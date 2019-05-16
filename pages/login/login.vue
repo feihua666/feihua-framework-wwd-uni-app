@@ -1,29 +1,36 @@
 <template>
-    <view class="uni-column uni-flex uni-flex-item ">
-        <view>
-            <view class="uni-input-group">
+    <view class="login-bg fh-width-100">
+        <view class="uni-center fh-width-100" style="margin-top: 50px;">
+            <image src="../../static/login/logo.png" style="width:200px;height:200px;"></image>
+        </view>
+        <view class="uni-center"><text class="colorWhite" style="font-size: 15px;">• 缘 分 从 遇 见 开 始 •</text></view>
+        <view class="fh-padding-30" style="display: none">
+            <view class="uni-input-group background-transparent" >
                 <view class="uni-input-row">
-                    <text class="uni-label">账号：</text>
+                    <text class="uni-label colorWhite">账号：</text>
                     <input type="text" focus v-model="form.principal" placeholder="请输入账号"></input>
                 </view>
                 <view class="uni-input-row">
-                    <text class="uni-label">密码：</text>
+                    <text class="uni-label colorWhite">密码：</text>
                     <input type="password" v-model="form.password" placeholder="请输入密码"></input>
                 </view>
             </view>
             <view class="fh-padding-30">
-                <button type="primary" :loading="loginLoading" @tap="loginBtnClick">登录</button>
+                <button type="primary" class="background-transparent border-1px-solid" :loading="loginLoading" @tap="loginBtnClick">帐号登录</button>
             </view>
 
-            <view class="uni-row uni-flex fh-padding-30 fh-justify-content-center">
-                <navigator class="uni-link" url="/pages/regist/regist">注册账号</navigator>
-                <text>|</text>
-                <navigator class="uni-link" url="/pages/password/forget">忘记密码</navigator>
+            <view class="uni-row uni-flex fh-padding-30 fh-justify-content-center colorWhite">
+                <navigator class="uni-link colorWhite" url="/pages/regist/regist">注册账号</navigator>
+                <text> | </text>
+                <navigator class="uni-link colorWhite" url="/pages/password/forget">忘记密码</navigator>
             </view>
+
         </view>
 
-        <view class="fh-padding-30">
-            <button type="primary" @tap="wxLoginBtnClick">微信授权登录(推荐)</button>
+        <view class="fh-width-100" style="position: absolute;bottom: 100px;">
+            <button type="primary" style="width:60%; font-size: 16px;" class="background-transparent border-1px-solid" @tap="wxLoginBtnClick">微 信 授 权 登 录</button>
+            <view class="" style="text-align: center;margin-top: 10px;"><text class="iconfont icon-wechat colorWhite border-1px-solid" style="font-size: 25px;border-radius: 6px;"></text></view>
+
         </view>
 
     </view>
@@ -84,22 +91,18 @@
                     self.loginLoading = false
                 })
             },
-            wxLoginAuto(){
+            wxLogin(){
+                uni.removeStorageSync('wxLogin');
                 let self = this
                 this.$http.post('/login',this.wxLoginForm).then(function () {
-                    // 完成后清除
-                    uni.removeStorage({key:'wxLogin'});
-
                     uni.setStorage({
                         key:'wxLoginAuto',
                         data:true
                     })
                     self.loginSuccess()
-                }).catch(function () {
-                    // 完成后清除
-                    uni.removeStorage({key:'wxLogin'});
+                }).catch(function (res) {
                     uni.showToast({
-                        title:'登录失败',
+                        title:'微信登录失败',
                         icon:'none'
                     })
                 })
@@ -131,11 +134,12 @@
                 return checkRes
             },
             wxLoginBtnClick(){
+                uni.removeStorageSync('wxLoginAuto')
                 let self = this
                 self.$http.get('/publicplatform/authAuthorizePageUrl/' + self.$config.which,{
                     scope:'snsapi_userinfo',
                     state:'STATE',
-                    redirectUrl:self.$config.hostApi + '/publicplatform/getAuthUserInfo/'+ self.$config.which +'?redirectUrl=' + self.$config.host + '/uni-app'
+                    redirectUrl:self.$config.hostApi + '/publicplatform/getAuthUserInfo/'+ self.$config.which +'/' + self.$config.client + '?redirectUrl=' + self.$config.host + '/uni-app'
                 }).then(function (res) {
                     let url = res.data.data.content
                     uni.setStorageSync('wxLogin',true)
@@ -148,12 +152,16 @@
         onLoad(options) {
             console.log('onLoad login')
             //微信登录
-            if (!this.hasLogin && uni.getStorageSync('wxLogin')) {
-                this.wxLoginAuto()
-            }else
-            // 自动登录
-            if (!this.hasLogin && uni.getStorageSync('wxLoginAuto')) {
-                this.wxLoginBtnClick()
+            if (this.hasLogin === true) {
+                console.log('xxx')
+            }else {
+                if ((uni.getStorageSync('wxLogin') === true)) {
+                    this.wxLogin()
+                } else
+                if ((uni.getStorageSync('wxLoginAuto') === true)) {
+                    // 自动登录
+                    this.wxLoginBtnClick()
+                }
             }
         }
     }
@@ -167,5 +175,18 @@
     .uni-input-row input{
         width:100%;
     }
-
+    .colorWhite{
+        color: #fff;
+    }
+    .background-transparent{
+        background: transparent;
+    }
+    .border-1px-solid{
+        border:1px solid;
+    }
+.login-bg{
+    background-image: url("../../static/login/login-bg.jpg");
+    background-size: 100%;
+    position: relative;
+}
 </style>

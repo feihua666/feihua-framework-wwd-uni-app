@@ -17,7 +17,7 @@
                 })
             }).catch(function () {
                 let hash = window.location.hash
-                if(hash && hash.substring(1).indexOf('/pages') == 0){
+                if(hash && hash.substring(1).indexOf('/pages') == 0 && hash.substring(1) != '/pages/login/login'){
                     uni.setStorageSync('navigateToPage',hash.substring(1))
                     uni.reLaunch({
                         url:'/pages/index/index'

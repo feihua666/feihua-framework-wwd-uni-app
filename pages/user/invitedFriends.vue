@@ -6,7 +6,7 @@
 				<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
 					<view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.id)">
 						<view class="uni-media-list-logo">
-							<image :src="$config.file.getDownloadUrl(getPic(item.id).picUrl)"></image>
+							<image :src="$config.file.getDownloadUrl(getPic(item.id))"></image>
 						</view>
 						<view class="uni-media-list-body">
 							<view class="uni-media-list-text-top">{{item.nickname}}</view>
@@ -55,7 +55,7 @@
                 for(let i=0;i<this.listPic.length;i++){
                     let item = this.listPic[i]
                     if(wwdUserId == item.wwdUserId){
-                        return item
+                        return item.picUrl
                     }
                 }
                 return null
