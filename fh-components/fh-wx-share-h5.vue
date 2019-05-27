@@ -41,7 +41,7 @@
                     // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容
                     jWeixin.updateAppMessageShareData({
                         title: shareContent.title, // 分享标题
-                        desc: shareContent.desc, // 分享描述
+                        desc: shareContent.desc || '', // 分享描述
                         link: link, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                         imgUrl: shareContent.imgUrl, // 分享图标
                         success: function () {

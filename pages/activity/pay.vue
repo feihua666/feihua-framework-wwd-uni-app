@@ -4,8 +4,8 @@
 	<view class="uni-card-content">
 		<view class="uni-card-content-inner">
 			<view>
-				<view class="uni-title"><text>活动开始时间：{{activity.startTime}}</text></view>
-				<view class="uni-title"><text>活动结束时间：{{activity.endTime}}</text></view>
+				<view class="uni-title"><text>活动开始时间：{{$utils.date.getDateWeek(activity.startTime)}}</text></view>
+				<view class="uni-title"><text>活动结束时间：{{$utils.date.getDateWeek(activity.endTime)}}</text></view>
 				<view class="uni-title"><text>活动人数：{{activity.headcountDesc}}</text></view>
 				<view class="uni-title"><text>报名费用：{{activity.priceDesc}}</text></view>
 				<view class="uni-title"><text>支付方式：<fh-dict-text class="font-size-sm" type="wwd_pay_type" :val="activity.payType"></fh-dict-text></text></view>

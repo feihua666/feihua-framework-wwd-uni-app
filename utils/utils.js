@@ -108,6 +108,19 @@ const date = {
         }
         return ''
     },
+	getDateWeek:function (dateStr) {
+	    var arr = ['','','']
+	    var weekDay = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+	
+	    if (dateStr) {
+	        arr[0] = dateStr.substring(0, 10)
+	        var myDate = new Date(Date.parse(arr[0].replace(/-/g, "/")));
+	        arr[1] = weekDay[myDate.getDay()]
+	        arr[2] = dateStr.substring(11, 16)
+	        return arr.join(" ")
+	    }
+	    return ''
+	},
     nowDate(){
         let date = new Date()
         let y = date.getFullYear();

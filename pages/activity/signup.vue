@@ -7,6 +7,15 @@
                 <text class="uni-label">姓名：</text>
                 <input type="text" focus clearable v-model="form.name" placeholder="请输入姓名"></input>
             </view>
+			<view class="uni-input-row">
+				<text class="uni-label">性别：</text>
+				<view v-if="wwdUser.gender =='male' || wwdUser.gender =='female' ">
+					<fh-dict-text :type="'gender'" :val="wwdUser.gender" text="未填写"></fh-dict-text>
+				</view>
+				<view v-else @tap="showDictPicker(form.gender,'gender','gender')">
+					<fh-dict-text :type="'gender'" :val="form.gender" text="未填写"></fh-dict-text>
+				</view>
+			</view>
             <view class="uni-input-row">
                 <text class="uni-label">手机号：</text>
                 <input type="text" clearable v-model="form.mobile" placeholder="手机号"></input>
@@ -22,24 +31,37 @@
                     </checkbox>
                 </checkbox-group>
             </view>
+			<fh-dict-picker ref="fhDictPicker" :type="dictPicker.type" :value-default="dictPicker.valueDefault" @onConfirm="onDictPickerConfirm"></fh-dict-picker>
+			
         </view>
         <view class="fh-padding-30">
             <button type="primary" :loading="btnLoading" @tap="signup">下一步</button>
         </view>
+		 <text v-if="!wwdUser.gender || wwdUser.gender =='unknown'" class="info-text">备注：性别更改将会同步到个人资料</text>
     </view>
 </template>
 
 <script>
     //来自 graceUI 的表单验证， 使用说明见手册 http://grace.hcoder.net/doc/info/73-3.html
-    import  graceChecker from "@/utils/graceChecker.js"
+    import  graceChecker from "@/utils/graceChecker.js";
+	import fhDictText from '@/fh-components/fh-dict-text.vue';
+	import fhDictPicker from '@/fh-components/fh-dict-picker.vue';
+
     export default {
         components: {
+			fhDictText,
+			fhDictPicker
         },
         data() {
             return {
+				dictPicker:{
+				    type:null,
+				    valueDefault:null
+				},
                 btnLoading:false,
                 form:{
-                    name: '',
+					name: '',
+                    gender: '',
                     mobile: '',
                     idCardNo: '',
                     activityId: '',
@@ -57,6 +79,19 @@
         computed: {
         },
         methods: {
+			 // showdictpicker
+			showDictPicker(valueDefault,type,wwdUserDictAttr){
+			    this.wwdUserDictAttr = wwdUserDictAttr
+				this.dictPicker.type = type
+				// 先给空值触发变化
+				this.dictPicker.valueDefault = null
+				this.dictPicker.valueDefault = valueDefault
+			
+			    this.$refs.fhDictPicker.show()
+			},
+			onDictPickerConfirm(obj){
+			    this.form[this.wwdUserDictAttr] = obj.value
+			},
             change(e){
                 if(e.detail.value.length > 0){
                     this.form.saveToInfo = 'Y'
@@ -72,6 +107,7 @@
                     self.form.name = self.wwdUser.name
                     self.form.mobile = self.wwdUser.mobile
                     self.form.idCardNo = self.wwdUser.idCardNo
+					self.form.gender = self.wwdUser.gender
                 })
             },
             signup() {
@@ -123,6 +159,7 @@
             checkRegistForm(){
                 let rule = [
                     {name:"name", checkType : "notnull", checkRule:"",  errorMsg:"请填写姓名"},
+					{name:"gender", checkType : "notnull", checkRule:"",  errorMsg:"请填写性别"},
                     {name:"mobile", checkType : "mobile", checkRule:"",  errorMsg:"请填写正确格式手机号"}
                 ];
                 if(this.requireIdCard == 'Y'){
@@ -142,5 +179,10 @@
     }
     .uni-input-row input{
         width:100%;
+		text-align: right;
     }
+	.info-text{
+		padding: 16px;
+		color: red;
+	}
 </style>

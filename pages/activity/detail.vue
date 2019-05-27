@@ -11,8 +11,8 @@
 		</view>
 		<view class=" fh-padding-30">
 			<view class="font-size-lg view-line-height"><text>{{activity.title}}</text></view>
-			<view class="font-size-sm view-line-height"><text>活动开始时间：{{activity.startTime}}</text></view>
-			<view class="font-size-sm view-line-height"><text>活动结束时间：{{activity.endTime}}</text></view>
+			<view class="font-size-sm view-line-height"><text>活动开始时间：{{$utils.date.getDateWeek(activity.startTime)}}</text></view>
+			<view class="font-size-sm view-line-height"><text>活动结束时间：{{$utils.date.getDateWeek(activity.endTime)}}</text></view>
 			<view class="font-size-sm view-line-height"><text>活动人数：{{activity.headcountDesc}}</text></view>
 			<view class="font-size-sm view-line-height"><text>报名费用：{{activity.priceDesc}}</text></view>
 			<view class="font-size-sm view-line-height"><text>支付方式：<fh-dict-text class="font-size-sm" type="wwd_pay_type" :val="activity.payType"></fh-dict-text></text></view>
