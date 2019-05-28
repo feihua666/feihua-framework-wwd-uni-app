@@ -56,10 +56,11 @@
                     selfContent: self.tagSelf
                 }
                 if (self.isUpdateChange){
-                    if (!this.id){
+
+                    if (this.id){
+                        self.$http.put('/wwd/user/current/tag/' + self.type,data).then(success)
+                    } else {
                         self.$http.post('/wwd/user/current/tag/' + self.type,data).then(success)
-                    } else if (!!this.id) {
-						self.$http.put('/wwd/user/current/tag/' + self.type,data).then(success)
                     }
                 }
 

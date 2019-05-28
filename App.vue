@@ -2,6 +2,8 @@
 	export default {
 		onLaunch: async function () {
             console.log('App Launch')
+            let code = this.$utils.getUrlParam(null,'code')
+            uni.setStorageSync('weixincode',code)
         },
 		onShow: function () {
 			console.log('App Show')
@@ -9,11 +11,13 @@
             this.$http.hasLogin().then(function () {
                 self.$http.get('/wwd/user/current/invited').then(function (res) {
                     // 有数据，已被邀请
-                }).catch(function () {
-                    // 跳转到输入邀请码页面
-                    uni.reLaunch({
-                        url: '/pages/invitation/invitation'
-                    });
+                }).catch(function (res) {
+                    if (res && res.statusCode == 404) {
+                        // 跳转到输入邀请码页面
+                        uni.reLaunch({
+                            url: '/pages/invitation/invitation'
+                        });
+                    }
                 })
             }).catch(function () {
                 let hash = window.location.hash

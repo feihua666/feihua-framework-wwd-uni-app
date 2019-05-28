@@ -180,6 +180,7 @@
                     title: this.wwdUser.wwdUserDto.nickname,
                     desc: this.wwdUser.wwdUserDto.description,
                     imgUrl: this.$config.file.getDownloadUrl(this.wwdUser.photo),
+					link: this.$config.host + '/uni-app/#/pages/detail/detail?wwdUserId=' + this.wwdUser.wwdUserDto.id
                 }
             }
 		},

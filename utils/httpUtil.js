@@ -363,12 +363,7 @@ export function hasLogin () {
         getCurrentUserinfo().then(response => {
             resolve()
         }).catch(err => {
-            let statusCode = err.statusCode
-            if (statusCode === 401) {
-                reject(err)
-            }else {
-                resolve()
-            }
+            reject(err)
         })
     })
 }

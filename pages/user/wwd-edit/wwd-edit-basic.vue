@@ -222,7 +222,9 @@
                 wwdUserDictAttr:'',
 				saveLoading:false,
 				form:{
-                    wwdUser:{},
+                    wwdUser:{
+                        birthDay: ''
+					},
                     nowAreaIds:[],
                     homeAreaIds:[]
 				},
@@ -247,11 +249,12 @@
                 this.$refs.fhDictPicker.show()
 			},
             onDictPickerConfirm(obj){
-                this.form.wwdUser[this.wwdUserDictAttr] = obj.value
+				this.$set(this.form.wwdUser,this.wwdUserDictAttr,obj.value)
             },
 			onBirthdayChange(e){
-                this.form.wwdUser.birthDay = e.detail.value
-			},
+                this.$set(this.form.wwdUser,'birthDay',e.detail.value)
+
+            },
             onAreaPickerConfirm(obj){
                 if('now' ==  this.areaPickerType){
                     this.userAreaLabel.now = obj.label.join(' ')
@@ -271,7 +274,7 @@
                 let self = this
                 self.$http.get('/wwd/user/current').then( res => {
                     let content = res.data.data.content
-                    self.form.wwdUser = content
+					self.$set(self.form,'wwdUser',content)
                 })
 			},
             //加载区域，家乡和当前所在地

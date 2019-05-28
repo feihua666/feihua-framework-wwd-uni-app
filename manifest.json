@@ -60,7 +60,8 @@
         },
         "devServer" : {
             "port" : 8383,
-            "disableHostCheck" : true
+            "disableHostCheck" : true,
+            "https" : true
         },
         "template" : "index.html",
         "title" : "靠谱单身"

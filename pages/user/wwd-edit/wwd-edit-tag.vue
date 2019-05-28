@@ -6,13 +6,12 @@
 			<view class="uni-list-cell-divider background-color-after-none background-color-before-none">
 				标签信息
 			</view>
-			<view class="uni-list-cell" @tap="$utils.n.ngt('/pages/user/wwd-edit/tag-edit?type='+item.type + '&id=' + item.id)"
+			<view class="uni-list-cell" @tap="$utils.n.ngt('/pages/user/wwd-edit/tag-edit?type='+item.type + '&id=' + (getTag(item).id || ''))"
 				  :class="{'uni-list-cell-last':index == tagsBind.length -1}"
 				  hover-class="uni-list-cell-hover"
 				  v-for="(item,index) in tagsBind">
 				<view class="uni-list-cell-navigate uni-navigate-right uni-navigate-badge">
 					{{item.name}}
-					<text >{{item.value}}</text>
 					<template v-for="tag in tags" v-if="tag.type == item.type && tag.content">
 						<view>
 							<fh-dict-text style="margin-right: 3px;" v-for="dictValue in tag.content.split(',')" :type="tag.type + ''" :val="dictValue" text=""></fh-dict-text>
@@ -68,6 +67,15 @@
 		},
 		methods:{
 
+            getTag (item) {
+                for (let i = 0; i < this.tags.length; i++) {
+                    let tag = this.tags[i]
+                    if (tag.type == item.type && tag.content){
+                        return tag
+					}
+				}
+                return {}
+			},
             loadTags: function () {
                 let self = this
                 self.$http.get('/wwd/user/current/tags').then(function (res) {

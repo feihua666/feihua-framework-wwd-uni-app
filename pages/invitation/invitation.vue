@@ -77,7 +77,6 @@
                 return checkRes
             },
             logoutBtnClick() {
-
                 let self = this
                 uni.showModal({
                     title: '输入邀请码才可继续使用',
@@ -88,6 +87,8 @@
                     showCancel: true,
                     success: (res) => {
                         if (res.confirm) {
+                            uni.removeStorageSync('wxLoginAuto')
+                            uni.removeStorageSync('wxLogin')
                             //退出登录
                             self.$http.post('/logout').then(function () {
                                 /**

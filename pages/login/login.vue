@@ -58,6 +58,7 @@
                     loginType: 'WX_PLATFORM',
                     client: this.$config.client,
                     type:this.$config.which,
+                    openid: '',
                     rememberMe: false
                 },
             }
@@ -94,18 +95,40 @@
             wxLogin(){
                 uni.removeStorageSync('wxLogin');
                 let self = this
-                this.$http.post('/login',this.wxLoginForm).then(function () {
-                    uni.setStorage({
-                        key:'wxLoginAuto',
-                        data:true
+                let p = {
+                    code: uni.getStorageSync('weixincode')
+                }
+                if (!p.code) {
+                    return
+                }
+                uni.showLoading({
+                    title: ''
+                });
+                self.$http.post('/publicplatform/authUserInfo/' + self.$config.which +'/' + self.$config.client,p).then(function (res) {
+                    let openid = res.data.data.content
+                    self.wxLoginForm.openid = openid
+                    self.$http.post('/login',self.wxLoginForm).then(function () {
+                        uni.setStorage({
+                            key:'wxLoginAuto',
+                            data:true
+                        })
+                        uni.hideLoading();
+                        self.loginSuccess()
+                    }).catch(function (res) {
+                        uni.hideLoading();
+                        uni.showToast({
+                            title:'微信登录失败',
+                            icon:'none'
+                        })
                     })
-                    self.loginSuccess()
-                }).catch(function (res) {
+                }).catch(function () {
+                    uni.hideLoading();
                     uni.showToast({
-                        title:'微信登录失败',
+                        title:'获取微信用户信息失败',
                         icon:'none'
                     })
                 })
+
             },
             // 登录成功调用,用于初始化基础数据
             loginSuccess(){
@@ -139,7 +162,7 @@
                 self.$http.get('/publicplatform/authAuthorizePageUrl/' + self.$config.which,{
                     scope:'snsapi_userinfo',
                     state:'STATE',
-                    redirectUrl:self.$config.hostApi + '/publicplatform/getAuthUserInfo/'+ self.$config.which +'/' + self.$config.client + '?redirectUrl=' + self.$config.host + '/uni-app'
+                    redirectUrl:self.$config.host + '/uni-app'
                 }).then(function (res) {
                     let url = res.data.data.content
                     uni.setStorageSync('wxLogin',true)
@@ -151,17 +174,12 @@
         },
         onLoad(options) {
             console.log('onLoad login')
-            //微信登录
-            if (this.hasLogin === true) {
-                console.log('xxx')
-            }else {
-                if ((uni.getStorageSync('wxLogin') === true)) {
-                    this.wxLogin()
-                } else
-                if ((uni.getStorageSync('wxLoginAuto') === true)) {
-                    // 自动登录
-                    this.wxLoginBtnClick()
-                }
+            if ((uni.getStorageSync('wxLogin') === true)) {
+                this.wxLogin()
+            } else
+            if ((uni.getStorageSync('wxLoginAuto') === true)) {
+                // 自动登录
+                this.wxLoginBtnClick()
             }
         }
     }

@@ -25,11 +25,11 @@
             this.setLabel(this.type, this.val)
         },
         watch: {
-            type () {
-                this.setLabel(this.type, this.val)
+            type (type) {
+                this.setLabel(type, this.val)
             },
-            val () {
-                this.setLabel(this.type, this.val)
+            val (val) {
+                this.setLabel(this.type, val)
             }
         },
         methods: {

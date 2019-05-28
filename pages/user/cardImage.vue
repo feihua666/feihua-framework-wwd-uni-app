@@ -7,7 +7,7 @@
 			还没有卡片点击下方的按钮生成吧
 		</view>
 		<view class="fh-padding-30">
-			<button type="primary" :loading="generateLoading" @tap="generate">{{cardinfo ? '重新': ''}}生成卡片</button>
+			<button type="primary"  v-if="wwdUserId" :loading="generateLoading" @tap="generate">{{cardinfo ? '重新': ''}}生成卡片</button>
 		</view>
 	</view>
 </template>
@@ -17,11 +17,13 @@
 		data() {
 			return {
 			    generateLoading:false,
-				cardinfo:null
+				cardinfo:null,
+				wwdUserId: null
 			};
 		},
 		onLoad(){
 		    this.loadData()
+		    this.loadWwdUser()
 		},
 		computed:{
 		    imageUrl(){
@@ -36,11 +38,22 @@
                     self.cardinfo = content
                 })
 			},
+            loadWwdUser(){
+                let self = this
+                self.$http.get('/wwd/user/current').then( res => {
+                    let content = res.data.data.content
+					self.wwdUserId = content.id
+                })
+            },
 			// 生成卡片
 			generate(){
                 let self = this
                 this.generateLoading = true
-                this.$http.post('/wwd/user/generatecard').then(function (res) {
+				let p = {
+                    sceneStr: 'card_wwdUserId_' + self.wwdUserId , // 前缀不能变后台有用到
+					which: self.$config.which
+				}
+                this.$http.post('/wwd/user/generatecard',p).then(function (res) {
                     let content = res.data.data.content
                     self.cardinfo = content
                     self.generateLoading = false

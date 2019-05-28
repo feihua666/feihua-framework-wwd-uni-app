@@ -32,7 +32,7 @@
                 </checkbox-group>
             </view>
 			<fh-dict-picker ref="fhDictPicker" :type="dictPicker.type" :value-default="dictPicker.valueDefault" @onConfirm="onDictPickerConfirm"></fh-dict-picker>
-			
+
         </view>
         <view class="fh-padding-30">
             <button type="primary" :loading="btnLoading" @tap="signup">下一步</button>
@@ -86,7 +86,7 @@
 				// 先给空值触发变化
 				this.dictPicker.valueDefault = null
 				this.dictPicker.valueDefault = valueDefault
-			
+
 			    this.$refs.fhDictPicker.show()
 			},
 			onDictPickerConfirm(obj){
@@ -107,7 +107,9 @@
                     self.form.name = self.wwdUser.name
                     self.form.mobile = self.wwdUser.mobile
                     self.form.idCardNo = self.wwdUser.idCardNo
-					self.form.gender = self.wwdUser.gender
+                    if (self.wwdUser.gender == 'male' || self.wwdUser.gender == 'female') {
+                        self.form.gender = self.wwdUser.gender
+                    }
                 })
             },
             signup() {

@@ -17,7 +17,7 @@
 			<view class="font-size-sm view-line-height"><text>报名费用：{{activity.priceDesc}}</text></view>
 			<view class="font-size-sm view-line-height"><text>支付方式：<fh-dict-text class="font-size-sm" type="wwd_pay_type" :val="activity.payType"></fh-dict-text></text></view>
 			<view class="font-size-sm view-line-height"><text>活动地点：{{activity.addr}}</text></view>
-			
+
 		</view>
 		<view class="article-content activity-detail-content-img-width100 uni-center">
 			<view v-html="activity.content"></view>
@@ -89,6 +89,7 @@
                     title: this.activity.title,
                     desc: this.activity.introduced,
                     imgUrl: this.$config.file.getDownloadUrl(this.activity.titleUrl) + '?x-oss-process=image/resize,h_528/auto-orient,1',
+                    link: this.$config.host + '/uni-app/#/pages/activity/detail?id=' + this.activity.id
                 }
 			}
 		},

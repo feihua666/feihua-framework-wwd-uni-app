@@ -70,6 +70,7 @@
                             //退出登录
                             self.$http.post('/logout').then(function () {
                                 uni.removeStorageSync('wxLoginAuto')
+                                uni.removeStorageSync('wxLogin')
                                 /**
                                  * 如果需要强制登录跳转回登录页面
                                  */
