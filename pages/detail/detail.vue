@@ -180,7 +180,10 @@
                     title: this.wwdUser.wwdUserDto.nickname,
                     desc: this.wwdUser.wwdUserDto.description,
                     imgUrl: this.$config.file.getDownloadUrl(this.wwdUser.photo),
-					link: this.$config.host + '/uni-app/#/pages/detail/detail?wwdUserId=' + this.wwdUser.wwdUserDto.id
+					link: this.$config.host + '/uni-app/#/pages/detail/detail?wwdUserId=' + this.wwdUser.wwdUserDto.id,
+                    type:'汪汪队用户详情',
+                    contentId:this.wwdUser.wwdUserDto.id,
+                    contentName:this.wwdUser.wwdUserDto.name
                 }
             }
 		},
@@ -268,6 +271,13 @@
                     let content = response.data.data.content
                     self.wwdUser.wwdUserDto = content
                     self.wwdUser.photo = response.data.data.photo
+					// 记录页面访问
+					self.$http.pageViewRecord({
+                        url:window.location.href,
+                        type:'汪汪队用户详情',
+                        contentId:content.id,
+                        contentName:content.name
+					})
                 })
 			},
 			//加载区域，家乡和当前所在地
