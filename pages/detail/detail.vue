@@ -180,7 +180,6 @@
                     title: this.wwdUser.wwdUserDto.nickname,
                     desc: this.wwdUser.wwdUserDto.description,
                     imgUrl: this.$config.file.getDownloadUrl(this.wwdUser.photo),
-					link: this.$config.host + '/uni-app/#/pages/detail/detail?wwdUserId=' + this.wwdUser.wwdUserDto.id,
                     type:'汪汪队用户详情',
                     contentId:this.wwdUser.wwdUserDto.id,
                     contentName:this.wwdUser.wwdUserDto.name

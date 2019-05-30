@@ -5,6 +5,7 @@ const hostApi = host + '/api'
 const config = {
     host: host,
     hostApi: hostApi,
+    hostContext: host + '/uni-app',
     cookieKey:'cookieKey',
     file: {
         // 文件上传地址

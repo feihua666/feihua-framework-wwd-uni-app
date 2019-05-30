@@ -2,8 +2,11 @@
 	export default {
 		onLaunch: async function () {
             console.log('App Launch')
+            // 微信授权登录code
             let code = this.$utils.getUrlParam(null,'code')
             uni.setStorageSync('weixincode',code)
+            // 单页面应用在历史模式下，微信分享的签名url只能是第一次的url这里记录一下以待签名使用
+            window.entryUrl = window.location.href
         },
 		onShow: function () {
 			console.log('App Show')
@@ -20,9 +23,10 @@
                     }
                 })
             }).catch(function () {
-                let hash = window.location.hash
-                if(hash && hash.substring(1).indexOf('/pages') == 0 && hash.substring(1) != '/pages/login/login'){
-                    uni.setStorageSync('navigateToPage',hash.substring(1))
+                // 如果没有登录，记录入口页面，登录成功后导航到入口页面，具体导航操作在登录页面执行
+                let hash = window.location.href.replace(self.$config.hostContext,'')
+                if(hash && hash.indexOf('/pages') == 0 && hash != '/pages/login/login'){
+                    uni.setStorageSync('navigateToPage',hash)
                     uni.reLaunch({
                         url:'/pages/index/index'
                     })

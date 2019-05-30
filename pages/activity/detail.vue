@@ -142,7 +142,6 @@
 
                     // 记录页面访问
                     self.$http.pageViewRecord({
-                        url:window.location.href,
                         type:'汪汪队用户详情',
                         contentId:content.id,
                         contentName:content.title
