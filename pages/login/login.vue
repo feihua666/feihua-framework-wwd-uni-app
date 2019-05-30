@@ -92,11 +92,10 @@
                     self.loginLoading = false
                 })
             },
-            wxLogin(){
-                uni.removeStorageSync('wxLogin');
+            wxLogin(code){
                 let self = this
                 let p = {
-                    code: uni.getStorageSync('weixincode')
+                    code: code
                 }
                 if (!p.code) {
                     return
@@ -157,15 +156,13 @@
                 return checkRes
             },
             wxLoginBtnClick(){
-                uni.removeStorageSync('wxLoginAuto')
                 let self = this
                 self.$http.get('/publicplatform/authAuthorizePageUrl/' + self.$config.which,{
                     scope:'snsapi_userinfo',
                     state:'STATE',
-                    redirectUrl:self.$config.hostContext
+                    redirectUrl: self.$config.hostContext + '/pages/login/login'
                 }).then(function (res) {
                     let url = res.data.data.content
-                    uni.setStorageSync('wxLogin',true)
                     window.location.href = url
                 })
             }
@@ -174,10 +171,10 @@
         },
         onLoad(options) {
             console.log('onLoad login')
-            if ((uni.getStorageSync('wxLogin') === true)) {
-                this.wxLogin()
-            } else
-            if ((uni.getStorageSync('wxLoginAuto') === true)) {
+            let code = this.$utils.getUrlParam(null,'code') || ''
+            if(code)  {
+                this.wxLogin(code)
+            }else if ((uni.getStorageSync('wxLoginAuto') === true)) {
                 // 自动登录
                 this.wxLoginBtnClick()
             }

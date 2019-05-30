@@ -88,7 +88,6 @@
                     success: (res) => {
                         if (res.confirm) {
                             uni.removeStorageSync('wxLoginAuto')
-                            uni.removeStorageSync('wxLogin')
                             //退出登录
                             self.$http.post('/logout').then(function () {
                                 /**
