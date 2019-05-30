@@ -89,7 +89,6 @@
                     title: this.activity.title,
                     desc: this.activity.introduced,
                     imgUrl: this.$config.file.getDownloadUrl(this.activity.titleUrl) + '?x-oss-process=image/resize,h_528/auto-orient,1',
-                    link: this.$config.host + '/uni-app/#/pages/activity/detail?id=' + this.activity.id,
                     type:'汪汪队活动详情',
                     contentId:this.activity.id,
                     contentName:this.activity.title

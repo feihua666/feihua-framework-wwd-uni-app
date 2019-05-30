@@ -162,7 +162,7 @@
                 self.$http.get('/publicplatform/authAuthorizePageUrl/' + self.$config.which,{
                     scope:'snsapi_userinfo',
                     state:'STATE',
-                    redirectUrl:self.$config.host + '/uni-app'
+                    redirectUrl:self.$config.hostContext
                 }).then(function (res) {
                     let url = res.data.data.content
                     uni.setStorageSync('wxLogin',true)
