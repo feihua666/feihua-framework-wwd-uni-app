@@ -21,6 +21,7 @@
                     }
                 })
             }).catch(function () {
+
                 // 如果没有登录，记录入口页面，登录成功后导航到入口页面，具体导航操作在登录页面执行
                 let hash = window.location.href.replace(self.$config.hostContext,'')
                 if(hash && hash.indexOf('/pages') == 0 && hash.indexOf('/pages/login/login') != 0){
