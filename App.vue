@@ -24,6 +24,10 @@
 
                 // 如果没有登录，记录入口页面，登录成功后导航到入口页面，具体导航操作在登录页面执行
                 let hash = window.location.href.replace(self.$config.hostContext,'')
+                // 兼容井号的分享页面
+                if ((!hash || hash.indexOf('/pages') != 0) && window.location.href.indexOf('#')>0){
+                    hash = window.location.href.split('#')[1]
+                }
                 if(hash && hash.indexOf('/pages') == 0 && hash.indexOf('/pages/login/login') != 0){
                     uni.setStorageSync('navigateToPage',hash)
                     uni.reLaunch({
