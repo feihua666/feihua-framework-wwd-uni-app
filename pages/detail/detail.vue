@@ -48,7 +48,7 @@
 					<fh-dict-text class=" font-size-sm" type="education_level" :val="wwdUser.wwdUserDto.education"></fh-dict-text>
 
 					<text class=" font-size-sm">
-						{{wwdUser.wwdUserDto.college}} {{wwdUser.wwdUserDto.major}}
+						{{wwdUser.wwdUserDto.college || ''}} {{wwdUser.wwdUserDto.major || ''}} {{wwdUser.wwdUserDto.profession || ''}}
 					</text>
 				</text>
 			</view>
@@ -76,9 +76,12 @@
 				<view class="uni-flex uni-row view-line-height">
 					<text class='iconfont icon-cheliang uni-flex-item '><text class="fh-inline-space-10"></text>
 						<fh-dict-text class=" font-size-sm" type="has_car_status" :val="wwdUser.wwdUserDto.hasCar"></fh-dict-text>
+						<text class="font-size-sm" v-if="wwdUser.wwdUserDto.carCity">({{wwdUser.wwdUserDto.carCity}})</text>
+
 					</text>
 					<text class='iconfont icon-icon-test1 uni-flex-item'><text class="fh-inline-space-10"></text>
 						<fh-dict-text class=" font-size-sm" type="has_hourse_status" :val="wwdUser.wwdUserDto.hasHourse"></fh-dict-text>
+						<text class="font-size-sm" v-if="wwdUser.wwdUserDto.hourseCity">({{wwdUser.wwdUserDto.hourseCity}})</text>
 					</text>
 				</view>
 				<view class="uni-flex uni-row view-line-height">

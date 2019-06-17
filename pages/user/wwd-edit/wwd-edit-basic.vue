@@ -87,6 +87,12 @@
 				</view>
 			</view>
 		</view>
+		<view class="uni-list-cell" v-if="form.wwdUser.hasCar == 'yes'">
+			<view class="uni-list-cell-navigate">
+				车牌所在城市,如：京牌
+				<input class="fh-text-align-right" v-model="form.wwdUser.carCity" placeholder="未填写"/>
+			</view>
+		</view>
 		<view class="uni-list-cell">
 			<view class="uni-list-cell-navigate">
 				房
@@ -94,6 +100,12 @@
 					<fh-dict-text :type="'has_hourse_status'" :val="form.wwdUser.hasHourse" text="未填写"></fh-dict-text>
 				</view>
 
+			</view>
+		</view>
+		<view class="uni-list-cell"  v-if="form.wwdUser.hasHourse == 'single_loan' || form.wwdUser.hasHourse == 'single_no_loan'">
+			<view class="uni-list-cell-navigate">
+				房所在城市,如：北京
+				<input class="fh-text-align-right" v-model="form.wwdUser.hourseCity" placeholder="未填写"/>
 			</view>
 		</view>
 		<view class="uni-list-cell">
@@ -292,7 +304,12 @@
                 let data = this.form.wwdUser
                 data.nowAreaIds = this.form.nowAreaIds
                 data.homeAreaIds = this.form.homeAreaIds
-
+				if (self.form.wwdUser.hasHourse != 'single_loan' && self.form.wwdUser.hasHourse != 'single_no_loan'){
+                    self.form.wwdUser.hourseCity = null
+				}
+                if (self.form.wwdUser.hasCar != 'yes'){
+                    self.form.wwdUser.carCity = null
+                }
 				this.saveLoading = true
                 this.$http.put('/wwd/user/current',data).then(function (res) {
                     uni.showToast({
