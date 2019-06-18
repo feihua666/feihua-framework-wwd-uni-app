@@ -280,7 +280,13 @@
                         contentId:content.id,
                         contentName:content.name
 					})
+					self.addWwdUserVisit({wwdUserId:self.wwdUserId,visitType:self.$utils.getUrlFrom(window.location.href,'from')})
                 })
+			},
+			//添加我看了谁
+			addWwdUserVisit(data){
+			    this.$http.post('/wwd/user/visit' , data).then(function (res) {
+			    })
 			},
 			//加载区域，家乡和当前所在地
 			loadArea(){

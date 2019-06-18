@@ -32,6 +32,17 @@
                     我邀请的朋友
                 </view>
             </view>
+			<view class="uni-list-cell" hover-class="uni-list-cell-hover">
+			    <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.n.ngt('/pages/user/visit')">
+			        谁看过我
+					<uni-badge v-if="visit.nRead>0" :text="'+'+visit.nRead" type="danger"></uni-badge>
+			    </view>
+			</view>
+			<view class="uni-list-cell" hover-class="uni-list-cell-hover">
+			    <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.n.ngt('/pages/user/my-visit')">
+			        我看过谁
+			    </view>
+			</view>
 			<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
 			    <view class="uni-list-cell-navigate uni-navigate-right" @click="$utils.n.ngt('/pages/user/participate/participate')">
 			        我的活动
@@ -75,7 +86,11 @@
         data () {
             return {
                 inviteCode:null,
-                userinfo: null
+                userinfo: null,
+				visit: {
+					yRead:0,
+					nRead:0
+				}
             }
         },
         computed: {
@@ -89,7 +104,15 @@
                     let content = res.data.data.content
                     self.inviteCode = content[0].code
                 })
-            }
+            },
+			//加载访问统计
+			loadVisitCount(){
+				let self = this
+				  this.$http.get('/wwd/user/visit/count').then(function (res) {
+				    let content = res.data.data.content
+				    self.visit = content
+				})
+			}
         },
         watch:{
         },
@@ -99,10 +122,15 @@
                 self.userinfo = content
             })
             this.loadInviteCode()
-        }
+        },
+		onShow(){
+			this.loadVisitCount()
+		}
     }
 </script>
 
 <style>
-
+	.uni-list-cell-navigate text,.uni-badge{
+		margin-right: 20px;
+	}
 </style>

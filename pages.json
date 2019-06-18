@@ -213,7 +213,21 @@
             "style" : {
                 "navigationBarTitleText" : "活动报名联系信息"
             }
-        }
+        },
+		{
+		    "path" : "pages/user/visit",
+		    "style" : {
+		        "navigationBarTitleText" : "谁看过我",
+		        "enablePullDownRefresh" : true //开启下拉刷新
+		    }
+		},
+		{
+		    "path" : "pages/user/my-visit",
+		    "style" : {
+		        "navigationBarTitleText" : "我看过谁",
+		        "enablePullDownRefresh" : true //开启下拉刷新
+		    }
+		}
     ],
     "tabBar" : {
         "list" : [

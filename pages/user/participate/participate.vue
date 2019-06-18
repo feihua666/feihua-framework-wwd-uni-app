@@ -50,6 +50,9 @@
 						<fh-uni-tag inverted="true" type="danger" size="small">
 						     <fh-dict-text :type="'wwd_pay_type'" :val="item.payType"></fh-dict-text>
 						</fh-uni-tag>
+						<fh-uni-tag inverted="true" type="danger" size="small">
+						     <fh-dict-text :type="'wwd_part_status'" :val="getParticipateStatus(item.wwdParticipateDtos)"></fh-dict-text>
+						</fh-uni-tag>
 						</view>
                 	</view>
             </view>
@@ -80,6 +83,7 @@
 			return {
 			    // 列表信息
                 listData: [],
+				wwdUserId: '',
                 searchForm: {
                     isParticipate: true,
                     keyword:'', // 查询关键字
@@ -93,6 +97,7 @@
             this.$bus.$on('participateSearch',(data) => {
                 this.doSearch(data)
             })
+			self.loadWwdUser()
 		},
         onReady() {
             this.loadData(true)
@@ -105,10 +110,29 @@
             this.loadData()
         },
         methods: {
+			loadWwdUser (){
+				let self = this
+				self.$http.get('/wwd/user/current').then(function (res) {
+					let content = res.data.data.content
+					self.wwdUserId = content.id
+				})
+			},
             previewImage:function(url){
                 if(url)
                 uni.previewImage({urls:[url]})
             },
+			//获取参与活动状态
+			getParticipateStatus:function(participates){
+				let self = this
+				let status = ''
+			    for (let i = 0; i < participates.length; i++) {
+			        if (self.wwdUserId === participates[i].wwdUserId) {
+			            status = participates[i].status
+			            break
+			        }
+			    }
+				return status
+			},
             loadData:function(pullDownRefresh){
                 let self = this
                 if(!this.$refs.loadmoreref){

@@ -384,21 +384,7 @@ export function hasLogin () {
 export function pageViewRecord (data) {
 
     if (!data.whereFrom) {
-        let from = utils.getUrlParam(window.location.href,'from')
-        console.log(from)
-        let fromStr = '正常访问'
-        if (from) {
-            if ('timeline' == from) {
-                fromStr = '朋友圈'
-            }else if ('groupmessage' == from) {
-                fromStr = '微信群'
-            }else if ('singlemessage' == from) {
-                fromStr = '微信朋友'
-            }else {
-                fromStr = from
-            }
-        }
-        data.whereFrom = fromStr
+        data.whereFrom = utils.getUrlFrom(window.location.href,'from')
     }
     if (!data.url) {
         data.url = window.location.href

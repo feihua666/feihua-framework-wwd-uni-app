@@ -232,6 +232,22 @@ const getUrlParam = function (url, name) {
     }
     return null;
 }
+const getUrlFrom = function (url, name) {
+    let from = getUrlParam(url,name)
+    let fromStr = '正常访问'
+    if (from) {
+       if ('timeline' == from) {
+           fromStr = '朋友圈'
+       }else if ('groupmessage' == from) {
+           fromStr = '微信群'
+       }else if ('singlemessage' == from) {
+           fromStr = '微信朋友'
+       }else {
+           fromStr = from
+       }
+    }
+    return fromStr;
+}
 export default {
     isArray: isArray,
     copy: copy,
@@ -244,7 +260,7 @@ export default {
     browser: browser,
     concatUrlParam: concatUrlParam,
     concatUrlHashParam: concatUrlHashParam,
-    getUrlParam: getUrlParam
-
+    getUrlParam: getUrlParam,
+	getUrlFrom: getUrlFrom
 
 }
