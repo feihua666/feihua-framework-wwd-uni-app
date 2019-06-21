@@ -27,13 +27,20 @@
             <view style="margin-top:10px;" class="uni-card box-shadow-none" @tap="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.wwdUserDto.id)" v-for="(item,index) in listData" :key="index">
                 <view class="uni-card-header uni-card-media">
                     <image class="uni-card-media-logo" :src="$config.file.getDownloadUrl(photo[item.wwdUserDto.userId])"></image>
-                    <view class="uni-card-media-body">
-                        <text class="uni-card-media-text-top">
-                            <text class="iconfont" :class="$utils.genderIcon(item.wwdUserDto.gender)">
+                    <view class="uni-card-media-body fh-width-100">
+                        <view class="uni-card-media-text-top fh-width-100 uni-flex fh-justify-content-space-between">
+                            <text>
+                                <text class="iconfont" :class="$utils.genderIcon(item.wwdUserDto.gender)">
+                                </text>
+                                <text class="fh-inline-space-10"></text>
+                                {{item.wwdUserDto.nickname}}
                             </text>
-                            <text class="fh-inline-space-10"></text>
-                            {{item.wwdUserDto.nickname}}
-                        </text>
+                            <text>
+                                <text style="font-size: 0.7em;color: #cccccc;" v-if="accessInfo[item.wwdUserDto.userId]">{{accessInfo[item.wwdUserDto.userId].accessLasttimeText || ''}}来过</text>
+                            </text>
+
+                        </view>
+
                         <text class="uni-card-media-text-bottom font-size-sm">
                             <text class=' iconfont icon-weizhi'></text>
                             <text class="fh-inline-space-10"></text>
@@ -90,8 +97,10 @@
                 listData: [],
                 //列表头像信息
                 photo:{},
+                accessInfo:{},
                 searchForm: {
                     includePic: true,
+                    includeAccessInfo: true,
                     keyword:'',
                     gender:'',
                     ageStart:'',
@@ -150,6 +159,9 @@
                     }
                     for(let key in res.data.data.photo){
                         self.photo[key] = res.data.data.photo[key]
+                    }
+                    for(let key in res.data.data.accessInfo){
+                        self.accessInfo[key] = res.data.data.accessInfo[key]
                     }
                 }).catch(function (res) {
                     let status = res.statusCode

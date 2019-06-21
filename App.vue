@@ -143,6 +143,9 @@
         display: inline-block;
         width: 15px;
     }
+    .fh-btn-link{
+        color: #0A98D5;
+    }
 
 
     .box-shadow-none{

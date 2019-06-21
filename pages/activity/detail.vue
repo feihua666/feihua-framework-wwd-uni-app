@@ -9,7 +9,24 @@
 			<text class="article-text">创建于</text>
 			<text class="article-time">{{activity.updateAt}}</text>
 		</view>
-		<view class=" fh-padding-30">
+		<view class="fh-padding-30" v-if="activityManage">
+			<text class="article-author">活动互选：</text>
+			<switch :checked="activity.mutualElectionStatus == 'ongoing'" @change="switchMutualElectionStatus"/>
+			<text class="article-time" v-if="activity.mutualElectionStatus == 'no_start'">互选未开始,点击开关开启互选</text>
+			<text class="article-time" v-else-if="activity.mutualElectionStatus == 'ongoing'">互选进行中</text>
+			<text class="article-time" v-else-if="activity.mutualElectionStatus == 'ended'">互选已结束</text>
+			<text class="article-time" v-else>点击开关开启互选</text>
+
+		</view>
+		<view class="fh-padding-30" v-if="activityManage">
+			<text class="article-author">查看活动互选结果：</text>
+			<text class="article-time fh-btn-link" @click="$utils.n.ngt('/pages/activity/mutualElectionResult?activityId=' + activity.id)">点击查看</text>
+		</view>
+		<view class="fh-padding-30" v-if="activity.mutualElectionStatus == 'ongoing' && participate">
+			<text class="article-author">开始互选：</text>
+			<text class="article-time fh-btn-link" @click="$utils.n.ngt('/pages/activity/mutualElection?activityId=' + activity.id + '&wwdUserId=' + wwdUser.id + '&gender=' + wwdUser.gender)">点击开始</text>
+		</view>
+		<view class="fh-padding-30">
 			<view class="font-size-lg view-line-height"><text>{{activity.title}}</text></view>
 			<view class="font-size-sm view-line-height"><text>活动开始时间：{{$utils.date.getDateWeek(activity.startTime)}}</text></view>
 			<view class="font-size-sm view-line-height"><text>活动结束时间：{{$utils.date.getDateWeek(activity.endTime)}}</text></view>
@@ -63,6 +80,7 @@
 					payStatus: 'paid,offline_pay',
 					status: 'normal,alternate'
 				},
+                activityManage: false,
 				participates: [],
 				participate: true,
                 wwdUser: {}
@@ -116,6 +134,7 @@
 				let self = this
                 self.$http.get('/wwd/activity/' + self.activity.id).then(function (response) {
                     let content = response.data.data.content
+					self.activityManage = response.data.data.activityManage
                     self.activity = content
                     let headcountDesc = ''
                     if(content.headcount==0 || (content.headcountMale + content.headcountFemale) == 0){
@@ -192,7 +211,13 @@
                     let content = res.data.data.content
                     self.wwdUser = content
                 })
-            }
+            },
+            switchMutualElectionStatus(e){
+			    let status = e.target.value ? 'ongoing':'ended'
+                let self = this
+                self.activity.mutualElectionStatus = status
+				self.$http.put('/wwd/activity/'+ self.activity.id +'/mutualElection/' + status)
+			}
 		}
 	}
 </script>

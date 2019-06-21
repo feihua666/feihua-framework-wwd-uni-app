@@ -214,6 +214,20 @@
                 "navigationBarTitleText" : "活动报名联系信息"
             }
         },
+        {
+            "path" : "pages/activity/mutualElection",
+            "style" : {
+                "navigationBarTitleText" : "活动互选",
+                "enablePullDownRefresh" : true
+            }
+        },
+        {
+            "path" : "pages/activity/mutualElectionResult",
+            "style" : {
+                "navigationBarTitleText" : "活动互选结果",
+                "enablePullDownRefresh" : true
+            }
+        },
 		{
 		    "path" : "pages/user/visit",
 		    "style" : {

@@ -68,6 +68,14 @@
                     有意思
                 </view>
             </view>
+            <template v-if="hasActivityManagePermission">
+            <view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
+            <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
+                <view class="uni-list-cell-navigate uni-navigate-right" @click="$utils.n.ngt('/pages/enjoy/enjoy')">
+                    活动管理
+                </view>
+            </view>
+            </template>
             <view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
             <view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
                 <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.n.ngt('/pages/setting/setting')">
@@ -90,7 +98,9 @@
 				visit: {
 					yRead:0,
 					nRead:0
-				}
+				},
+                // 是否有活动管理功能权限
+                hasActivityManagePermission: false
             }
         },
         computed: {
@@ -122,6 +132,9 @@
                 self.userinfo = content
             })
             this.loadInviteCode()
+            this.$http.hasPermission('activityManage').then(function (res) {
+                self.hasActivityManagePermission = true
+            })
         },
 		onShow(){
 			this.loadVisitCount()
