@@ -133,21 +133,21 @@
             loadData: function (pulldownRefresh) {
                 let self = this
 				let index = this.segmentedControl.current + 1
-                if (index == "1"){
-                    if(self.listData1.length > 0){
-                        return
-					}
-                } else if (index == "2") {
-                    if(self.listData2.length > 0){
-                        return
-                    }
-                }else if (index == "3") {
-                    if(self.listData3.length > 0){
-                        return
-                    }
-                }else{
-                    return
-				}
+    //             if (index == "1"){
+    //                 if(self.listData1.length > 0){
+    //                     return
+				// 	}
+    //             } else if (index == "2") {
+    //                 if(self.listData2.length > 0){
+    //                     return
+    //                 }
+    //             }else if (index == "3") {
+    //                 if(self.listData3.length > 0){
+    //                     return
+    //                 }
+    //             }else{
+    //                 return
+				// }
                 this.$http.get('/wwd/user/current/enjoys/' + (this.segmentedControl.current + 1)).then(function (response) {
 
                     if(pulldownRefresh){
