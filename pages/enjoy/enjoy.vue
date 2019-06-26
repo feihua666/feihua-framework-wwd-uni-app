@@ -29,7 +29,7 @@
 						<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
 							<view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.id)">
 								<view class="uni-media-list-logo">
-									<image :src="$config.file.getDownloadUrl(getPic(item.id,1).picUrl)"></image>
+									<image :src="$config.file.getDownloadUrl(getPic(item.id,2))"></image>
 								</view>
 								<view class="uni-media-list-body">
 									<view class="uni-media-list-text-top">{{item.nickname}}</view>
@@ -47,7 +47,7 @@
 						<view class="uni-list-cell uni-list-cell-last" hover-class="uni-list-cell-hover">
 							<view class="uni-list-cell-navigate uni-navigate-right"   @click="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.id)">
 								<view class="uni-media-list-logo">
-									<image :src="$config.file.getDownloadUrl(getPic(item.id,1).picUrl)"></image>
+									<image :src="$config.file.getDownloadUrl(getPic(item.id,3))"></image>
 								</view>
 								<view class="uni-media-list-body">
 									<view class="uni-media-list-text-top">{{item.nickname}}</view>
