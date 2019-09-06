@@ -212,7 +212,6 @@
     import fhAreaPicker from '@/fh-components/fh-area-picker.vue';
     import ChatInput from "../../../components/im-chat/chatinput";
     import fhDictText from '@/fh-components/fh-dict-text.vue';
-
     export default {
         components: {
             fhDictText,
@@ -300,6 +299,10 @@
 			// 保存
 			save(){
                 //if (!this.checkForm()) return
+				if(!this.form.wwdUser.wechatNumber){
+					 uni.showToast({ title: '微信号不能为空', icon: "none" });
+					 return
+				}
                 let self = this
                 let data = this.form.wwdUser
                 data.nowAreaIds = this.form.nowAreaIds

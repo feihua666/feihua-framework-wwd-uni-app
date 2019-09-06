@@ -15,7 +15,10 @@
 								</view>
 								<view class="uni-media-list-body">
 									<view class="uni-media-list-text-top">{{item.nickname}}</view>
-									<view class="uni-media-list-text-bottom uni-ellipsis"><fh-dict-text type="gender" :val="item.gender"></fh-dict-text></view>
+									<view class="uni-media-list-text-bottom uni-ellipsis">
+										<fh-dict-text type="gender" :val="item.gender"></fh-dict-text> 
+										<text class="enjoy-date">{{enjoyedTime1[item.id]}}</text>
+									</view>
 								</view>
 							</view>
 						</view>
@@ -33,7 +36,10 @@
 								</view>
 								<view class="uni-media-list-body">
 									<view class="uni-media-list-text-top">{{item.nickname}}</view>
-									<view class="uni-media-list-text-bottom uni-ellipsis"><fh-dict-text type="gender" :val="item.gender"></fh-dict-text></view>
+									<view class="uni-media-list-text-bottom uni-ellipsis">
+										<fh-dict-text type="gender" :val="item.gender"></fh-dict-text> 
+										<text class="enjoy-date">{{enjoyedTime1[item.id]}}</text>
+									</view>
 								</view>
 							</view>
 						</view>
@@ -52,7 +58,8 @@
 								<view class="uni-media-list-body">
 									<view class="uni-media-list-text-top">{{item.nickname}}</view>
 									<view class="uni-media-list-text-bottom uni-ellipsis">
-										<fh-dict-text type="gender" :val="item.gender"></fh-dict-text>
+										<fh-dict-text type="gender" :val="item.gender"></fh-dict-text> 
+										<text class="enjoy-date">{{enjoyedTime1[item.id]}}</text>
 									</view>
 								</view>
 							</view>
@@ -79,15 +86,18 @@
 					items:[
 					    '对谁有意思',
 					    '对我有意思',
-					    '真的有意思'
+					    '互相有意思'
 					],
 				},
                 listData1: [],
                 listPic1: [],
+				enjoyedTime1: {},
                 listData2: [],
                 listPic2: [],
+				 enjoyedTime2: {},
                 listData3: [],
-                listPic3: []
+                listPic3: [],
+				enjoyedTime3: {}
 			};
 		},
 		onLoad(){
@@ -155,15 +165,20 @@
 					}
                     let content = response.data.data.content
                     let listPic = response.data.data.pic
+				
+					let enjoyedTime = response.data.data.enjoyedTime
                     if (index == "1"){
                         self.listData1 = content
                         self.listPic1 = listPic
+						self.enjoyedTime1 = enjoyedTime
                     } else if (index == "2") {
                         self.listData2 = content
                         self.listPic2 = listPic
+						self.enjoyedTime2 = enjoyedTime
                     }else if (index == "3") {
                         self.listData3 = content
                         self.listPic3 = listPic
+						self.enjoyedTime3 = enjoyedTime
                     }
                 }).catch(function () {
                     if(pulldownRefresh){
@@ -178,5 +193,9 @@
 <style>
 .text{
 	width:100%;
+}
+.enjoy-date{
+	float: right;
+    margin-right: 20px;
 }
 </style>

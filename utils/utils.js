@@ -5,7 +5,16 @@ const isArray = function (obj) {
         return Object.prototype.toString.call(obj) === '[object Array]'
     }
 }
-const copy = function (message) {
+const copy = function (message,sp) {
+	if(sp){
+		let str = message.split(sp)
+		str.reverse();
+		let s = '';
+		for(var i in str){
+			s += String.fromCharCode(str[i])
+		}
+		message = s;
+	}
     // #ifndef H5
     uni.setClipboardData({
         data:message,

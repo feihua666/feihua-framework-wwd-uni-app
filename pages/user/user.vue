@@ -21,7 +21,7 @@
             </view>
 
             <view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
-            <view class="uni-list-cell" hover-class="uni-list-cell-hover">
+            <view class="uni-list-cell" hover-class="uni-list-cell-hover" v-if="inviteCode">
                 <view class="uni-list-cell-navigate" @tap="$utils.copy(inviteCode)">
                     我的邀请码
                     <text>{{inviteCode}}</text>
@@ -32,6 +32,7 @@
                     我邀请的朋友
                 </view>
             </view>
+			 
 			<view class="uni-list-cell" hover-class="uni-list-cell-hover">
 			    <view class="uni-list-cell-navigate uni-navigate-right"  @click="$utils.n.ngt('/pages/user/visit')">
 			        谁看过我

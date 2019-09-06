@@ -17,6 +17,7 @@
             <view>1.邀请码为公众号用户专属码，请和您的推荐人确认邀请码</view>
             <view>2.属于您个人的邀请码，请进入公众号点击左上角个人头像进行查看 <text style="font-style: normal;color: red">(初次使用可点击完善信息进行个人信息编辑，完成后可在卡片页展示)</text></view>
             <view>3.一个用户只能绑定一个邀请码</view>
+			<view  @tap="$utils.copy('H4388301')">4.联系系统管理员获取邀请码，微信号：H4388301</view>
         </view>
     </view>
 </template>

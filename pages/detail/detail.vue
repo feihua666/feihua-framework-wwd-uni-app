@@ -139,6 +139,9 @@
 		</view>
 		<view class="fh-padding-30">
 			<button type="primary" @tap="enjoy" :loading="enjoyLoading"  v-if="'married' != wwdUser.wwdUserDto.maritalStatus && isEnjoy">有意思</button>
+			<button type="primary" v-else-if="'married' != wwdUser.wwdUserDto.maritalStatus && !isEnjoy && !enjoyCode && isEnjoyCode">TA未展示微信号</button>
+			<button type="primary" @tap="$utils.copy(enjoyCode,'-')"  v-else-if="'married' != wwdUser.wwdUserDto.maritalStatus && !isEnjoy && enjoyCode && isEnjoyCode">点击复制微信号</button>
+			
 		</view>
 
 		<fh-wx-share-h5 ref="fhwxshare" :share-content="shareContent"></fh-wx-share-h5>
@@ -158,6 +161,8 @@
 			return {
 				wwdUserId:null,
 				//是否可以对他有意思
+				isEnjoyCode: false,
+				enjoyCode: null,
 				isEnjoy:false,
 				enjoyLoading:false,
 				wwdUser:{
@@ -197,6 +202,7 @@
 			this.loadArea()
 			this.loadTags()
 			this.loadEnjoy()
+			this.getEnjoyCode()
 		},
 		methods:{
             // 有意思按钮
@@ -204,7 +210,7 @@
                 let self = this
                 uni.showModal({
                     title: '有意思',
-                    content: '请三思，不能儿戏！',
+                    content: '确定后对方将收到通知  若双方均“有意思”即可互看微信号',
                     showCancel: true,
                     success: function(res){
                         if (res.confirm) {
@@ -220,11 +226,22 @@
                 self.$http.post('/wwd/user/current/enjoy/' + this.wwdUserId).then(function (res) {
                     self.isEnjoy = false
                     uni.showToast({
-                        title:'恭喜您已表示了对TA有意思',
+                        title:'你的心动信号已发出 记得关注公众号信息等待对方回应哦',
                         icon:'none'
                     })
+					self.getEnjoyCode()
                     self.enjoyLoading = false
+                }).catch( res=>{
+                  self.loadEnjoy()
                 })
+			},
+			
+			getEnjoyCode(){
+			    let self = this
+			   self.$http.get('/wwd/user/'+ self.wwdUserId +'/enjoyCode').then(function (response) {
+				   self.isEnjoyCode= true
+			       self.enjoyCode = response.data.data.content.enjoyCode
+			   })
 			},
 		    tagIcon(type){
 		        let r = ''
