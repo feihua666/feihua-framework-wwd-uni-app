@@ -99,6 +99,7 @@
                 photo:{},
                 accessInfo:{},
                 searchForm: {
+					pNum:1,
                     includePic: true,
                     includeAccessInfo: true,
                     keyword:'',
@@ -152,6 +153,7 @@
                     pullDownRefresh:!!pullDownRefresh,
                     data: self.searchForm}).then(function (res) {
                     let content = res.data.data.content
+					self.searchForm.pNum = res.data.data.page.pageNo
                     if(pullDownRefresh){
                         self.listData = content
                     }else{
@@ -247,6 +249,15 @@
             }
 		},
         watch:{
+			'searchForm.pNum'(val){
+				if(val == 1){
+					this.searchForm.orderable=false
+					this.searchForm.orderby=null
+				}else{
+					this.searchForm.orderable=true
+					this.searchForm.orderby='update_at-desc'			
+				}
+			}
         }
 	}
 </script>
