@@ -85,13 +85,16 @@
             </view>
             <view class="uni-list-cell-divider background-color-after-none background-color-before-none"></view>
         </view>
+		<fh-wx-share-h5 ref="fhwxshare" :share-content="shareContent"></fh-wx-share-h5>
     </view>
 </template>
 
 <script>
     import uniBadge from "@/components/uni-badge.vue";
+	import fhWxShareH5 from '@/fh-components/fh-wx-share-h5.vue';
     export default {
-        components:{uniBadge},
+        components:{uniBadge,
+		fhWxShareH5},
         data () {
             return {
                 inviteCode:null,
@@ -105,6 +108,17 @@
             }
         },
         computed: {
+			shareContent () {
+				let self = this
+			    return  {
+			        title: '这有一个脱单神器',
+			        desc: '可盐可甜的小姐姐，高薪帅气的小哥哥都在这等你来相遇！',
+			        imgUrl: self.$config.logo,
+			        type:'靠谱单身',
+			        contentId:self.$store.state.userinfo.id,
+			        contentName:self.$store.state.userinfo.nickname
+			    }
+			}
         },
         methods: {
             // 加载邀请码

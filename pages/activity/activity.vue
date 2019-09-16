@@ -53,6 +53,7 @@
                 	</view>
             </view>
         </fh-loadmore>
+		<fh-wx-share-h5 ref="fhwxshare" :share-content="shareContent"></fh-wx-share-h5>
 	</view>
 </template>
 
@@ -63,6 +64,7 @@
 	import uniTag from '@/components/uni-tag.vue'
     import fhDictText from '@/fh-components/fh-dict-text.vue';
     import fhUniTag from '@/fh-components/uni-tag.vue';
+	import fhWxShareH5 from '@/fh-components/fh-wx-share-h5.vue';
 	export default {
         components: {
             uniNavBar,
@@ -70,9 +72,21 @@
             uniIcon,
 			uniTag,
             fhUniTag,
-            fhDictText
+            fhDictText,
+			fhWxShareH5
         },
         computed: {
+			shareContent () {
+				let self = this
+			    return  {
+			        title: '最新脱单活动',
+			        desc: '高质量脱单局帮你寻找兴趣相投的ta，男女1:1名额有限，速来！',
+			        imgUrl: self.$config.logo,
+			        type:'靠谱单身活动',
+			        contentId:self.$store.state.userinfo.id,
+			        contentName:self.$store.state.userinfo.nickname
+			    }
+			}
         },
 		data() {
 			return {
