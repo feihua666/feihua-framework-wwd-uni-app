@@ -210,7 +210,9 @@
                 let self = this
                 uni.showModal({
                     title: '有意思',
-                    content: '确定后对方将收到通知  若双方均“有意思”即可互看微信号',
+					cancelText:'算了，再想想',
+					confirmText:'确定，告诉TA',
+                    content: '每周只有7次使用该功能机会哦,若双方均“有意思”即可互看微信号',
                     showCancel: true,
                     success: function(res){
                         if (res.confirm) {
@@ -225,14 +227,23 @@
 				self.enjoyLoading = true
                 self.$http.post('/wwd/user/current/enjoy/' + this.wwdUserId).then(function (res) {
                     self.isEnjoy = false
+					self.enjoyLoading = false
                     uni.showToast({
                         title:'你的心动信号已发出 记得关注公众号信息等待对方回应哦',
                         icon:'none'
                     })
 					self.getEnjoyCode()
-                    self.enjoyLoading = false
                 }).catch( res=>{
-                  self.loadEnjoy()
+					self.enjoyLoading = false
+					let status = res.statusCode
+					if (status ==409 ){
+					   uni.showToast({
+					       title:res.data.msg || "您近期操作已经达到限制！",
+					       icon:'none',
+						   duration:2000
+					   })
+					}
+					self.loadEnjoy()
                 })
 			},
 			

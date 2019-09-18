@@ -186,4 +186,7 @@
     .activity-detail-content-img-width100 img{
         max-width: 100% !important;
     }
+	uni-modal .uni-modal__ft,uni-modal .uni-modal__bd{
+		font-size: 14px !important;
+	}
 </style>
