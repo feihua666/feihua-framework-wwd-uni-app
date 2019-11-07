@@ -14,6 +14,17 @@
 		</uni-nav-bar>
 		<!-- 使用非原生导航栏后需要在页面顶部占位 -->
 		<view style="height:50px;"></view>
+		<view class="uni-padding-wrap" v-if="banners.length>0">
+			<view class="page-section swiper">
+				<view class="page-section-spacing">
+					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
+						<swiper-item v-for="(item, index) in banners" @tap="$utils.n.ngt(item.type=='页面'?('/pages/index/web-view?id=' + item.id):item.redirectUrl)" >
+							<image class="banner-image" :src="$config.file.getDownloadUrl(item.titleUrl)"></image>
+						</swiper-item>
+					</swiper>
+				</view>
+			</view>
+		</view>
 		<fh-loadmore ref="loadmoreref" class="background-color">
 			<view
 				style="margin-top:10px;"
@@ -133,11 +144,17 @@ export default {
 				nowProvinceId: '',
 				nowCityId: '',
 				nowDistrictId: ''
-			}
+			},
+			banners: [],
+			indicatorDots: true,
+			autoplay: true,
+			interval: 2000,
+			duration: 500
 		};
 	},
 	onLoad() {
 		console.log('onLoad index');
+		this.loadBanners();
 		this.initSearchForm();
 	},
 	onReady() {
@@ -162,6 +179,17 @@ export default {
 					}
 				}
 			});
+		},
+		loadBanners: function() {
+			let self = this
+			self.$http
+				.get('/wwd/banners',{'status':'Y'})
+				.then(function(res) {
+					self.banners = res.data.data.content
+				})
+				.catch(function() {
+					self.banners = []
+				});
 		},
 		loadData: function(pullDownRefresh) {
 			console.log('loaddata');
@@ -303,9 +331,6 @@ export default {
 	margin: 7px 0;
 	line-height: 30px;
 }
-swiper {
-	font-size: 16px;
-}
 
 .fh-image-view {
 	height: 440upx;
@@ -317,5 +342,31 @@ swiper {
 }
 .image {
 	width: 100%;
+}
+
+swiper {
+	font-size: 16px;
+}
+.uni-padding-wrap{
+	width: 97%;
+	padding: 0 6px 0 6px;
+}
+.banner-image{
+	width: 100%;
+	height: 100%;
+}
+.swiper {
+	height: 300upx;
+}
+.swiper-item {
+	display: block;
+	height: 300upx;
+	line-height: 300upx;
+	text-align: center;
+}
+
+.swiper-list {
+	margin-top: 40upx;
+	margin-bottom: 0;
 }
 </style>

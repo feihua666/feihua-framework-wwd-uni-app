@@ -12,7 +12,8 @@
 						<view class="uni-media-list-text-top">{{item.wwdUserDto.nickname}}</view>
 						<view class="uni-media-list-text-bottom uni-ellipsis">
 							<fh-dict-text type="gender" :val="item.wwdUserDto.gender"></fh-dict-text>
-							<text class="visit-date" v-if="item.selected">已选</text>
+							<text class="visit-date" v-if="item.selected"><fh-uni-tag inverted="true" type="danger" size="small" :text="'已选'+item.level"></fh-uni-tag></text>
+							
 						</view>
 					</view>
 				</view>
@@ -24,10 +25,11 @@
 
 <script>
     import fhDictText from '@/fh-components/fh-dict-text.vue';
-
+    import fhUniTag from '@/fh-components/uni-tag.vue';
     export default {
         components: {
-            fhDictText
+            fhDictText,
+			fhUniTag
         },
 		data() {
 			return {
@@ -37,7 +39,7 @@
                     wwdUserId: null,
 					gender: null
 				},
-				selectedWwdUser: null
+				selectedWwdUser: []
 			};
 		},
         onPullDownRefresh(){
@@ -84,8 +86,15 @@
                     if(content && content.length > 0){
                         for(let i = 0; i< content.length; i++){
                             if(content[i].wwdUserDto.gender == keepGender){
-                                if (self.selectedWwdUser) {
-                                    content[i].selected = (content[i].wwdUserDto.id == self.selectedWwdUser.selectedWwdUserId)
+								
+                                if (self.selectedWwdUser.length>0) {
+									self.selectedWwdUser.forEach(function(v){
+										if(content[i].wwdUserDto.id == v.selectedWwdUserId){
+											content[i].selected = true
+											content[i].level = v.level || ''
+											return false
+										}
+									})
 								}
 
                                 temp.push(content[i])
@@ -105,12 +114,12 @@
 				self.$http.get('/wwd/activityMutualElection/userMutualElections',form)
 					.then(function (res) {
 						let content = res.data.data.content
-						self.selectedWwdUser = content[0]
+						self.selectedWwdUser = content
                         uni.stopPullDownRefresh();
 						self.getParticipates()
 
                     }).catch(() => {
-                    	self.selectedWwdUser = null
+                    	self.selectedWwdUser = []
                     	uni.stopPullDownRefresh();
 						self.getParticipates()
 
@@ -120,58 +129,81 @@
 
                 let self = this
                 // 点击已选择的不提示
-                if (self.selectedWwdUser && item.wwdUserDto.id == self.selectedWwdUser.selectedWwdUserId){
-                    return
-				}
-
-                uni.showModal({
-                    title: '您的选择是',
-                    content: item.wwdUserDto.nickname,
-                    showCancel: true,
-                    success: (res) => {
-                        if (res.confirm) {
-                            // 如果有选择的更新，没有选择的添加
-                            let form = {
-                                activityId: self.activityId,
-                                wwdUserId: self.wwdUser.wwdUserId,
-                                selectedWwdUserId: item.wwdUserDto.id
-                            }
-                            if (self.selectedWwdUser) {
-                                self.$http.put('/wwd/activityMutualElection/userMutualElection/' + self.selectedWwdUser.id,form).then(function () {
-                                    // 保存完成，重新加载数据
-                                    uni.showToast({
-                                        icon: 'none',
-                                        title: '您的选择已提交'
-                                    });
-                                    self.getSelected()
-                                }).catch(() => {
-                                    // 保存完成，重新加载数据
-                                    uni.showToast({
-                                        icon: 'none',
-                                        title: 'sorry,互选已结束'
-                                    });
+				console.log(item)
+				if(item.selected){
+					uni.showModal({
+					    title: '您是否要取消选择',
+					    content: item.wwdUserDto.nickname,
+					    showCancel: true,
+					    success: (res) => {
+					        if (res.confirm) {
+					            // 如果有选择的更新，没有选择的添加
+								let id  = ''
+								self.selectedWwdUser.forEach(function(v){
+									if(v.selectedWwdUserId == item.wwdUserDto.id){
+										id = v.id 
+										return false
+									}
 								})
-							}else {
-                                self.$http.post('/wwd/activityMutualElection/userMutualElection',form).then(function () {
-                                    // 保存完成，重新加载数据
-                                    uni.showToast({
-                                        icon: 'none',
-                                        title: '您的选择已提交'
-                                    });
-                                    self.getSelected()
-                                }).catch(() => {
-                                    // 保存完成，重新加载数据
-                                    uni.showToast({
-                                        icon: 'none',
-                                        title: 'sorry,互选已结束'
-                                    });
-                                })
-							}
-
-
-                        }
-                    }
-                });
+					            self.$http.delete('/wwd/activityMutualElection/userMutualElection/'+ id).then(function () {
+					                // 保存完成，重新加载数据
+					                uni.showToast({
+					                    icon: 'none',
+					                    title: '您的取消选择已提交'
+					                });
+					                self.getSelected()
+					            }).catch(() => {
+					                // 保存完成，重新加载数据
+					                uni.showToast({
+					                    icon: 'none',
+					                    title: 'sorry,互选已结束'
+					                });
+					            })
+				
+					        }
+					    }
+					});
+				} else if (self.selectedWwdUser.length >= 2){
+					uni.showToast({
+					    icon: 'none',
+					    title: '您的选择达到上限'
+					});
+                    return
+				}else {
+					uni.showModal({
+					    title: '您的选择是',
+					    content: item.wwdUserDto.nickname,
+					    showCancel: true,
+					    success: (res) => {
+					        if (res.confirm) {
+					            // 如果有选择的更新，没有选择的添加
+					            let form = {
+					                activityId: self.activityId,
+					                wwdUserId: self.wwdUser.wwdUserId,
+					                selectedWwdUserId: item.wwdUserDto.id
+					            }
+								form.level = 'A'
+								if(self.selectedWwdUser.length == 1 && self.selectedWwdUser[0].level == 'A'){
+									form.level = 'B'
+								}
+					            self.$http.post('/wwd/activityMutualElection/userMutualElection',form).then(function () {
+					                // 保存完成，重新加载数据
+					                uni.showToast({
+					                    icon: 'none',
+					                    title: '您的选择已提交'
+					                });
+					                self.getSelected()
+					            }).catch(() => {
+					                // 保存完成，重新加载数据
+					                uni.showToast({
+					                    icon: 'none',
+					                    title: 'sorry,互选已结束'
+					                });
+					            })
+					        }
+					    }
+					});
+				}
             }
 		}
 	}

@@ -242,6 +242,12 @@
 		        "enablePullDownRefresh" : true //开启下拉刷新
 		    }
 		}
+        ,{
+            "path" : "pages/index/web-view",
+            "style" : {
+				"navigationBarTitleText" : "轮播内容详情"
+			}
+        }
     ],
     "tabBar" : {
         "list" : [
