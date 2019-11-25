@@ -19,7 +19,7 @@
 				<view class="page-section-spacing">
 					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
 						<swiper-item v-for="(item, index) in banners" @tap="$utils.n.ngt(item.type=='页面'?('/pages/index/web-view?id=' + item.id):item.redirectUrl)" >
-							<image class="banner-image" :src="$config.file.getDownloadUrl(item.titleUrl)"></image>
+							<image lazy-load mode="aspectFit"  class="banner-image" :src="$config.file.getDownloadUrl(item.titleUrl)"></image>
 						</swiper-item>
 					</swiper>
 				</view>
@@ -130,21 +130,21 @@ export default {
 			photo: {},
 			accessInfo: {},
 			searchForm: {
-				pNum: 1,
-				includePic: true,
-				includeAccessInfo: true,
-				keyword: '',
-				gender: '',
-				ageStart: '',
-				ageEnd: '',
-				education: '',
-				homeProvinceId: '',
-				homeCityId: '',
-				homeDistrictId: '',
-				nowProvinceId: '',
-				nowCityId: '',
-				nowDistrictId: ''
-			},
+                pNum: 1,
+                includePic: true,
+                includeAccessInfo: true,
+                keyword: '',
+                gender: '',
+                ageStart: '',
+                ageEnd: '',
+                education: '',
+                homeProvinceId: '',
+                homeCityId: '',
+                homeDistrictId: '',
+                nowProvinceId: '',
+                nowCityId: '',
+                nowDistrictId: ''
+            },
 			banners: [],
 			indicatorDots: true,
 			autoplay: true,

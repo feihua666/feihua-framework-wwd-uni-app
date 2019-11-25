@@ -1,6 +1,6 @@
 // const host = 'http://yangwei.ngrok.ahbdz.com'
 const host = 'http://api.51match.cn'
-//const host = 'http://wwd.com'
+// const host = 'http://wwd.com'
 const hostApi = host + '/api'
 const config = {
 	logo:'http://p3.qhimg.com/t01f9eff21fde930194.png',

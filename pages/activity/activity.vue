@@ -43,7 +43,7 @@
 						</navigator>
                 	</view>
                 	<view class="uni-card-footer">
-                		<view class="uni-card-link">{{item.wwdParticipateDtos?item.wwdParticipateDtos.length:'0'}}/{{item.headcountRule == 'unlimited' ? (item.headcount=='0'?'不限人数':item.headcount):(item.headcountMale + item.headcountFemale)}} 人 </view>
+                		<view class="uni-card-link">{{item.wwdParticipateDtos?item.wwdParticipateDtos.length:'0'}}/{{item.headcountRule == 'unlimited' ? (item.headcount=='0'?'不限人数':item.headcount + ' 人'):(item.headcountMale + item.headcountFemale) + ' 人'}}  </view>
                 		<view class="uni-card-link">
                             <fh-uni-tag inverted="true" type="danger" size="small">
                                 <fh-dict-text :type="'activity_status'" :val="item.status"  text="不限"></fh-dict-text>

@@ -50,10 +50,18 @@
 			</template>
 		</view>
 		<view class="fh-padding-30" v-if="participates.length >0" style="border-top: 1px solid #ccc;width: 90%;">
-			<view class="font-size-sm view-line-height" style="color: red;"><text>{{activity.signDesc}}</text></view>
+			<view class="font-size-sm view-line-height" style="color: red;"><text>{{activity.signDesc[0]}}</text></view>
 		</view>
 		 <view class="fh-padding-30">
-		    <view class="icon-item" v-for="(item,index) in participates" :key="index" @tap="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.wwdUserDto.id)" style="display: inline-block;width: 20%;">
+		    <view  v-if="item.wwdUserDto.gender == 'male'"  class="icon-item" v-for="(item,index) in participates" :key="index" @tap="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.wwdUserDto.id)" style="display: inline-block;width: 20%;">
+				<image class="uni-grid-9-image" :src="$config.file.getDownloadUrl(item.baseUserDto.photo)" style="border-radius: 50%;width: 50px;height: 50px;"></image>
+		    </view>
+		</view>
+		<view class="fh-padding-30" v-if="participates.length >0" style="border-top: 1px solid #ccc;width: 90%;">
+			<view class="font-size-sm view-line-height" style="color: red;"><text>{{activity.signDesc[1]}}</text></view>
+		</view>
+		 <view class="fh-padding-30">
+		    <view  v-if="item.wwdUserDto.gender == 'female'"  class="icon-item" v-for="(item,index) in participates" :key="index" @tap="$utils.n.ngt('/pages/detail/detail?wwdUserId=' + item.wwdUserDto.id)" style="display: inline-block;width: 20%;">
 				<image class="uni-grid-9-image" :src="$config.file.getDownloadUrl(item.baseUserDto.photo)" style="border-radius: 50%;width: 50px;height: 50px;"></image>
 		    </view>
 		</view>
@@ -215,9 +223,9 @@
 						self.maleCount = maleCount
 						self.femaleCount = femaleCount
 						if(self.activity.headcountRule && self.activity.headcountRule=='custom'){
-							self.activity.signDesc = ['已报名人数：男 ',maleCount,'/',self.activity.headcountMale,' 人; 女 ',femaleCount,'/',self.activity.headcountFemale ,'人'].join('')
+							self.activity.signDesc = [['已报名人数：男 ',maleCount,'/',self.activity.headcountMale,' 人'].join(''),['已报名人数：女 ',femaleCount,'/',self.activity.headcountFemale ,'人'].join('')]
 						}else{
-							self.activity.signDesc = ['已报名人数：男 ',maleCount,'人; 女 ',femaleCount,'人'].join('')
+							self.activity.signDesc = [['已报名人数：男 ',maleCount,'人'].join(''),['已报名人数：女 ',femaleCount,'人'].join('')]
 						}
 					}
                 }).catch(function () {
