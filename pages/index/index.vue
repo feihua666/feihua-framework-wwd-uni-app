@@ -22,7 +22,6 @@
 							<image
 								lazy-load
 								mode="aspectFill"
-								style="height: 300px;"
 								:src="$config.file.getDownloadUrl(item.titleUrl) + '?x-oss-process=image/resize,h_528/auto-orient,1'"
 								class="image height100"
 							></image>
