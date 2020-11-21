@@ -19,7 +19,13 @@
 				<view class="page-section-spacing">
 					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
 						<swiper-item v-for="(item, index) in banners" @tap="$utils.n.ngt(item.type=='页面'?('/pages/index/web-view?id=' + item.id):item.redirectUrl)" >
-							<image lazy-load mode="aspectFit"  class="banner-image" :src="$config.file.getDownloadUrl(item.titleUrl)"></image>
+							<image
+								lazy-load
+								mode="aspectFill"
+								style="height: 300px;"
+								:src="$config.file.getDownloadUrl(item.titleUrl) + '?x-oss-process=image/resize,h_528/auto-orient,1'"
+								class="image height100"
+							></image>
 						</swiper-item>
 					</swiper>
 				</view>
@@ -356,12 +362,12 @@ swiper {
 	height: 100%;
 }
 .swiper {
-	height: 300upx;
+	height: 400upx;
 }
 .swiper-item {
 	display: block;
-	height: 300upx;
-	line-height: 300upx;
+	height: 400upx;
+	line-height: 400upx;
 	text-align: center;
 }
 
